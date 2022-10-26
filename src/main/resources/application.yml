@@ -1,0 +1,13 @@
+server:
+  port: 8000
+# cloud config
+spring:
+  application:
+    name: configtest
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://13.209.85.118:9999 # config server ??
+
+
+
