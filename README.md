@@ -16,4 +16,4 @@
 
 
 ## 인프라 아키텍처 
-![image](https://user-images.githubusercontent.com/96860725/198271153-f5b63889-954b-43a9-bab3-4f481d2bab2e.png)
+![image](https://user-images.githubusercontent.com/96860725/198549957-3b089b31-1307-4681-84a2-6f22baa23c26.png)
