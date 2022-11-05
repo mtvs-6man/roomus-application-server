@@ -1,7 +1,7 @@
 package com.sixman.roomus.product.command.domain.model;
 
-import com.sixman.roomus.commons.jpa.MoneyConverter;
-import com.sixman.roomus.commons.model.Money;
+import com.sixman.roomus.common.jpa.MoneyConverter;
+import com.sixman.roomus.common.model.Money;
 import lombok.*;
 
 import javax.persistence.*;
