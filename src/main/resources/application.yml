@@ -3,11 +3,8 @@ server:
 # cloud config
 spring:
   application:
-    name: configtest
+    name: application
   profiles:
-    active: dev
+    active: dev, aws
   config:
     import: optional:configserver:http://13.209.85.118:9999 # config server ??
-
-
-
