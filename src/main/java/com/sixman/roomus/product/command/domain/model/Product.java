@@ -1,10 +1,12 @@
 package com.sixman.roomus.product.command.domain.model;
 
 import com.sixman.roomus.common.jpa.MoneyConverter;
+import com.sixman.roomus.common.model.File_backup;
 import com.sixman.roomus.common.model.Money;
 import lombok.*;
 
 import javax.persistence.*;
+import java.net.URL;
 import java.util.Date;
 
 @Getter
@@ -55,7 +57,14 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
-    public Product(String funitureName, boolean location, String category, String information, float xSize, float ySize, float zSize, int price, Date createdDate, Date lastModifiedDate) {
+    @Column(name = "FILE_URL")
+    private String fileUrl;
+
+    @Column(name = "SCREENT_SHOT_URL")
+    private String screenShotUrl;
+
+
+    public Product(String funitureName, boolean location, String category, String information, float xSize, float ySize, float zSize, int price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
         this.funitureName = funitureName;
         this.location = location;
         this.category = category;
@@ -64,5 +73,7 @@ public class Product {
         this.price = new Money(price);
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
+        this.fileUrl = fileUrl;
+        this.screenShotUrl = screenShotUrl;
     }
 }
