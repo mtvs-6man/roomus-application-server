@@ -3,7 +3,6 @@ package com.sixman.roomus.product.command.infra.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.sixman.roomus.common.repository.FileRepository;
 import com.sixman.roomus.product.command.domain.exception.NullContentTypeException;
 import com.sixman.roomus.product.command.domain.service.ProductAwsS3Service;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ public class ProductAwsS3ServiceImpl implements ProductAwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final FileRepository fileRepository;
     private final AmazonS3 amazonS3;
 
 
