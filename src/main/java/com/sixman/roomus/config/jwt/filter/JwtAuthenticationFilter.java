@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sixman.roomus.config.auth.PrincipalDetails;
 import com.sixman.roomus.member.Dto.LoginDto;
+import com.sixman.roomus.member.Dto.LoginRequestDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +17,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 
 
@@ -28,6 +32,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분 사용이 가능함
     private String key;
+
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, String key) {
         this.authenticationManager = authenticationManager;
         this.key = key;
@@ -36,6 +41,29 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // (/login) 요청시 동작되는 함수이다.
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader br = null;
+//      request의 buffer 값을 확인해서 옴
+//        String line = "";
+//
+//        try {
+//            //body내용 inputstream에 담는다.
+//            InputStream inputStream = request.getInputStream();
+//            if (inputStream != null) {
+//                br = new BufferedReader(new InputStreamReader(inputStream));
+//                //더 읽을 라인이 없을때까지 계속
+//                while ((line = br.readLine()) != null) {
+//                    System.out.println("line : " + line);
+//                    stringBuilder.append(line);
+//                }
+//            }else {
+//                System.out.println("데이터 없음");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
 
         // 1. username, password 받아는다.
         try {
@@ -46,7 +74,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //            }
             ObjectMapper loginObj = new ObjectMapper();
             LoginDto loginDto = loginObj.readValue(request.getInputStream(), LoginDto.class);
-
             // 사용자가 입력한 정보를 받아서 토큰으로 만들어줌
             // 사용자의 아이디 패스워드를 넣어 임시 토큰을 발행함
             UsernamePasswordAuthenticationToken authenticationToken =
@@ -89,7 +116,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("memberId", principalDetails.getMember().getMemberId())
                 .sign(Algorithm.HMAC512(key));
 
+        LoginRequestDTO responseDTO = new LoginRequestDTO();
+//        responseDTO.setUserName(principalDetails.getMember().getMemberInfo().getName());
+        responseDTO.setUserRole(principalDetails.getMember().getRole());
+        responseDTO.setUserNo(principalDetails.getMember().getMemberNo());
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String responseValue = objectMapper.writeValueAsString(responseDTO);
+
         response.addHeader("Authorization", "Bearer " + jwtToken);
+        response.getOutputStream().println(responseValue);
     }
 
 }
