@@ -33,8 +33,6 @@ public class PrincipalDetails implements UserDetails {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         // 회원이 가진 권한의 정보를 list 형태로 불러와서 authorities list에 추가함
         member.getRoleList().forEach(r -> authorities.add(() -> r));
-        System.out.println("잘들어감? : " + authorities);
-        authorities.forEach(r -> System.out.println("role : " + r.getAuthority()));
         System.out.println("authorities test : " + authorities.iterator().next().getAuthority());
         return authorities;
     }
