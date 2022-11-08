@@ -1,12 +1,10 @@
 package com.sixman.roomus.product.command.domain.model;
 
 import com.sixman.roomus.common.jpa.MoneyConverter;
-import com.sixman.roomus.common.model.File_backup;
 import com.sixman.roomus.common.model.Money;
 import lombok.*;
 
 import javax.persistence.*;
-import java.net.URL;
 import java.util.Date;
 
 @Getter

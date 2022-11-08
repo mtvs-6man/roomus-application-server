@@ -48,16 +48,5 @@ public class ProductAwsS3ServiceImpl implements ProductAwsS3Service {
     private static UUID getRandomUuid() {
         return UUID.randomUUID();
     }
-//    @Override
-//    public byte[] fileDownload(URL url) throws IOException {
-//        System.out.println(url.toString());
-//        S3Object downloadS3Object = amazonS3.getObject(new GetObjectRequest(bucket, url.toString()));
-//        S3ObjectInputStream s3ObjectInputStream = downloadS3Object.getObjectContent();
-//        return IOUtils.toByteArray(s3ObjectInputStream);
-//    }
-//    @Override
-//    public byte[] fileDownload(String fileName) {
-//        System.out.println("fileName = " + fileName);
-//        amazonS3.getObject(new GetObjectRequest())
-//    }
+
 }
