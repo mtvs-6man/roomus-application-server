@@ -4,6 +4,7 @@ import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.domain.model.Product;
 import com.sixman.roomus.product.command.domain.repository.ProductRepository;
 import com.sixman.roomus.product.command.domain.service.ProductAwsS3Service;
+import com.sixman.roomus.product.command.domain.service.ProductDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,8 @@ import java.io.IOException;
 public class ProductService {
 
     private final ProductRepository productRepository;
-
     private final ProductAwsS3Service fileService;
+    private final ProductDataService productDataService;
 
     private final String PRODUCT_ZIP_DIRECTORY = "/product/zip";
     private final String PRODUCT_SCREENSHOT_DIRECTORY = "/product/screenshot";
@@ -45,6 +46,8 @@ public class ProductService {
                 screenShotName);
         // 도메인 서비스 혹은 레파지토리 호출
         productRepository.save(product);
+        productDataService.throwProductSaveMessageToViewRepository(product); // 쿼리용 DB에 저장
+
         // 삽입 결과 반환
         return product.getProductNo();
     }
