@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public class RoomusApplicaitonSeverApplication {
 
+    static {
+        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+    }
     public static void main(String[] args) {
         SpringApplication.run(RoomusApplicaitonSeverApplication.class, args);
     }
