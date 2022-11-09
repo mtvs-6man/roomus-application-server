@@ -1,7 +1,7 @@
 package com.sixman.roomus.product.command.domain.model;
 
-import com.sixman.roomus.common.jpa.MoneyConverter;
-import com.sixman.roomus.common.model.Money;
+import com.sixman.roomus.commons.jpa.MoneyConverter;
+import com.sixman.roomus.commons.model.Money;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,7 +26,11 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_SEQUENCE")
-    private Integer no;
+    @Column(name = "PRODUCT_NO")
+    private Integer productNo;
+
+    @Column(name = "MEMBER_NO")
+    private Integer memberNo;
 
     @Column(name = "FUNITURE_NAME")
     private String funitureName;
@@ -62,7 +66,8 @@ public class Product {
     private String screenShotUrl;
 
 
-    public Product(String funitureName, boolean location, String category, String information, float xSize, float ySize, float zSize, int price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
+    public Product(Integer memberNo,String funitureName, boolean location, String category, String information, float xSize, float ySize, float zSize, int price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
+        this.memberNo = memberNo;
         this.funitureName = funitureName;
         this.location = location;
         this.category = category;

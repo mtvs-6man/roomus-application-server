@@ -62,7 +62,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority(Role.SELLER.getValue(), Role.ADMIN.getValue())
                 .antMatchers("/admin/**")// 관리자
                 .hasAnyAuthority(Role.ADMIN.getValue())
-                .antMatchers("/**").permitAll()
+                // 상품 (product) 관련 권한 설정
+//                .antMatchers("/v1/products/**")
+//                .hasAnyAuthority(Role.USER.getValue(), Role.SELLER.getValue(), Role.ADMIN.getValue())
+                // 그 외 모든 요청 허용
                 .anyRequest().permitAll(); //denyAll();//위의 요청을 제외한 모든 요청을
 
     }

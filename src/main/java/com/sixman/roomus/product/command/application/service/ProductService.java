@@ -20,16 +20,17 @@ public class ProductService {
 
     private final ProductAwsS3Service fileService;
 
-    private final String PRODUCT_ZIP_FILE = "/product/zip";
-    private final String PRODUCT_SCREENSHOT_FILE = "/product/screenshot";
+    private final String PRODUCT_ZIP_DIRECTORY = "/product/zip";
+    private final String PRODUCT_SCREENSHOT_DIRECTORY = "/product/screenshot";
 
     @Transactional
     public Integer registProduct(ProductRequestDTO productRequestDTO, MultipartFile uploadFile, MultipartFile screenShot) throws IOException {
         // s3 데이터 추가
-        String fbxFileName = fileService.fileUpload(PRODUCT_ZIP_FILE, uploadFile);
-        String screenShotName = fileService.fileUpload(PRODUCT_SCREENSHOT_FILE, screenShot);
+        String fbxFileName = fileService.fileUpload(PRODUCT_ZIP_DIRECTORY, uploadFile);
+        String screenShotName = fileService.fileUpload(PRODUCT_SCREENSHOT_DIRECTORY, screenShot);
         // 엔티티로 변환
         Product product = new Product(
+                productRequestDTO.getMemberNo(),
                 productRequestDTO.getFurnitName(),
                 productRequestDTO.isLocation(),
                 productRequestDTO.getCategory(),
@@ -43,9 +44,8 @@ public class ProductService {
                 fbxFileName,
                 screenShotName);
         // 도메인 서비스 혹은 레파지토리 호출
-        System.out.println("productRepository = " + productRepository);
         productRepository.save(product);
         // 삽입 결과 반환
-        return product.getNo();
+        return product.getProductNo();
     }
 }

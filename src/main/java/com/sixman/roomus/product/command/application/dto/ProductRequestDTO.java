@@ -4,6 +4,7 @@ import lombok.*;
 
 @Data
 public class ProductRequestDTO {
+    private Integer memberNo;
     private String furnitName;
     private boolean location;
     private String category;
