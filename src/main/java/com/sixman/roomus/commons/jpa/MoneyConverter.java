@@ -1,6 +1,6 @@
-package com.sixman.roomus.common.jpa;
+package com.sixman.roomus.commons.jpa;
 
-import com.sixman.roomus.common.model.Money;
+import com.sixman.roomus.commons.model.Money;
 
 import javax.persistence.AttributeConverter;
 

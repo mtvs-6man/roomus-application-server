@@ -1,4 +1,4 @@
-package com.sixman.roomus.common.dto;
+package com.sixman.roomus.commons.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

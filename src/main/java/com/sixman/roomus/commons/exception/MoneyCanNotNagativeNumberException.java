@@ -1,4 +1,4 @@
-package com.sixman.roomus.common.exception;
+package com.sixman.roomus.commons.exception;
 
 public class MoneyCanNotNagativeNumberException extends RuntimeException{
     public MoneyCanNotNagativeNumberException() {

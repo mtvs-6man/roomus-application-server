@@ -1,7 +1,7 @@
-package com.sixman.roomus.common.model;
+package com.sixman.roomus.commons.model;
 
 
-import com.sixman.roomus.common.exception.MoneyCanNotNagativeNumberException;
+import com.sixman.roomus.commons.exception.MoneyCanNotNagativeNumberException;
 import lombok.Getter;
 import lombok.ToString;
 
