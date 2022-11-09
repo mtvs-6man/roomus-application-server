@@ -9,23 +9,14 @@ import javax.persistence.Embeddable;
 public class MemberInfo {
     @Column(name = "MEMBER_NAME")
     private String name;
-    @Column(name = "MAMBER_PHONE")
-    private String phone;
-    @Column(name = "MEMBER_GENDER")
-    private String gender;
-    @Column(name = "MEMBER_AGE")
-    private String age;
     @Column(name = "MEMBER_EMAIL")
     private String email;
 
     public MemberInfo() {
     }
 
-    public MemberInfo(String name, String phone, String gender, String age, String email) {
+    public MemberInfo(String name, String email) {
         setName(name);
-        setPhone(phone);
-        setGender(gender);
-        setAge(age);
         setEmail(email);
     }
 
@@ -37,28 +28,6 @@ public class MemberInfo {
         this.name = name;
     }
 
-    public void setPhone(String phone) {
-        if(phone == null){
-            throw new MemberNullError("회원 전화번호");
-        }
-
-        this.phone = phone;
-    }
-
-    public void setGender(String gender) {
-        if(gender == null){
-            throw new MemberNullError("회원 성별");
-        }
-        this.gender = gender;
-    }
-
-    public void setAge(String age) {
-        if(age == null){
-            throw new MemberNullError("회원 나이");
-        }
-        this.age = age;
-    }
-
     public void setEmail(String email) {
         if(email == null){
             throw new MemberNullError("회원 이메일");
@@ -68,18 +37,6 @@ public class MemberInfo {
 
     public String getName() {
         return name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getAge() {
-        return age;
     }
 
     public String getEmail() {
