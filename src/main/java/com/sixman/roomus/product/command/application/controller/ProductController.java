@@ -24,14 +24,7 @@ public class ProductController {
     public ResponseEntity<ResponseDTO> insertProduct(ProductRequestDTO product,
                                                      @RequestPart(value = "zipFile") MultipartFile zipFile,
                                                      @RequestPart(value = "screenShot") MultipartFile screenShot
-//                                                     @RequestPart(value = "fbxFile") MultipartFile fbxFile,
-//                                                     @RequestPart(value = "screenShot") MultipartFile screenShot,
-//                                                     @RequestPart(value = "material1", required = false) MultipartFile material1,
-//                                                     @RequestPart(value = "material2", required = false) MultipartFile material2,
-//                                                     @RequestPart(value = "material3", required = false) MultipartFile material3,
-//                                                     @RequestPart(value = "material4", required = false) MultipartFile material4,
-//                                                     @RequestPart(value = "material5", required = false) MultipartFile material5
-    ) throws IOException {
+                                                    ) throws IOException {
         // 1. 로그인한 유저를 security 꺼내는 작업을 해야한다.
 //        Integer memberNo = productMemberService.getMemberNo();
         product.setMemberNo(1);
