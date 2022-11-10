@@ -3,7 +3,7 @@ package com.sixman.roomus.product.command.application.service;
 import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.domain.model.Product;
 import com.sixman.roomus.product.command.domain.repository.ProductRepository;
-import com.sixman.roomus.product.command.domain.service.ProductAwsS3Service;
+import com.sixman.roomus.product.command.domain.service.ProductStorageService;
 import com.sixman.roomus.product.command.domain.service.ProductDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,17 +18,15 @@ import java.io.IOException;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductAwsS3Service fileService;
+    private final ProductStorageService productStorageService;
     private final ProductDataService productDataService;
 
-    private final String PRODUCT_ZIP_DIRECTORY = "/product/zip";
-    private final String PRODUCT_SCREENSHOT_DIRECTORY = "/product/screenshot";
 
     @Transactional
     public Integer registProduct(ProductRequestDTO productRequestDTO, MultipartFile uploadFile, MultipartFile screenShot) throws IOException {
         // s3 데이터 추가
-        String fbxFileName = fileService.fileUpload(PRODUCT_ZIP_DIRECTORY, uploadFile);
-        String screenShotName = fileService.fileUpload(PRODUCT_SCREENSHOT_DIRECTORY, screenShot);
+        String fbxFileName = productStorageService.fileSaveToStorage(uploadFile);
+        String screenShotName = productStorageService.fileSaveToStorage(screenShot);
         // 엔티티로 변환
         Product product = new Product(
                 productRequestDTO.getMemberNo(),
