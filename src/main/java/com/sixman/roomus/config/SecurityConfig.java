@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static String AUTH_KEY;
     private final MemberRepository memberRepository;
 
+
     public SecurityConfig(@Value("${jwt.secret}") String key, MemberRepository memberRepository) {
         this.AUTH_KEY = key;
         this.memberRepository = memberRepository;
@@ -56,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(),AUTH_KEY)) // 로그인 요청시 해당 필터를 거치도록 설정 | 필수 파라미터 AuthenticationManger을 필수로 등록해야됨
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), AUTH_KEY, memberRepository))
                 .authorizeRequests()
-                .antMatchers("/user/**") // 회원용
+                .antMatchers("/member/**") // 회원용
                 .hasAnyAuthority(Role.USER.getValue(), Role.SELLER.getValue(), Role.ADMIN.getValue())
                 .antMatchers("/seller/**") // 판매자
                 .hasAnyAuthority(Role.SELLER.getValue(), Role.ADMIN.getValue())
