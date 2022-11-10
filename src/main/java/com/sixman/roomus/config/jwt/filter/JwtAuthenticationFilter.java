@@ -42,8 +42,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        BufferedReader br = null;
+//        StringBuilder stringBuilder = new StringBuilder();
+//        BufferedReader br = null;
 //      request의 buffer 값을 확인해서 옴
 //        String line = "";
 //
