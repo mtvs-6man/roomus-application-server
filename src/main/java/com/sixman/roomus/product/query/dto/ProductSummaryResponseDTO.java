@@ -11,4 +11,5 @@ import lombok.*;
 public class ProductSummaryResponseDTO {
     private int no;
     private String screenShotUrl;
+    private String category;
 }

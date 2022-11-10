@@ -46,6 +46,7 @@ public class ProductViewService {
         for (ProductData productData : productDataList) {
             ProductSummaryResponseDTO productListResponseDTO = new ProductSummaryResponseDTO();
             productListResponseDTO.setNo(productData.getProductNo());
+            productListResponseDTO.setCategory(productData.getCategory());
             productListResponseDTO.setScreenShotUrl(productData.getScreenShotUrl());
             productSummaryResponseDTO.add(productListResponseDTO);
         }
