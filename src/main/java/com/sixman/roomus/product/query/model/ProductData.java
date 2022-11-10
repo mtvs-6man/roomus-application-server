@@ -57,12 +57,12 @@ public class ProductData {
     private String screenShotUrl;
 
 
-    public ProductData(String funitureName, boolean location, String category, String information, float xSize, float ySize, float zSize, int price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
+    public ProductData(String funitureName, boolean location, String category, String information, float xsize, float ysize, float zsize, int price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
         this.funitureName = funitureName;
         this.location = location;
         this.category = category;
         this.information = information;
-        this.productScale = new ProductScale(xSize, ySize, zSize);
+        this.productScale = new ProductScale(xsize, ysize, zsize);
         this.price = new Money(price);
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;

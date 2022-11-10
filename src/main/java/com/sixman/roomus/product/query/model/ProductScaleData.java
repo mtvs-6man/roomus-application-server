@@ -16,11 +16,11 @@ import java.io.Serializable;
 public class ProductScaleData implements Serializable {
 
     @Column(name = "X_SIZE")
-    private float xSize;
+    private float xsize;
     @Column(name = "Y_SIZE")
-    private float ySize;
+    private float ysize;
     @Column(name = "Z_SIZE")
-    private float zSize;
+    private float zsize;
 
 //    @Override
 //    public boolean equals(Object o) {

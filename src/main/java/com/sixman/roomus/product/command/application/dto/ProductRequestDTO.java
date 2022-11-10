@@ -9,8 +9,8 @@ public class ProductRequestDTO {
     private boolean location;
     private String category;
     private String information;
-    private float xSize;
-    private float ySize;
-    private float zSize;
+    private float xsize;
+    private float ysize;
+    private float zsize;
     private Integer price;
 }

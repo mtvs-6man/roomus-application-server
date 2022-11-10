@@ -38,7 +38,7 @@ public class ProductController {
         // 2. 서비스 호출
         Integer registProductNo = productService.registProduct(product, zipFile, screenShot);
         // 3. 호출결과 반환
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "가구가 성공적으로 업로드 되었습니다.", registProductNo));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품이 성공적으로 업로드 되었습니다.", registProductNo));
     }
 
 }
