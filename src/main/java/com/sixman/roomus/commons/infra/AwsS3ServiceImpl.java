@@ -3,17 +3,15 @@ package com.sixman.roomus.commons.infra;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.sixman.roomus.commons.exception.NullContentTypeException;
 import com.sixman.roomus.commons.service.AwsS3Service;
-import com.sixman.roomus.product.command.domain.exception.NullContentTypeException;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.UUID;
 
 @Service

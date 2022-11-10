@@ -1,4 +1,4 @@
-package com.sixman.roomus.product.command.domain.exception;
+package com.sixman.roomus.commons.exception;
 
 public class NullContentTypeException extends RuntimeException {
     public NullContentTypeException() {
