@@ -2,6 +2,7 @@ package com.sixman.roomus.member.Dto;
 
 import com.sixman.roomus.member.command.domain.model.Role;
 
+
 public class LoginRequestDTO {
 
     String userName;

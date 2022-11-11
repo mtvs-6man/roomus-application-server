@@ -9,6 +9,7 @@ import javax.persistence.Embeddable;
 public class MemberInfo {
     @Column(name = "MEMBER_NAME")
     private String name;
+    
     @Column(name = "MEMBER_EMAIL")
     private String email;
 
@@ -38,7 +39,7 @@ public class MemberInfo {
     public String getName() {
         return name;
     }
-
+    
     public String getEmail() {
         return email;
     }

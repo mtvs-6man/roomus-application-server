@@ -11,6 +11,7 @@ public class SecondFilter implements Filter {
     //filter를 상속 받아서 filter를 구현해 준다.
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        System.out.println("filter2 실행됨");
         filterChain.doFilter(servletRequest,servletResponse);
     }
 }
