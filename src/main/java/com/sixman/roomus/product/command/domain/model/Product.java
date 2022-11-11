@@ -36,7 +36,7 @@ public class Product {
     private String funitureName;
 
     @Column(name = "LOCATION")
-    private boolean location;
+    private Boolean location;
 
     @Column(name = "CATEGORY")
     private String category;
@@ -66,7 +66,7 @@ public class Product {
     private String screenShotUrl;
 
 
-    public Product(Integer memberNo,String funitureName, boolean location, String category, String information, float xSize, float ySize, float zSize, int price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
+    public Product(Integer memberNo,String funitureName, Boolean location, String category, String information, Float xSize, Float ySize, Float zSize, Integer price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
         this.memberNo = memberNo;
         this.funitureName = funitureName;
         this.location = location;

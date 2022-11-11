@@ -11,16 +11,13 @@ import java.util.Objects;
 @ToString
 public class Money {
 
-    private int value;
+    private Integer value;
 
-    public Money multiply(int multiplier) {
+    public Money multiply(Integer multiplier) {
         return new Money(value * multiplier);
     }
 
-    public Money(int value) {
-        if (value < 0){
-            throw new MoneyCanNotNagativeNumberException("돈은 음수가 될 수 없습니다.");
-        }
+    public Money(Integer value) {
         this.value = value;
     }
 
@@ -29,7 +26,7 @@ public class Money {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Money money = (Money) obj;
-        return value == money.value;
+        return Objects.equals(value, money.value);
     }
 
     @Override

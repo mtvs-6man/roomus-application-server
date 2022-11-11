@@ -2,6 +2,7 @@ package com.sixman.roomus.product.command.application.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
+import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
 import com.sixman.roomus.product.command.application.service.ProductService;
 import com.sixman.roomus.product.command.domain.service.ProductMemberService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,24 @@ public class ProductController {
         // 2. 서비스 호출
         Integer registProductNo = productService.registProduct(product, zipFile, screenShot);
         // 3. 호출결과 반환
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품이 성공적으로 업로드 되었습니다.", registProductNo));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "상품이 성공적으로 업로드 되었습니다.", registProductNo));
+    }
+
+    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ResponseDTO> updateProduct(@PathVariable int productNo,
+                                                     ProductUpdateRequestDTO product,
+                                                     @RequestPart(value = "screenShot", required = false) MultipartFile screenShot
+                                                     ) throws IOException {
+
+        // 0. 유효성 검사 필요
+
+        // 1. 현재 로그인한 유저 판별, 해당 리소스가 유저의 소유가 맞는지 확인
+
+        // 2. 서비스 호출
+        product.setProductNo(productNo);
+        boolean result = productService.updateProduct(product, screenShot);
+        // 3. 호출 결과 반환
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 수정하였습니다.", result));
     }
 
 }

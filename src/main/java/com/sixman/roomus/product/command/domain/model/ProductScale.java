@@ -1,9 +1,6 @@
 package com.sixman.roomus.product.command.domain.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,14 +10,15 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor()
 @Getter
+@Setter
 public class ProductScale implements Serializable {
 
     @Column(name = "X_SIZE")
-    private float xSize;
+    private Float xSize;
     @Column(name = "Y_SIZE")
-    private float ySize;
+    private Float ySize;
     @Column(name = "Z_SIZE")
-    private float zSize;
+    private Float zSize;
 
 //    @Override
 //    public boolean equals(Object o) {
