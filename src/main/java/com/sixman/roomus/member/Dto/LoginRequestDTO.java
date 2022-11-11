@@ -38,7 +38,6 @@ public class LoginRequestDTO {
     public Role getUserRole() {
         return userRole;
     }
-
     public void setUserRole(Role userRole) {
         this.userRole = userRole;
     }
