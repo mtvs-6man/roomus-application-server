@@ -22,7 +22,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQUENCE")
     private int memberNo;
 
-    @Column(name = "MEMBER_ID", length = 30)
+    @Column(name = "MEMBER_ID", length = 30, unique = true)
     private String memberId;
 
     @Column(name = "MEMBER_PASS", length = 100)
@@ -95,7 +95,7 @@ public class Member {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password =  password;
     }
 
     public MemberInfo getMemberInfo() {
