@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -65,6 +66,11 @@ public class Product {
     @Column(name = "SCREENT_SHOT_URL")
     private String screenShotUrl;
 
+    @Column(name = "IS_DELETE")
+    private boolean isDelete;
+
+    @OneToMany(mappedBy = "productLikesMemberPk.product", fetch = FetchType.EAGER)
+    private List<ProductLikesMember> ProductLikesMember;
 
     public Product(Integer memberNo,String funitureName, Boolean location, String category, String information, Float xSize, Float ySize, Float zSize, Integer price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
         this.memberNo = memberNo;
