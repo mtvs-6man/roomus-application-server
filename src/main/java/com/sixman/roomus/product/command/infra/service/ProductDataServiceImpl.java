@@ -5,6 +5,7 @@ import com.sixman.roomus.product.command.domain.service.ProductDataService;
 import com.sixman.roomus.product.query.model.ProductData;
 import com.sixman.roomus.product.query.repository.ProductDataRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,12 +15,13 @@ public class ProductDataServiceImpl implements ProductDataService {
     private final ProductDataRepository productDataRepository;
 
     @Override
+    @Async
     public void throwProductSaveMessageToViewRepository(Product product) {
         ProductData productData = new ProductData(
                 product.getProductNo(),
                 product.getMemberNo(),
                 product.getFunitureName(),
-                product.isLocation(),
+                product.getLocation(),
                 product.getCategory(),
                 product.getInformation(),
                 product.getProductScale(),

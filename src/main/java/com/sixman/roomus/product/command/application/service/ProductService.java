@@ -1,5 +1,6 @@
 package com.sixman.roomus.product.command.application.service;
 
+import com.sixman.roomus.commons.model.Money;
 import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
 import com.sixman.roomus.product.command.application.exception.NullProductException;
