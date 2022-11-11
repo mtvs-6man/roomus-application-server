@@ -3,13 +3,8 @@ server:
 # cloud config
 spring:
   application:
-    name: configtest
+    name: application
   profiles:
-    active: dev
+    active: dev, aws
   config:
     import: optional:configserver:http://13.209.85.118:9999 # config server ??
-
-# HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
-# Secret 값은 특정 문자열을 Base64 로 인코딩한 값 사용
-jwt:
-  secret: asdfjp298pafo1320efqw0udvnh0er0h412r08byfdq9dsvh02143908hfeqwn80fdqs0nfdqs0n412013rq0nqefn08dfas0das730732g86923
