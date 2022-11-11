@@ -35,10 +35,11 @@ public class ProductController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "상품이 성공적으로 업로드 되었습니다.", registProductNo));
     }
 
-    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+//    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseDTO> updateProduct(@PathVariable int productNo,
-                                                     ProductUpdateRequestDTO product,
-                                                     @RequestPart(value = "screenShot", required = false) MultipartFile screenShot
+                                                     @RequestBody ProductUpdateRequestDTO product
+//                                                  ,@RequestPart(value = "screenShot", required = false) MultipartFile screenShot
                                                      ) throws IOException {
 
         // 0. 유효성 검사 필요
@@ -47,9 +48,21 @@ public class ProductController {
 
         // 2. 서비스 호출
         product.setProductNo(productNo);
-        boolean result = productService.updateProduct(product, screenShot);
+//        boolean result = productService.updateProduct(product, screenShot);
+        boolean result = productService.updateProduct(product);
+        System.out.println("product = " + product);
         // 3. 호출 결과 반환
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 수정하였습니다.", result));
+    }
+
+    @DeleteMapping(value = "/{productNo}")
+    public ResponseEntity<ResponseDTO> deleteProduct(@PathVariable int productNo) {
+        // 0. 유효성 검사
+        // 1. 현재 로그인한 유저 판별, 해당 리소스가 유저의 소유가 맞는지 확인
+        // 2. 서비스 호출
+        boolean result = productService.deleteProduct(productNo);
+        // 4. 결과 반환
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 삭제하였습니다.", result));
     }
 
 }
