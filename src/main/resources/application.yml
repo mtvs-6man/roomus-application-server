@@ -1,0 +1,10 @@
+server:
+  port: 8000
+# cloud config
+spring:
+  application:
+    name: application
+  profiles:
+    active: dev, aws
+  config:
+    import: optional:configserver:http://13.209.85.118:9999 # config server ??

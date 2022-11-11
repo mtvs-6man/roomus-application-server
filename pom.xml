@@ -100,7 +100,6 @@
             <version>0.11.2</version>
             <scope>runtime</scope>
         </dependency>
-
 <!--        신규 추가 영역 member branch -->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
         <dependency>
