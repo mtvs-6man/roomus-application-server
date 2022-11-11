@@ -2,11 +2,13 @@ package com.sixman.roomus.product.query.model;
 
 import com.sixman.roomus.commons.jpa.MoneyConverter;
 import com.sixman.roomus.commons.model.Money;
+import com.sixman.roomus.product.command.domain.model.ProductLikesMember;
 import com.sixman.roomus.product.command.domain.model.ProductScale;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -56,17 +58,25 @@ public class ProductData {
     @Column(name = "SCREENT_SHOT_URL")
     private String screenShotUrl;
 
+    @Column(name = "IS_DELETE")
+    private boolean isDelete;
 
-    public ProductData(String funitureName, boolean location, String category, String information, float xsize, float ysize, float zsize, int price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl) {
-        this.funitureName = funitureName;
-        this.location = location;
-        this.category = category;
-        this.information = information;
-        this.productScale = new ProductScale(xsize, ysize, zsize);
-        this.price = new Money(price);
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.fileUrl = fileUrl;
-        this.screenShotUrl = screenShotUrl;
-    }
+    @OneToMany(mappedBy = "productLikesMemberPk.product")
+    private List<ProductLikesMemberData> ProductLikesMember;
+
+//    public ProductData(Integer memberNo,String funitureName, Boolean location, String category, String information, Float xSize, Float ySize, Float zSize, Integer price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl, int countLike, boolean isDelete) {
+//        this.memberNo = memberNo;
+//        this.funitureName = funitureName;
+//        this.location = location;
+//        this.category = category;
+//        this.information = information;
+//        this.productScale = new ProductScale(xSize, ySize, zSize);
+//        this.price = new Money(price);
+//        this.createdDate = createdDate;
+//        this.lastModifiedDate = lastModifiedDate;
+//        this.fileUrl = fileUrl;
+//        this.screenShotUrl = screenShotUrl;
+//        this.countLikes = countLike;
+//        this.isDelete = isDelete;
+//    }
 }

@@ -15,20 +15,8 @@ public class ProductStorageServiceImpl implements ProductStorageService {
 
     private final AwsS3Service awsS3Service;
 
-    private final Map<String, String> filePathMap = Map.of(
-            "image/png", "/screenshot",
-            "application/zip", "/fbx-file"
-    );
-//    private final String PRODUCT_ZIP_DIRECTORY = "/product/zip";
-//    private final String PRODUCT_SCREENSHOT_DIRECTORY = "/product/screenshot";
-
     @Override
     public String fileSaveToStorage(MultipartFile file) throws IOException {
         return awsS3Service.fileUpload("product", file);
-    }
-
-    private String getFilePath(String contentType){
-        System.out.println("contentType = " + contentType);
-        return filePathMap.get(contentType);
     }
 }
