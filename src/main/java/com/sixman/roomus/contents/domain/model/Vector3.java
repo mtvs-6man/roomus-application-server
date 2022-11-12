@@ -1,9 +1,6 @@
 package com.sixman.roomus.contents.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,16 +10,15 @@ import java.util.Objects;
 @Embeddable
 @NoArgsConstructor()
 @AllArgsConstructor()
+@Setter
 @Getter
 @ToString
 public class Vector3 implements Serializable {
     @Column(name = "x")
     private float x;
     @Column(name = "y")
-
     private float y;
     @Column(name = "z")
-
     private float z;
 
     @Override
