@@ -111,7 +111,8 @@
         </dependency>
 
     </dependencies>
-    <description>roomus-applicaiton-sever</description>
+
+plicaiton-sever</description>
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.4</spring-cloud.version>
@@ -125,8 +126,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-
         </dependencies>
     </dependencyManagement>
 
@@ -135,7 +134,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${parent.version}</version>
+                <version>${project.parent.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>
