@@ -69,22 +69,4 @@ public class Product {
     @Column(name = "IS_DELETE")
     private boolean isDelete;
 
-    @OneToMany(mappedBy = "productLikesMemberPk.product", fetch = FetchType.LAZY)
-    private List<ProductLikesMember> ProductLikesMember;
-
-
-//    public Product(Integer memberNo,String funitureName, Boolean location, String category, String information, Float xSize, Float ySize, Float zSize, Integer price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl, int countLike, boolean isDelete) {
-//        this.memberNo = memberNo;
-//        this.funitureName = funitureName;
-//        this.location = location;
-//        this.category = category;
-//        this.information = information;
-//        this.productScale = new ProductScale(xSize, ySize, zSize);
-//        this.price = new Money(price);
-//        this.createdDate = createdDate;
-//        this.lastModifiedDate = lastModifiedDate;
-//        this.fileUrl = fileUrl;
-//        this.screenShotUrl = screenShotUrl;
-//        this.isDelete = isDelete;
-//    }
 }

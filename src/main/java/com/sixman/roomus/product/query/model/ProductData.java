@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "TBL_PRODUCT_DATA")
+@Table(name = "TBL_PRODUCT")
 public class ProductData {
 
     @Id
@@ -61,7 +61,8 @@ public class ProductData {
     @Column(name = "IS_DELETE")
     private boolean isDelete;
 
-    @OneToMany(mappedBy = "productLikesMemberPk.product")
+    @OneToMany
+    @JoinColumn(name = "PRODUCT_NO")
     private List<ProductLikesMemberData> ProductLikesMember;
 
 //    public ProductData(Integer memberNo,String funitureName, Boolean location, String category, String information, Float xSize, Float ySize, Float zSize, Integer price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl, int countLike, boolean isDelete) {

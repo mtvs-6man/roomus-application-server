@@ -12,4 +12,5 @@ public class ProductSummaryResponseDTO {
     private int no;
     private String screenShotUrl;
     private String category;
+    private int likes;
 }

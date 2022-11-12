@@ -1,6 +1,7 @@
 package com.sixman.roomus.product.command.domain.service;
 
 import com.sixman.roomus.product.command.domain.model.Product;
+import com.sixman.roomus.product.command.domain.model.ProductLikesMember;
 
 public interface ProductDataService {
     void throwProductSaveMessageToViewRepository(Product product);
@@ -8,5 +9,13 @@ public interface ProductDataService {
 
     void throwProductDeleteMessageToViewRepository(int productId);
     // delete를 위한 비동기 메소드
+
+    void throwLikesSaveMessageToViewRepository(ProductLikesMember productLikesMember);
+    void throwLikesDeleteMessageToViewRepository(ProductLikesMember productLikesMember);
+
+
+
+
+
 
 }

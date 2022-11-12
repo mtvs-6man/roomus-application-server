@@ -3,10 +3,7 @@ package com.sixman.roomus.product.query.model;
 import com.sixman.roomus.product.command.domain.model.Product;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
@@ -16,10 +13,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 public class ProductLikesMemberDataPK implements Serializable {
-
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_NO")
-    private Product product;
 
     @Column(name = "MEMBER_NO")
     private int memberId;

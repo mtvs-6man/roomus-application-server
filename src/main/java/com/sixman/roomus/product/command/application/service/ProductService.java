@@ -1,6 +1,5 @@
 package com.sixman.roomus.product.command.application.service;
 
-import com.amazonaws.services.kms.model.NotFoundException;
 import com.sixman.roomus.commons.model.Money;
 import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
@@ -13,18 +12,13 @@ import com.sixman.roomus.product.command.domain.repository.ProductLikesMemberRep
 import com.sixman.roomus.product.command.domain.repository.ProductRepository;
 import com.sixman.roomus.product.command.domain.service.ProductStorageService;
 import com.sixman.roomus.product.command.domain.service.ProductDataService;
-import com.sixman.roomus.product.query.model.ProductLikesMemberDataPK;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -58,14 +52,14 @@ public class ProductService {
                 new java.util.Date(),
                 fbxFileName,
                 screenShotName,
-                false,
-                new ArrayList<>()
+                false
+//                new ArrayList<>()
         );
 
         // 도메인 서비스 혹은 레파지토리 호출
         productRepository.save(product);
-        System.out.println("product = " + product);
-        productDataService.throwProductSaveMessageToViewRepository(product); // 쿼리용 DB에 저장
+//        System.out.println("product = " + product);
+//        productDataService.throwProductSaveMessageToViewRepository(product); // 쿼리용 DB에 저장
 
         // 삽입 결과 반환
         return product.getProductNo();
@@ -89,7 +83,7 @@ public class ProductService {
         if (requestProduct.getCategory() != null) {
             product.setCategory(requestProduct.getCategory());
         }
-        if (requestProduct.getInformation().equals("")) {
+        if (requestProduct.getInformation() != null) {
             product.setInformation(requestProduct.getInformation());
 
         }
@@ -107,7 +101,7 @@ public class ProductService {
 //        }
 
         product.setLastModifiedDate(new java.util.Date());
-        productDataService.throwProductSaveMessageToViewRepository(product); // 쿼리용 DB또한 수정
+//        productDataService.throwProductSaveMessageToViewRepository(product); // 쿼리용 DB또한 수정
         return true;
     }
 
@@ -119,7 +113,7 @@ public class ProductService {
         }
         Product product = foundProduct.get();
         product.setDelete(true);
-        productDataService.throwProductDeleteMessageToViewRepository(productNo);
+//        productDataService.throwProductDeleteMessageToViewRepository(productNo);
         return true;
     }
 
@@ -138,6 +132,7 @@ public class ProductService {
         if (productLikesMemberQpt.isEmpty()) { // 2-1. 좋아요를 누른 상태가 아닌 경우 좋아요 추가
             ProductLikesMember productLikesMember = new ProductLikesMember(new ProductLikesMemberPK(product, memberNo));
             productLikesMemberRepository.save(productLikesMember);
+//            productDataService.throwProductSaveMessageToViewRepository(productLikesMember);
         } else { // 2-2. 좋아요를 누른 상태인 경우 exception
             throw new DuplicateKeyException("이미 좋아요를 눌렀습니다.");
         }
@@ -157,7 +152,7 @@ public class ProductService {
             ProductLikesMember productLikesMember = new ProductLikesMember(new ProductLikesMemberPK(product, memberNo));
             productLikesMemberRepository.delete(productLikesMember);
         } else { // 2-2. 좋아요를 누르지 않은 상태인 경우 exception
-            throw new DuplicateKeyException("이미 좋아요를 눌렀습니다.");
+            throw new DuplicateKeyException("좋아요가 눌러져 있지 않습니다.");
         }
 
     }

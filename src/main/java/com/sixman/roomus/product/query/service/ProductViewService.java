@@ -4,8 +4,10 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.sixman.roomus.product.query.dto.ProductSummaryResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductDetailsResponseDTO;
 import com.sixman.roomus.product.query.model.ProductData;
+import com.sixman.roomus.product.query.model.ProductLikesMemberData;
 import com.sixman.roomus.product.query.repository.ProductDataRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public class ProductViewService {
     }
 
     public List<ProductSummaryResponseDTO> findProductList() {
-        List<ProductData> productDataList = productDataRepository.findAll();
+        List<ProductData> productDataList = productDataRepository.findAll(Sort.by(Sort.Direction.ASC, "productNo"));
         System.out.println("productDataList = " + productDataList);
         List<ProductSummaryResponseDTO> productSummaryResponseDTO = new ArrayList<>();
         for (ProductData productData : productDataList) {
@@ -48,6 +50,9 @@ public class ProductViewService {
             productListResponseDTO.setNo(productData.getProductNo());
             productListResponseDTO.setCategory(productData.getCategory());
             productListResponseDTO.setScreenShotUrl(productData.getScreenShotUrl());
+            // 좋아요 수 구하기
+            List<ProductLikesMemberData> productLikesMember = productData.getProductLikesMember();
+            productListResponseDTO.setLikes(productLikesMember.size());
             productSummaryResponseDTO.add(productListResponseDTO);
         }
         return productSummaryResponseDTO;

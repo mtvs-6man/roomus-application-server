@@ -35,10 +35,10 @@ public class ProductController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "상품이 성공적으로 업로드 되었습니다.", registProductNo));
     }
 
-//    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+//    @PutMapping(value = "/{productNo}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseDTO> updateProduct(@PathVariable int productNo,
-                                                     @RequestBody ProductUpdateRequestDTO product
+                                                     ProductUpdateRequestDTO product
 //                                                  ,@RequestPart(value = "screenShot", required = false) MultipartFile screenShot
                                                      ) throws IOException {
 

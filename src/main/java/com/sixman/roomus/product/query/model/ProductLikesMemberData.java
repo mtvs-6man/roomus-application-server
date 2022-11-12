@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "TBL_PRODUCT_LIKES_MEMBER_DATA")
+@Table(name = "TBL_PRODUCT_LIKES_MEMBER")
 public class ProductLikesMemberData {
 
     @EmbeddedId
