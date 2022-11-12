@@ -69,7 +69,7 @@ public class Product {
     @Column(name = "IS_DELETE")
     private boolean isDelete;
 
-    @OneToMany(mappedBy = "productLikesMemberPk.product", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productLikesMemberPk.product", fetch = FetchType.LAZY)
     private List<ProductLikesMember> ProductLikesMember;
 
 

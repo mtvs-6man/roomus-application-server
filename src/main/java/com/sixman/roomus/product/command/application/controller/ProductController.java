@@ -65,4 +65,27 @@ public class ProductController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 삭제하였습니다.", result));
     }
 
+    @PostMapping(value = "/{productNo}/likes")
+    public ResponseEntity<ResponseDTO> likeProducts(@PathVariable Integer productNo) {
+        // 0. 유효성 검사
+
+        // 1. 현재 로그인한 유저 판별
+        int memberNo = 1;
+        // 2. 서비스 호출
+        productService.likeProducts(productNo, memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 추가 완료.", null));
+    }
+
+    @DeleteMapping(value = "/{productNo}/likes")
+    public ResponseEntity<ResponseDTO> unlikeProducts(@PathVariable Integer productNo) {
+        // 0. 유효성 검사
+
+        // 1. 현재 로그인한 유저 판별
+        int memberNo = 1;
+        // 2. 서비스 호출
+        productService.unlikeProducts(productNo, memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 삭제 완료", null));
+
+    }
+
 }
