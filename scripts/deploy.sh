@@ -1,5 +1,5 @@
 # 가동중인 awsstudy 도커 중단 및 삭제
-sudo docker ps -a -q --filter "name=awsstudy" | grep -q . && docker stop awsstudy && docker rm awsstudy | true
+sudo docker ps -a -q --filter "name=mungjin4966" | grep -q . && docker stop awsstudy && docker rm awsstudy | true
 
 # 기존 이미지 삭제
 sudo docker rmi backtony/awsstudy:1.0
