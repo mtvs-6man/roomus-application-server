@@ -39,8 +39,11 @@ public class RoomService {
                 registerRoom.getZsize(),
                 registerRoom.getDoor(),
                 new Date(),
+                new Date(),
+                false,
                 new Date()
         );
+
         roomRepository.save(room);
         return room.getRoomNo();
     }
@@ -107,6 +110,21 @@ public class RoomService {
         if (description != null) {
             foundRoom.setDescription(description);
         }
+        return true;
+    }
+
+    @Transactional
+    public boolean deleteRoom(int memberNo, int roomNo) {
+        Optional<Room> foundRoomOpt = roomRepository.findById(roomNo);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방이 존재하지 않습니다.");
+        }
+        Room foundRoom = foundRoomOpt.get();
+        if (!foundRoom.isRoomOwner(memberNo)) {
+            throw new NotRoomOwnerException("해당 방의 사용자가 아닙니다.");
+        }
+        foundRoom.setDelete(true);
+        foundRoom.setDeletedDate(new Date());
         return true;
     }
 }

@@ -65,6 +65,13 @@ public class Room {
     @Temporal(TemporalType.TIMESTAMP)
     @NonNull
     private Date lastModifiedDate;
+    // 삭제 여부
+    @NonNull
+    private boolean isDelete;
+    // 삭제 일자
+    @Temporal(TemporalType.TIMESTAMP)
+    @NonNull
+    private Date deletedDate;
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "ROOM_NO")
 //    @NonNull

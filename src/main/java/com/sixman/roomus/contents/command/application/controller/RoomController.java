@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -51,7 +52,7 @@ public class RoomController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<ResponseDTO> updateRoom(@PathVariable(name = "id") int roomNo,
                                                   @RequestBody UpdateRoomDTO updateRoomDTO
-                                                  ) {
+    ) {
         // 0. 회원 정보 수집
         int memberNo = 1;
         // 1. 유효성 검사
@@ -60,5 +61,18 @@ public class RoomController {
         roomService.updateRoom(memberNo, updateRoomDTO);
         // 3. 응답
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 정보 수정 완료", null));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<ResponseDTO> deleteRoom(@PathVariable(name = "id") int roomNo) {
+        // 회원 정보 꺼내기
+        int memberNo = 1;
+        // 유효성 검사
+
+        // 서비스 호출
+        roomService.deleteRoom(memberNo, roomNo);
+
+        // 서비스 응답
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 정보 삭제 완료", null));
     }
 }
