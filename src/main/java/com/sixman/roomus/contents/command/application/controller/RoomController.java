@@ -4,6 +4,7 @@ import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.contents.command.application.dto.AssignmentInfoDTO;
 import com.sixman.roomus.contents.command.application.dto.RegisterRoomRequestDTO;
 import com.sixman.roomus.contents.command.application.dto.UpdateFunitureInfoDTO;
+import com.sixman.roomus.contents.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.contents.command.application.service.RoomService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,20 @@ public class RoomController {
         // 2. 서비스 호출
         boolean result = roomService.saveFurnitureAssignInfo(roomNo, memberNo, datas);
         // 3. 응답
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "가구 배치 정보 저장에 성공했습니다.", null));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "가구 배치 정보 저장에 성공했습니다.", null));
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ResponseDTO> updateRoom(@PathVariable(name = "id") int roomNo,
+                                                  @RequestBody UpdateRoomDTO updateRoomDTO
+                                                  ) {
+        // 0. 회원 정보 수집
+        int memberNo = 1;
+        // 1. 유효성 검사
+        updateRoomDTO.setRoomNo(roomNo);
+        // 2. 서비스 호출
+        roomService.updateRoom(memberNo, updateRoomDTO);
+        // 3. 응답
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 정보 수정 완료", null));
+    }
 }
