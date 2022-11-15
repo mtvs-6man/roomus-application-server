@@ -1,10 +1,7 @@
 package com.sixman.roomus.contents.command.application.dto;
 
 
-import com.sixman.roomus.contents.domain.model.Vector3;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class RegisterRoomRequestDTO {

@@ -4,17 +4,21 @@ package com.sixman.roomus.contents.command.application.service;
 import com.sixman.roomus.contents.command.application.dto.AssignmentInfoDTO;
 import com.sixman.roomus.contents.command.application.dto.RegisterRoomRequestDTO;
 import com.sixman.roomus.contents.command.application.dto.UpdateRoomDTO;
-import com.sixman.roomus.contents.domain.exception.NotFoundRoomException;
-import com.sixman.roomus.contents.domain.exception.NotRoomOwnerException;
-import com.sixman.roomus.contents.domain.model.FurnitureArrangement;
-import com.sixman.roomus.contents.domain.model.Room;
-import com.sixman.roomus.contents.domain.repository.FurnitureArrangementRepository;
-import com.sixman.roomus.contents.domain.repository.RoomRepository;
+import com.sixman.roomus.contents.command.domain.exception.NotFoundRoomException;
+import com.sixman.roomus.contents.command.domain.exception.NotRoomOwnerException;
+import com.sixman.roomus.contents.command.domain.model.FurnitureArrangement;
+import com.sixman.roomus.contents.command.domain.model.Room;
+import com.sixman.roomus.contents.command.domain.model.RoomLikesMember;
+import com.sixman.roomus.contents.command.domain.model.RoomLikesMemberPK;
+import com.sixman.roomus.contents.command.domain.repository.FurnitureArrangementRepository;
+import com.sixman.roomus.contents.command.domain.repository.RoomLikesMemberRepository;
+import com.sixman.roomus.contents.command.domain.repository.RoomRepository;
+import com.sixman.roomus.product.command.application.exception.NullProductException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +28,7 @@ import java.util.Optional;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final RoomLikesMemberRepository roomLikesMemberRepository;
     private final FurnitureArrangementRepository furnitureArrangementRepository;
 
     @Transactional
@@ -126,5 +131,43 @@ public class RoomService {
         foundRoom.setDelete(true);
         foundRoom.setDeletedDate(new Date());
         return true;
+    }
+
+    @Transactional
+    public void likeProducts(Integer roomNo, int memberNo) {
+        // 1. 좋아요를 이미 누른 상태인지 확인하기 위해서 productLikesMemberPK 생성 (VO)
+        Optional<Room> foundRoomOpt = roomRepository.findById(roomNo);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("존재하지 않는 방입니다.");
+        }
+        Room foundRoom = foundRoomOpt.get();
+        RoomLikesMemberPK roomLikesMemberPK = new RoomLikesMemberPK(foundRoom, memberNo);
+        Optional<RoomLikesMember> roomLikesMemberQpt = roomLikesMemberRepository.findById(roomLikesMemberPK);
+
+        if (roomLikesMemberQpt.isEmpty()) { // 2-1. 좋아요를 누른 상태가 아닌 경우 좋아요 추가
+            RoomLikesMember roomLikesMember = new RoomLikesMember(new RoomLikesMemberPK(foundRoom, memberNo));
+            roomLikesMemberRepository.save(roomLikesMember);
+        } else { // 2-2. 좋아요를 누른 상태인 경우 exception
+            throw new DuplicateKeyException("이미 좋아요를 눌렀습니다.");
+        }
+    }
+
+    @Transactional
+    public void unlikeRooms (Integer roomNo, int memberNo) {
+        // 1. 좋아요를 이미 누른 상태인지 확인하기 위해서 productLikesMemberPK 생성 (VO)
+        Optional<Room> productOpt = roomRepository.findById(roomNo);
+        if (productOpt.isEmpty()) {
+            throw new NullProductException("존재하지 않는 방입니다.");
+        }
+        Room foundRoom = productOpt.get();
+        RoomLikesMemberPK roomLikesMemberPK = new RoomLikesMemberPK(foundRoom, memberNo);
+        Optional<RoomLikesMember> roomLikesMemberQpt = roomLikesMemberRepository.findById(roomLikesMemberPK);
+
+        if (roomLikesMemberQpt.isPresent()) { // 2-1. 좋아요를 누른 상태인 경우 좋아요 삭제
+            roomLikesMemberRepository.delete(roomLikesMemberQpt.get());
+        } else { // 2-2. 좋아요를 누르지 않은 상태인 경우 exception
+            throw new DuplicateKeyException("좋아요가 눌러져 있지 않습니다.");
+        }
+
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -75,4 +74,29 @@ public class RoomController {
         // 서비스 응답
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 정보 삭제 완료", null));
     }
+
+    @PostMapping(value = "/{roomNo}/likes")
+    public ResponseEntity<ResponseDTO> likeRooms(@PathVariable Integer roomNo) {
+        // 0. 유효성 검사
+
+        // 1. 현재 로그인한 유저 판별
+        int memberNo = 1;
+        // 2. 서비스 호출
+        roomService.likeProducts(roomNo, memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 추가 완료.", null));
+    }
+
+    @DeleteMapping(value = "/{roomNo}/likes")
+    public ResponseEntity<ResponseDTO> unlikeProducts(@PathVariable Integer roomNo) {
+        // 0. 유효성 검사
+
+        // 1. 현재 로그인한 유저 판별
+        int memberNo = 1;
+        // 2. 서비스 호출
+        roomService.unlikeRooms(roomNo, memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 삭제 완료", null));
+
+    }
+
+
 }
