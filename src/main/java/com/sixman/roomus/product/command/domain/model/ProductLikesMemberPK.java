@@ -22,11 +22,11 @@ public class ProductLikesMemberPK implements Serializable {
     private Product product;
 
     @Column(name = "MEMBER_NO")
-    private int memberId;
+    private int memberNo;
 
     @Override
     public int hashCode() {
-        return Objects.hash(product.hashCode(), memberId);
+        return Objects.hash(product.hashCode(), memberNo);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class ProductLikesMemberPK implements Serializable {
             return false;
         }
         ProductLikesMemberPK productLikesMemberPK = (ProductLikesMemberPK) obj;
-        return product == productLikesMemberPK.getProduct() && Objects.equals(memberId, productLikesMemberPK.getMemberId());
+        return product == productLikesMemberPK.getProduct() && Objects.equals(memberNo, productLikesMemberPK.getMemberNo());
     }
 }
