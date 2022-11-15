@@ -1,4 +1,4 @@
-package com.sixman.roomus.contents.domain.model;
+package com.sixman.roomus.contents.command.domain.model;
 
 import lombok.*;
 
