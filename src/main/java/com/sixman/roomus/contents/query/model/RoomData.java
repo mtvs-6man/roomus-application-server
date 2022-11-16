@@ -1,5 +1,6 @@
 package com.sixman.roomus.contents.query.model;
 
+import com.sixman.roomus.contents.command.domain.exception.NotRoomOwnerException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -73,7 +74,7 @@ public class RoomData {
 
     public boolean isRoomOwner(int memberNo) {
         if (this.memberNo != memberNo) {
-            return false;
+            throw new NotRoomOwnerException("방에 대한 권한이 없습니다.");
         }
         return true;
     }
