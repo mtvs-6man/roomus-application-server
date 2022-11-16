@@ -20,9 +20,9 @@ public class FurnitureArrangementData {
     @Column(name = "FUNITURE_ARRANGEMENT_NO")
     private Integer funitureArrangementNo;
 
-    @ManyToOne
-    @JoinColumn(name = "ROOM_NO")
-    private Room room;
+//    @ManyToOne
+//    @JoinColumn(name = "ROOM_NO")
+//    private Room room;
 
     @Embedded
     @AttributeOverrides({
