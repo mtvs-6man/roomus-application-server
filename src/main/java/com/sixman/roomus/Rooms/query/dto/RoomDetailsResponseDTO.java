@@ -19,5 +19,5 @@ public class RoomDetailsResponseDTO {
     private float xsize;
     private float ysize;
     private float zsize;
-    private List<FurnitureArrangementData> furnitureArrangementList;
+    private List<FurnitureArrangementData> datas;
 }
