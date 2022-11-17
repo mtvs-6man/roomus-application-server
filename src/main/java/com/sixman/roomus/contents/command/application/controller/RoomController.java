@@ -6,6 +6,7 @@ import com.sixman.roomus.contents.command.application.dto.RegisterRoomRequestDTO
 import com.sixman.roomus.contents.command.application.dto.UpdateFunitureInfoDTO;
 import com.sixman.roomus.contents.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.contents.command.application.service.RoomService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/rooms")
 @RequiredArgsConstructor
+@Tag(name = "방", description = "방에 관련된 조회를 제외한 API")
 public class RoomController {
 
     private final RoomService roomService;

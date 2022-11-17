@@ -4,6 +4,7 @@ import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.contents.query.dto.RoomDetailsResponseDTO;
 import com.sixman.roomus.contents.query.dto.RoomSummaryResponseDTO;
 import com.sixman.roomus.contents.query.service.RoomViewService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/rooms")
 @RequiredArgsConstructor
+@Tag(name = "방 조회", description = "방에 관련된 조회에 관련된 API")
 public class RoomViewController {
 
     private final RoomViewService roomViewService;

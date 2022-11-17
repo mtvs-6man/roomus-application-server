@@ -4,6 +4,7 @@ import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductDetailsResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductSummaryResponseDTO;
 import com.sixman.roomus.product.query.service.ProductViewService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/v1/products")
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "상품 조회", description = "상품 조회 관련 API")
 public class ProductViewController {
 
     private final ProductViewService productViewService;
