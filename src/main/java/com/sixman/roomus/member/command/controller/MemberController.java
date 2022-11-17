@@ -7,6 +7,8 @@ import com.sixman.roomus.member.command.domain.model.Member;
 import com.sixman.roomus.member.command.domain.model.Role;
 import com.sixman.roomus.member.command.repository.MemberRepository;
 import com.sixman.roomus.member.command.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 @RestController
+@Tag(name = "UserController")
 @RequestMapping("/")
 public class MemberController {
 
@@ -30,6 +33,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    @Operation(description = "회원가입")
     @PostMapping("/guest/signup")
     public ResponseEntity<String> userJoin(@Valid @RequestBody JoinDto joinDto){
 
@@ -42,13 +46,14 @@ public class MemberController {
 
         return ResponseEntity.ok().body(result);
     }
-
+    @Operation(description = "판매자 가입")
     @PostMapping("/member/rankUp")
     public ResponseEntity<String> memberRankUp(@Valid @RequestBody LoginDto loginDto){
 
         return null;
     }
 
+    @Operation(description = "test")
     @GetMapping("/test")
     public String test(){
 
