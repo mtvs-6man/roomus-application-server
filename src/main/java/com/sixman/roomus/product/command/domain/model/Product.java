@@ -65,6 +65,9 @@ public class Product {
     @Column(name = "SCREENT_SHOT_URL")
     private String screenShotUrl;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleteDate;
+
     @Column(name = "IS_DELETE")
     private boolean isDelete;
 
