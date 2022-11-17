@@ -5,6 +5,7 @@ import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
 import com.sixman.roomus.product.command.application.service.ProductService;
 import com.sixman.roomus.product.command.domain.service.ProductMemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/v1/products")
 @RequiredArgsConstructor // 생성자 자동 주입
+@Tag(name = "상품", description = "상품 조회를 제외한 API")
 public class ProductController {
     private final ProductService productService;
     private final ProductMemberService productMemberService;

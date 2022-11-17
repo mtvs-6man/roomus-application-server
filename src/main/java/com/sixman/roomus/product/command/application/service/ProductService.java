@@ -133,6 +133,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public void unlikeProducts(Integer productNo, int memberNo) {
         // 1. 좋아요를 이미 누른 상태인지 확인하기 위해서 productLikesMemberPK 생성 (VO)
         Optional<Product> productOpt = productRepository.findById(productNo);
@@ -143,9 +144,8 @@ public class ProductService {
         ProductLikesMemberPK productLikesMemberPK = new ProductLikesMemberPK(product, memberNo);
         Optional<ProductLikesMember> productLikesMemberQpt = productLikesMemberRepository.findById(productLikesMemberPK);
 
-        if (productLikesMemberQpt.isPresent()) { // 2-1. 좋아요를 누른 상태인 경우 좋아요 추가
-            ProductLikesMember productLikesMember = new ProductLikesMember(new ProductLikesMemberPK(product, memberNo));
-            productLikesMemberRepository.delete(productLikesMember);
+        if (productLikesMemberQpt.isPresent()) { // 2-1. 좋아요를 누른 상태인 경우 좋아요 삭제
+            productLikesMemberRepository.delete(productLikesMemberQpt.get());
         } else { // 2-2. 좋아요를 누르지 않은 상태인 경우 exception
             throw new DuplicateKeyException("좋아요가 눌러져 있지 않습니다.");
         }
