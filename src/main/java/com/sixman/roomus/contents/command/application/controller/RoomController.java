@@ -7,7 +7,7 @@ import com.sixman.roomus.contents.command.application.dto.UpdateFunitureInfoDTO;
 import com.sixman.roomus.contents.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.contents.command.application.service.RoomService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,7 @@ public class RoomController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "방 생성에 성공했습니다.", registedRoomNo));
     }
 
-    @PatchMapping(value = "/{id}/furniture", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{id}/furniture", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseDTO> saveFurnitureAssignInfo(@PathVariable(name = "id") int roomNo,
                                                                @RequestBody UpdateFunitureInfoDTO updateFunitureInfoDTO
     ) {
