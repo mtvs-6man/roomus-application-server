@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -50,6 +51,7 @@ public class ProductService {
                 new java.util.Date(),
                 fbxFileName,
                 screenShotName,
+                null,
                 false
 //                new ArrayList<>()
         );
@@ -109,6 +111,7 @@ public class ProductService {
         }
         Product product = foundProduct.get();
         product.setDelete(true);
+        product.setDeleteDate(new Date());
 //        productDataService.throwProductDeleteMessageToViewRepository(productNo);
         return true;
     }

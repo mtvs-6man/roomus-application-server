@@ -20,8 +20,8 @@ public class ProductViewService {
 
     private final ProductDataRepository productDataRepository;
 
-    public ProductDetailsResponseDTO findProductByProductId(int id) {
-        Optional<ProductData> productDataOptional = productDataRepository.findById(id);
+    public ProductDetailsResponseDTO findProductByProductId(int productNo) {
+        Optional<ProductData> productDataOptional = productDataRepository.findProductDataByProductNoAndIsDelete(productNo);
         if (productDataOptional.isEmpty()) {
             throw new NotFoundException("product를 찾을 수 없습니다.");
         }
@@ -43,7 +43,7 @@ public class ProductViewService {
     }
 
     public List<ProductSummaryResponseDTO> findProductList() {
-        List<ProductData> productDataList = productDataRepository.findAll(Sort.by(Sort.Direction.ASC, "productNo"));
+        List<ProductData> productDataList = productDataRepository.findAllByIsDelete();
         System.out.println("productDataList = " + productDataList);
         List<ProductSummaryResponseDTO> productSummaryResponseDTO = new ArrayList<>();
         for (ProductData productData : productDataList) {
