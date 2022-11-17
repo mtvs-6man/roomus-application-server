@@ -6,6 +6,7 @@ import com.sixman.roomus.Rooms.command.application.dto.RegisterRoomRequestDTO;
 import com.sixman.roomus.Rooms.command.application.dto.UpdateFunitureInfoDTO;
 import com.sixman.roomus.Rooms.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.Rooms.command.application.service.RoomService;
+import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,10 +29,14 @@ public class RoomController {
     @PostMapping(value = {"", "/"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseDTO> registerRoom(RegisterRoomRequestDTO registerRoom,
                                                     @RequestPart MultipartFile screenShot
-            ) throws IOException {
+            ) throws IOException, ContentTypeNotAllowedException {
         // 0. 회원 정보 수집
         int memberNo = 1; // 후에 token에서 받는 것으로 수정해야 합니다.
         // 1. 유효성 검사
+        String contentType = screenShot.getContentType();
+        if (!contentType.split("/")[0].equals("image")) {
+            throw new ContentTypeNotAllowedException("지원하지 않는 타입입니다.");
+        }
         // 2. 서비스 호출
         int registedRoomNo = roomService.registRoom(memberNo, registerRoom, screenShot);
         // 3. 응답
