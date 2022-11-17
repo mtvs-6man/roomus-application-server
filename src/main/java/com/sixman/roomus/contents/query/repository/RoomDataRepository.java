@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomDataRepository extends JpaRepository<RoomData, Integer> {
-    List<RoomData> findAllByMemberNoAndIsDelete(int memberNo, boolean isDelete);
 
-    @Query("select a from RoomData a join fetch a.furnitureArrangementList where a.isDelete = false")
+    @Query("select a from RoomData a where a.isDelete = false and a.memberNo = :memberNo")
+    List<RoomData> findAllByMemberNoAndIsDelete(int memberNo);
+
+    @Query("select a from RoomData a join fetch a.furnitureArrangementList where a.isDelete = false and a.roomNo = :roomNo")
     Optional<RoomData> findByRoomNoAndIsDelete(int roomNo);
 }

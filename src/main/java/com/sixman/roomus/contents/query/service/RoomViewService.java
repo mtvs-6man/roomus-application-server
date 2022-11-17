@@ -19,7 +19,7 @@ public class RoomViewService {
     private final RoomDataRepository roomDataRepository;
 
     public List<RoomSummaryResponseDTO> findRoomList(int memberNo) {
-        List<RoomData> foundRoomList = roomDataRepository.findAllByMemberNoAndIsDelete(memberNo, false);
+        List<RoomData> foundRoomList = roomDataRepository.findAllByMemberNoAndIsDelete(memberNo);
         List<RoomSummaryResponseDTO> roomResponseDTOList = new ArrayList<>();
         for (RoomData roomData : foundRoomList) {
             RoomSummaryResponseDTO roomResponseDTO = new RoomSummaryResponseDTO(
