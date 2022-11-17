@@ -13,12 +13,15 @@ import com.sixman.roomus.Rooms.command.domain.model.RoomLikesMemberPK;
 import com.sixman.roomus.Rooms.command.domain.repository.FurnitureArrangementRepository;
 import com.sixman.roomus.Rooms.command.domain.repository.RoomLikesMemberRepository;
 import com.sixman.roomus.Rooms.command.domain.repository.RoomRepository;
+import com.sixman.roomus.Rooms.command.domain.service.RoomStorageService;
 import com.sixman.roomus.product.command.application.exception.NullProductException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +33,12 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomLikesMemberRepository roomLikesMemberRepository;
     private final FurnitureArrangementRepository furnitureArrangementRepository;
+    private final RoomStorageService roomStorageService;
 
     @Transactional
-    public int registRoom(int memberNo, RegisterRoomRequestDTO registerRoom) {
+    public int registRoom(int memberNo, RegisterRoomRequestDTO registerRoom, MultipartFile screenShot) throws IOException {
+        // 스크린샷 S3 스토리지에 저장
+        String screenShotUrl = roomStorageService.fileSaveToStorage(screenShot);
         Room room = new Room(
                 memberNo,
                 registerRoom.getRoomName(),
@@ -46,7 +52,8 @@ public class RoomService {
                 new Date(),
                 new Date(),
                 false,
-                new Date()
+                new Date(),
+                screenShotUrl
         );
 
         roomRepository.save(room);

@@ -67,6 +67,10 @@ public class RoomData {
     @NonNull
     private Date deletedDate;
 
+    @Column(name = "URL_SCREENSHOT")
+    @NonNull
+    private String ScreenShotUrl;
+
     @OneToMany
     @JoinColumn(name = "ROOM_NO")
     @NonNull

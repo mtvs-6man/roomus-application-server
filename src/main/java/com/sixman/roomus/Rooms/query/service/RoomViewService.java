@@ -36,8 +36,8 @@ public class RoomViewService {
                     roomData.getCreatedDate(),
                     roomData.getLastModifiedDate(),
                     roomData.getDeletedDate(),
-                    roomData.isDelete()
-//                    roomData.getFurnitureArrangementList()
+                    roomData.isDelete(),
+                    roomData.getScreenShotUrl()
             );
             roomResponseDTOList.add(roomResponseDTO);
         }
@@ -60,6 +60,7 @@ public class RoomViewService {
                 foundRoom.getXsize(),
                 foundRoom.getYsize(),
                 foundRoom.getZsize(),
+                foundRoom.getScreenShotUrl(),
                 foundRoom.getFurnitureArrangementList()
         );
         return roomDetailsResponseDTO;

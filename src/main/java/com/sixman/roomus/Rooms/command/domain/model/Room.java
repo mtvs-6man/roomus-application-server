@@ -71,10 +71,12 @@ public class Room {
     @Temporal(TemporalType.TIMESTAMP)
     @NonNull
     private Date deletedDate;
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ROOM_NO")
-//    @NonNull
-//    private List<FurnitureArrangement> furnitureArrangementList;
+
+    @Column(name = "URL_SCREENSHOT")
+    @NonNull
+    private String ScreenShotUrl;
+
+
 
     public boolean isRoomOwner(int memberNo) {
         if (this.memberNo != memberNo) {

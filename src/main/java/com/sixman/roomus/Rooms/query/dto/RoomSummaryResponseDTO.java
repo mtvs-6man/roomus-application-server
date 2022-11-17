@@ -25,6 +25,7 @@ public class RoomSummaryResponseDTO {
     private Date lastModifiedDate;
     private Date deletedDate;
     private boolean isDelete;
+    private String screenShotUrl;
 //    private List<FurnitureArrangementData> furnitureArrangementList;
 
 }
