@@ -17,7 +17,7 @@ public class FurnitureArrangementData {
 
     @Id
     @Column(name = "FUNITURE_ARRANGEMENT_NO")
-    private Integer funitureArrangementNo;
+    private Integer idx;
 
 //    @ManyToOne
 //    @JoinColumn(name = "ROOM_NO")
