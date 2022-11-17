@@ -12,7 +12,10 @@ import java.util.List;
 @ToString
 public class RoomDetailsResponseDTO {
     private int roomNo;
+    private String roomName;
     private int memberNo;
+    private String category;
+    private String description;
     private float xsize;
     private float ysize;
     private float zsize;

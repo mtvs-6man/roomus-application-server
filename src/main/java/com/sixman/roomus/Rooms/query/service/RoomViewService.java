@@ -53,7 +53,10 @@ public class RoomViewService {
         foundRoom.isRoomOwner(memberNo);
         RoomDetailsResponseDTO roomDetailsResponseDTO = new RoomDetailsResponseDTO(
                 foundRoom.getRoomNo(),
+                foundRoom.getRoomName(),
                 foundRoom.getMemberNo(),
+                foundRoom.getCategory(),
+                foundRoom.getDescription(),
                 foundRoom.getXsize(),
                 foundRoom.getYsize(),
                 foundRoom.getZsize(),
