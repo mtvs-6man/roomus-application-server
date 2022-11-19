@@ -7,6 +7,7 @@ import com.sixman.roomus.rooms.command.application.dto.UpdateFunitureInfoDTO;
 import com.sixman.roomus.rooms.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.rooms.command.application.service.RoomService;
 import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class RoomController {
 
     private final RoomService roomService;
 
+    @Operation(description = "방 생성을 위해서 사용하는 API입니다.", summary = "방 생성")
     @PostMapping(value = {""}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseDTO> registerRoom(RegisterRoomRequestDTO registerRoom,
                                                     @RequestPart MultipartFile screenShot
@@ -42,7 +44,7 @@ public class RoomController {
         // 3. 응답
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "방 생성에 성공했습니다.", registedRoomNo));
     }
-
+    @Operation(description = "방에 배치한 가구 정보를 변경하는 API입니다.", summary = "방의 가구 배치 정보 변경")
     @PutMapping(value = "/{id}/furniture", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseDTO> saveFurnitureAssignInfo(@PathVariable(name = "id") int roomNo,
                                                                @RequestBody UpdateFunitureInfoDTO updateFunitureInfoDTO
@@ -58,11 +60,11 @@ public class RoomController {
         // 3. 응답
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "가구 배치 정보 저장에 성공했습니다.", null));
     }
-
+    @Operation(description = "방의 정보를 변경하는 API입니다.", summary = "방 정보 변경")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ResponseDTO> updateRoom(@PathVariable(name = "id") int roomNo,
-                                                  UpdateRoomDTO updateRoomDTO,
-                                                  @RequestPart MultipartFile screenShot
+                                                  UpdateRoomDTO updateRoomDTO
+//                                                  @RequestPart MultipartFile screenShot
     ) {
         // 0. 회원 정보 수집
         int memberNo = 1;
@@ -74,6 +76,7 @@ public class RoomController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 정보 수정 완료", null));
     }
 
+    @Operation(description = "방 삭제 API입니다.", summary = "방 정보 삭제")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ResponseDTO> deleteRoom(@PathVariable(name = "id") int roomNo) {
         // 회원 정보 꺼내기
@@ -87,6 +90,7 @@ public class RoomController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 정보 삭제 완료", null));
     }
 
+    @Operation(description = "방에 좋아요를 추가하는 API입니다.", summary = "방 좋아요")
     @PostMapping(value = "/{roomNo}/likes")
     public ResponseEntity<ResponseDTO> likeRooms(@PathVariable Integer roomNo) {
         // 0. 유효성 검사
@@ -98,6 +102,7 @@ public class RoomController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 추가 완료.", null));
     }
 
+    @Operation(description = "방에 좋아요를 취소하는 API입니다.", summary = "방 좋아요 취소")
     @DeleteMapping(value = "/{roomNo}/likes")
     public ResponseEntity<ResponseDTO> unlikeProducts(@PathVariable Integer roomNo) {
         // 0. 유효성 검사
@@ -110,7 +115,7 @@ public class RoomController {
 
     }
 
-    // 방 이미지 수정
+    @Operation(description = "방의 이미지를 수정하는 API입니다.", summary = "방 이미지 수정")
     @PutMapping(value = "/{roomNo}/screenShot", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseDTO> updateImage(@PathVariable int roomNo,
                                                    @RequestPart MultipartFile screenShot
