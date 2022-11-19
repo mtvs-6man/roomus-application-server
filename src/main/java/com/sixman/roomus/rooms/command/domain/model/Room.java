@@ -1,5 +1,7 @@
 package com.sixman.roomus.rooms.command.domain.model;
 
+import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
+import com.sixman.roomus.rooms.command.domain.exception.NotRoomOwnerException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -77,11 +79,17 @@ public class Room {
     private String ScreenShotUrl;
 
 
-
-    public boolean isRoomOwner(int memberNo) {
+    // 방 소유자 확인
+    public void isRoomOwner(int memberNo) {
         if (this.memberNo != memberNo) {
-            return false;
+            throw new NotRoomOwnerException("방 소유자가 아닙니다.");
         }
-        return true;
+    }
+
+    // 스크린샷 확인
+    public void isImageFile(String contentType) throws ContentTypeNotAllowedException {
+        if (!contentType.split("/")[0].equals("image")) {
+            throw new ContentTypeNotAllowedException("지원하지 않는 타입입니다.");
+        }
     }
 }

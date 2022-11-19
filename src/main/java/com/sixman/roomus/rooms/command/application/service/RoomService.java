@@ -1,11 +1,11 @@
 package com.sixman.roomus.rooms.command.application.service;
 
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.sixman.roomus.rooms.command.application.dto.AssignmentInfoDTO;
 import com.sixman.roomus.rooms.command.application.dto.RegisterRoomRequestDTO;
 import com.sixman.roomus.rooms.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomException;
-import com.sixman.roomus.rooms.command.domain.exception.NotRoomOwnerException;
 import com.sixman.roomus.rooms.command.domain.model.FurnitureArrangement;
 import com.sixman.roomus.rooms.command.domain.model.Room;
 import com.sixman.roomus.rooms.command.domain.model.RoomLikesMember;
@@ -68,9 +68,7 @@ public class RoomService {
         }
         Room foundRoom = foundRoomOpt.get();
         // 해당 방의 소유자 인지 확인.
-        if (!foundRoom.isRoomOwner(memberNo)) {
-            throw new NotRoomOwnerException("해당 방의 사용자가 아닙니다.");
-        }
+        foundRoom.isRoomOwner(memberNo);
 
 
         // 기존에 존재하던 해당 방의 가구 배치 정보 삭제
@@ -98,9 +96,8 @@ public class RoomService {
             throw new NotFoundRoomException("방이 존재하지 않습니다.");
         }
         Room foundRoom = foundRoomOpt.get();
-        if (!foundRoom.isRoomOwner(memberNo)) {
-            throw new NotRoomOwnerException("해당 방의 사용자가 아닙니다.");
-        }
+        // 방 소유자 확인
+        foundRoom.isRoomOwner(memberNo);
         // 방 이름 변경
         String roomName = updateRoomDTO.getRoomName();
         if (roomName != null) {
@@ -131,9 +128,9 @@ public class RoomService {
             throw new NotFoundRoomException("방이 존재하지 않습니다.");
         }
         Room foundRoom = foundRoomOpt.get();
-        if (!foundRoom.isRoomOwner(memberNo)) {
-            throw new NotRoomOwnerException("해당 방의 사용자가 아닙니다.");
-        }
+        // 방 사용자 확인
+        foundRoom.isRoomOwner(memberNo);
+        // 방 삭제
         foundRoom.setDelete(true);
         foundRoom.setDeletedDate(new Date());
         return true;
@@ -175,5 +172,23 @@ public class RoomService {
             throw new DuplicateKeyException("좋아요가 눌러져 있지 않습니다.");
         }
 
+    }
+
+    @Transactional
+    public void updateScreenShot(int roomNo, int memberNo, MultipartFile screenShot) throws IOException {
+        Optional<Room> foundRoomOpt = roomRepository.findById(roomNo);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방을 찾을 수 없습니다.");
+        }
+        Room foundRoom = foundRoomOpt.get();
+        // 방 소유 확인
+        foundRoom.isRoomOwner(memberNo);
+        foundRoom.setLastModifiedDate(new Date());
+
+        // 스크린샷 업로드
+        String fileUrl = roomStorageService.fileSaveToStorage(screenShot);
+
+        // 이미지 url 업데이트
+        foundRoom.setScreenShotUrl(fileUrl);
     }
 }

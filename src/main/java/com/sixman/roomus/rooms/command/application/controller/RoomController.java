@@ -110,5 +110,18 @@ public class RoomController {
 
     }
 
-
+    // 방 이미지 수정
+    @PutMapping(value = "/{roomNo}/screenShot", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ResponseDTO> updateImage(@PathVariable int roomNo,
+                                                   @RequestPart MultipartFile screenShot
+    ) throws ContentTypeNotAllowedException, IOException {
+        int memberNo = 1;
+        // 1. 유효성 검사
+        String contentType = screenShot.getContentType();
+        if (!contentType.split("/")[0].equals("image")) {
+            throw new ContentTypeNotAllowedException("지원하지 않는 타입입니다.");
+        }
+        roomService.updateScreenShot(roomNo, memberNo, screenShot);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "이미지 수정이 완료되었습니다.", roomNo));
+    }
 }
