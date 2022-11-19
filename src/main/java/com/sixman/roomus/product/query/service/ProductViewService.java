@@ -53,8 +53,8 @@ public class ProductViewService {
             ProductSummaryResponseDTO productListResponseDTO = new ProductSummaryResponseDTO(
                     productData.getProductNo(),
                     productData.getFunitureName(),
-                    productData.getCategory(),
                     productData.getScreenShotUrl(),
+                    productData.getCategory(),
                     productLikesMember.size()
             );
             // 응답 리스트에 추가
