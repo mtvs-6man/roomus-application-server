@@ -26,7 +26,7 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    @PostMapping(value = {"", "/"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = {""}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseDTO> registerRoom(RegisterRoomRequestDTO registerRoom,
                                                     @RequestPart MultipartFile screenShot
             ) throws IOException, ContentTypeNotAllowedException {
@@ -61,13 +61,14 @@ public class RoomController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<ResponseDTO> updateRoom(@PathVariable(name = "id") int roomNo,
-                                                  @RequestBody UpdateRoomDTO updateRoomDTO
+                                                  UpdateRoomDTO updateRoomDTO,
+                                                  @RequestPart MultipartFile screenShot
     ) {
         // 0. 회원 정보 수집
         int memberNo = 1;
         // 1. 유효성 검사
         updateRoomDTO.setRoomNo(roomNo);
-        // 2. 서비스 호출
+        // ㅌ서비스 호출
         roomService.updateRoom(memberNo, updateRoomDTO);
         // 3. 응답
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 정보 수정 완료", null));

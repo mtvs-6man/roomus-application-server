@@ -104,7 +104,6 @@ public class RoomService {
         // 방 이름 변경
         String roomName = updateRoomDTO.getRoomName();
         if (roomName != null) {
-            System.out.println(roomName);
             foundRoom.setRoomName(roomName);
         }
         // 방 공개 여부 변경
