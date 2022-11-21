@@ -62,7 +62,11 @@ public class ProductService {
         // 도메인 서비스 혹은 레파지토리 호출
         productRepository.save(product);
         AiRequestDTO aiRequestDTO = new AiRequestDTO(product.getProductNo().toString(), product.getScreenShotUrl());
-        String s = productCallAPI.callUploadFurniture(aiRequestDTO);
+        try {
+            productCallAPI.callUploadFurniture(aiRequestDTO);
+        } catch (Exception e) {
+            System.out.println("오류 발생");
+        }
 
         // 삽입 결과 반환
         return product.getProductNo();
@@ -119,7 +123,11 @@ public class ProductService {
         product.setDeleteDate(new Date());
 
         AiRequestDTO aiRequestDTO = new AiRequestDTO(product.getProductNo().toString(), "");
-        productCallAPI.callDeleteFurniture(aiRequestDTO);
+        try {
+            productCallAPI.callDeleteFurniture(aiRequestDTO);
+        } catch (Exception e) {
+            System.out.println("오류 발생");
+        }
 
         return true;
     }
