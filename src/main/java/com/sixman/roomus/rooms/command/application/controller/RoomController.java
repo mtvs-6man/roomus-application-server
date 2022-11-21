@@ -61,9 +61,9 @@ public class RoomController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "가구 배치 정보 저장에 성공했습니다.", null));
     }
     @Operation(description = "방의 정보를 변경하는 API입니다.", summary = "방 정보 변경")
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> updateRoom(@PathVariable(name = "id") int roomNo,
-                                                  UpdateRoomDTO updateRoomDTO
+                                                  @RequestBody UpdateRoomDTO updateRoomDTO
 //                                                  @RequestPart MultipartFile screenShot
     ) {
         // 0. 회원 정보 수집
@@ -116,7 +116,7 @@ public class RoomController {
     }
 
     @Operation(description = "방의 이미지를 수정하는 API입니다.", summary = "방 이미지 수정")
-    @PutMapping(value = "/{roomNo}/screenShot", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/{roomNo}/screenShot", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseDTO> updateImage(@PathVariable int roomNo,
                                                    @RequestPart MultipartFile screenShot
     ) throws ContentTypeNotAllowedException, IOException {
