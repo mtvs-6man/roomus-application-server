@@ -16,4 +16,8 @@ public interface ProductCallAPI {
     @Headers("Content-Type: application/json")
     String callUploadFurniture(AiRequestDTO aiRequestDTO);
 
+    @PostMapping(value = "/delete_furniture")
+    @Headers("Content-Type: application/json")
+    String callDeleteFurniture(AiRequestDTO aiRequestDTO);
+
 }

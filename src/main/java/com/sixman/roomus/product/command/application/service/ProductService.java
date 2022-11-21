@@ -117,7 +117,10 @@ public class ProductService {
         Product product = foundProduct.get();
         product.setDelete(true);
         product.setDeleteDate(new Date());
-//        productDataService.throwProductDeleteMessageToViewRepository(productNo);
+
+        AiRequestDTO aiRequestDTO = new AiRequestDTO(product.getProductNo().toString(), "");
+        productCallAPI.callDeleteFurniture(aiRequestDTO);
+
         return true;
     }
 
