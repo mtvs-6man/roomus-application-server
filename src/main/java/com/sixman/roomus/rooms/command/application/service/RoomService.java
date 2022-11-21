@@ -83,7 +83,6 @@ public class RoomService {
                     assignmentInfo.getEulerAngle(),
                     assignmentInfo.getLocalScale()
             );
-            System.out.println("furnitureArrangement = " + furnitureArrangement);
             furnitureArrangementRepository.save(furnitureArrangement);
         }
         return true;

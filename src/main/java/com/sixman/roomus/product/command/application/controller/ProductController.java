@@ -4,6 +4,7 @@ import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
 import com.sixman.roomus.product.command.application.service.ProductService;
+import com.sixman.roomus.product.command.domain.service.ProductCallAPI;
 import com.sixman.roomus.product.command.domain.service.ProductMemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,13 @@ import java.io.IOException;
 public class ProductController {
     private final ProductService productService;
     private final ProductMemberService productMemberService;
+    private final ProductCallAPI productCallAPI;
 
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseDTO> insertProduct(ProductRequestDTO product,
                                                      @RequestPart(value = "zipFile") MultipartFile zipFile,
                                                      @RequestPart(value = "screenShot") MultipartFile screenShot
-                                                    ) throws IOException {
+    ) throws IOException {
         // 1. 로그인한 유저를 security 꺼내는 작업을 해야한다.
 //        Integer memberNo = productMemberService.getMemberNo();
         product.setMemberNo(1);
@@ -42,7 +44,7 @@ public class ProductController {
     public ResponseEntity<ResponseDTO> updateProduct(@PathVariable int productNo,
                                                      ProductUpdateRequestDTO product
 //                                                  ,@RequestPart(value = "screenShot", required = false) MultipartFile screenShot
-                                                     ) throws IOException {
+    ) throws IOException {
 
         // 0. 유효성 검사 필요
 
@@ -52,7 +54,6 @@ public class ProductController {
         product.setProductNo(productNo);
 //        boolean result = productService.updateProduct(product, screenShot);
         boolean result = productService.updateProduct(product);
-        System.out.println("product = " + product);
         // 3. 호출 결과 반환
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 수정하였습니다.", result));
     }
@@ -90,4 +91,14 @@ public class ProductController {
 
     }
 
+
+    @GetMapping("/test")
+    public ResponseEntity<ResponseDTO> test() {
+
+        String s = productCallAPI.callIndex();
+        System.out.println("s = " + s);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "테스트", null));
+
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.sixman.roomus.product.command.application.service;
 
 import com.sixman.roomus.commons.model.Money;
+import com.sixman.roomus.product.command.application.dto.AiRequestDTO;
 import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
 import com.sixman.roomus.product.command.application.exception.NullProductException;
@@ -10,6 +11,7 @@ import com.sixman.roomus.product.command.domain.model.ProductLikesMemberPK;
 import com.sixman.roomus.product.command.domain.model.ProductScale;
 import com.sixman.roomus.product.command.domain.repository.ProductLikesMemberRepository;
 import com.sixman.roomus.product.command.domain.repository.ProductRepository;
+import com.sixman.roomus.product.command.domain.service.ProductCallAPI;
 import com.sixman.roomus.product.command.domain.service.ProductStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -29,6 +31,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductStorageService productStorageService;
     private final ProductLikesMemberRepository productLikesMemberRepository;
+    private final ProductCallAPI productCallAPI;
 
     @Transactional
     public Integer registProduct(ProductRequestDTO productRequestDTO, MultipartFile uploadFile, MultipartFile screenShot) throws IOException {
@@ -58,6 +61,8 @@ public class ProductService {
 
         // 도메인 서비스 혹은 레파지토리 호출
         productRepository.save(product);
+        AiRequestDTO aiRequestDTO = new AiRequestDTO(product.getProductNo().toString(), product.getScreenShotUrl());
+        String s = productCallAPI.callUploadFurniture(aiRequestDTO);
 
         // 삽입 결과 반환
         return product.getProductNo();
@@ -154,4 +159,5 @@ public class ProductService {
         }
 
     }
+
 }
