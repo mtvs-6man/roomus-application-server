@@ -3,7 +3,9 @@ package com.sixman.roomus.member.command.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sixman.roomus.commons.vo.DateSet;
+import com.sixman.roomus.config.jwt.JwtConfig;
 import com.sixman.roomus.member.Dto.JoinDto;
+import com.sixman.roomus.member.Dto.TokenDTO;
 import com.sixman.roomus.member.command.domain.model.Member;
 import com.sixman.roomus.member.command.domain.model.MemberInfo;
 import com.sixman.roomus.member.command.domain.model.Role;
@@ -23,10 +25,12 @@ public class MemberService {
     private MemberRepository memberRepository;
 
     private BCryptPasswordEncoder passwordEncoder;
+    private JwtConfig jwtConfig;
 
-    public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder passwordEncoder){
+    public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder passwordEncoder, JwtConfig jwtConfig){
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtConfig = jwtConfig;
     }
 
     public String memberSinup(JoinDto joinDto){
@@ -58,22 +62,31 @@ public class MemberService {
 
     public boolean passConfirm(String token, String confirmPass) throws JsonProcessingException {
 
-        Base64.Decoder decoder = Base64.getDecoder();
-        ObjectMapper mapper = new ObjectMapper();
 
-        token = token.substring(token.lastIndexOf(" ") + 1);
-        String[] splitJwt = token.split("\\.");
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
 
-        String payload = new String(decoder.decode(splitJwt[1].getBytes()));
-        Map<String, String> payloadMap = mapper.readValue(payload, Map.class);
-
-
-        Member member = memberRepository.findByMemberId(payloadMap.get("memberId"));
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
 
         if(!passwordEncoder.matches(confirmPass, member.getPassword())){
             return false;
         }
 
         return true;
+    }
+
+    public Member chagePass(String token, String changePass) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
+        member.setPassword(passwordEncoder.encode(changePass));
+
+        Member chanageMember = memberRepository.save(member);
+        if(member.getPassword().equals(chanageMember.getPassword())){
+            return chanageMember;
+        }else{
+            return null;
+        }
+
     }
 }

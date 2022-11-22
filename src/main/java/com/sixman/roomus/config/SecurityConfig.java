@@ -1,5 +1,6 @@
 package com.sixman.roomus.config;
 
+import com.sixman.roomus.config.jwt.JwtConfig;
 import com.sixman.roomus.config.jwt.filter.JwtAuthenticationFilter;
 import com.sixman.roomus.config.jwt.filter.JwtAuthorizationFilter;
 import com.sixman.roomus.config.jwt.filter.JwtFilter;
@@ -26,11 +27,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static String AUTH_KEY;
     private final MemberRepository memberRepository;
-
-
-    public SecurityConfig(@Value("${jwt.secret}") String key, MemberRepository memberRepository) {
+    private final JwtConfig jwtConfig;
+    public SecurityConfig(@Value("${jwt.secret}") String key, MemberRepository memberRepository, JwtConfig jwtConfig) {
         this.AUTH_KEY = key;
         this.memberRepository = memberRepository;
+        this.jwtConfig = jwtConfig;
     }
 
     @Bean
@@ -54,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 // 아래의 authenticationManager는 WebSecurityConfigurerAdapter가 가지고 있어서 별도의 선언 없이 사용이 가능하다.
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(),AUTH_KEY)) // 로그인 요청시 해당 필터를 거치도록 설정 | 필수 파라미터 AuthenticationManger을 필수로 등록해야됨
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(),AUTH_KEY, jwtConfig)) // 로그인 요청시 해당 필터를 거치도록 설정 | 필수 파라미터 AuthenticationManger을 필수로 등록해야됨
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), AUTH_KEY, memberRepository))
                 .authorizeRequests()
                 .antMatchers("/member/**") // 회원용
