@@ -17,11 +17,10 @@ public class FurnitureArrangementData {
 
     @Id
     @Column(name = "FUNITURE_ARRANGEMENT_NO")
-    private Integer idx;
+    private Integer furnitureArrangementNo;
 
-//    @ManyToOne
-//    @JoinColumn(name = "ROOM_NO")
-//    private Room room;
+    @Column(name = "PRODUCT_NO")
+    private int idx;
 
     @Embedded
     @AttributeOverrides({
