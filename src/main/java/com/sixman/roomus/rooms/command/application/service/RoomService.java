@@ -1,7 +1,7 @@
 package com.sixman.roomus.rooms.command.application.service;
 
 
-import com.amazonaws.services.s3.AmazonS3;
+import com.sixman.roomus.product.command.application.exception.NullProductException;
 import com.sixman.roomus.rooms.command.application.dto.AssignmentInfoDTO;
 import com.sixman.roomus.rooms.command.application.dto.RegisterRoomRequestDTO;
 import com.sixman.roomus.rooms.command.application.dto.RoomLightingRequestDTO;
@@ -15,7 +15,6 @@ import com.sixman.roomus.rooms.command.domain.repository.FurnitureArrangementRep
 import com.sixman.roomus.rooms.command.domain.repository.RoomLikesMemberRepository;
 import com.sixman.roomus.rooms.command.domain.repository.RoomRepository;
 import com.sixman.roomus.rooms.command.domain.service.RoomStorageService;
-import com.sixman.roomus.product.command.application.exception.NullProductException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -62,8 +61,8 @@ public class RoomService {
     }
 
     @Transactional
-    public boolean saveFurnitureAssignInfo(int roomNo,int memberNo, List<AssignmentInfoDTO> assignmentInfoList){
-        Optional<Room> foundRoomOpt = roomRepository.findById(roomNo);
+    public boolean saveFurnitureAssignInfo(int roomNo, int memberNo, List<AssignmentInfoDTO> assignmentInfoList) {
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
         if (foundRoomOpt.isEmpty()) {
             throw new NotFoundRoomException("방을 찾을 수 없습니다.");
         }
@@ -91,7 +90,7 @@ public class RoomService {
 
     @Transactional
     public boolean updateRoom(int memberNo, UpdateRoomDTO updateRoomDTO) {
-        Optional<Room> foundRoomOpt = roomRepository.findById(updateRoomDTO.getRoomNo());
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(updateRoomDTO.getRoomNo(), false);
         if (foundRoomOpt.isEmpty()) {
             throw new NotFoundRoomException("방이 존재하지 않습니다.");
         }
@@ -123,7 +122,7 @@ public class RoomService {
 
     @Transactional
     public boolean deleteRoom(int memberNo, int roomNo) {
-        Optional<Room> foundRoomOpt = roomRepository.findById(roomNo);
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
         if (foundRoomOpt.isEmpty()) {
             throw new NotFoundRoomException("방이 존재하지 않습니다.");
         }
@@ -139,7 +138,7 @@ public class RoomService {
     @Transactional
     public void likeProducts(Integer roomNo, int memberNo) {
         // 1. 좋아요를 이미 누른 상태인지 확인하기 위해서 productLikesMemberPK 생성 (VO)
-        Optional<Room> foundRoomOpt = roomRepository.findById(roomNo);
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
         if (foundRoomOpt.isEmpty()) {
             throw new NotFoundRoomException("존재하지 않는 방입니다.");
         }
@@ -156,9 +155,9 @@ public class RoomService {
     }
 
     @Transactional
-    public void unlikeRooms (Integer roomNo, int memberNo) {
+    public void unlikeRooms(Integer roomNo, int memberNo) {
         // 1. 좋아요를 이미 누른 상태인지 확인하기 위해서 productLikesMemberPK 생성 (VO)
-        Optional<Room> productOpt = roomRepository.findById(roomNo);
+        Optional<Room> productOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
         if (productOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 방입니다.");
         }
@@ -176,7 +175,7 @@ public class RoomService {
 
     @Transactional
     public void updateScreenShot(int roomNo, int memberNo, MultipartFile screenShot) throws IOException {
-        Optional<Room> foundRoomOpt = roomRepository.findById(roomNo);
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
         if (foundRoomOpt.isEmpty()) {
             throw new NotFoundRoomException("방을 찾을 수 없습니다.");
         }

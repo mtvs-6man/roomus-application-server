@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @ToString
 @Entity
 @Table(name = "TBL_FURNITURE_ARRANGEMENT")
@@ -25,8 +26,13 @@ public class FurnitureArrangement {
     @Column(name = "FUNITURE_ARRANGEMENT_NO")
     private Integer funitureArrangementNo;
 
+    @Column(name = "PRODUCT_NO")
+    @NonNull
+    private int productNo;
+
     @ManyToOne
     @JoinColumn(name = "ROOM_NO")
+    @NonNull
     private Room room;
 
     @Embedded
@@ -36,7 +42,9 @@ public class FurnitureArrangement {
             @AttributeOverride(name = "z", column = @Column(name = "position_z")),
 
     })
+    @NonNull
     private Vector3 position;
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "x", column = @Column(name = "eulerAngle_x")),
@@ -44,7 +52,9 @@ public class FurnitureArrangement {
             @AttributeOverride(name = "z", column = @Column(name = "eulerAngle_z")),
 
     })
+    @NonNull
     private Vector3 eulerAngle;
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "x", column = @Column(name = "localScale_x")),
@@ -52,6 +62,7 @@ public class FurnitureArrangement {
             @AttributeOverride(name = "z", column = @Column(name = "localScale_z")),
 
     })
+    @NonNull
     private Vector3 localScale;
 
 }
