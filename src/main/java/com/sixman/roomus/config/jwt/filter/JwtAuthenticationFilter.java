@@ -1,12 +1,10 @@
 package com.sixman.roomus.config.jwt.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sixman.roomus.config.auth.PrincipalDetails;
+import com.sixman.roomus.config.jwt.JwtConfig;
 import com.sixman.roomus.member.Dto.LoginDto;
 import com.sixman.roomus.member.Dto.LoginRequestDTO;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,11 +15,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Date;
 
 
 // 시큐리티에서 UsernamePasswordAuthenticationFilter가 있으며 login 요청시 username, password가 post로 전송되면 userNamePasswordAuthenticationFilter가 동작을 하게 된다.
@@ -30,12 +24,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     //로그인시 처리하도록 동작된다.
     private final AuthenticationManager authenticationManager;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분 사용이 가능함
-    private String key;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, String key) {
+    private String key;
+    private JwtConfig jwtConfig;
+
+
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, String key, JwtConfig jwtConfig) {
         this.authenticationManager = authenticationManager;
         this.key = key;
+        this.jwtConfig = jwtConfig;
+
     }
 
     // (/login) 요청시 동작되는 함수이다.
@@ -107,17 +105,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // jwt 토큰을 만들어서 request요청한 사용자에게 jwt토큰을 response 해주면된다.
         // 위의 attemptAuthentication가 실행된 후 authResult의 매개변수로 전달되어 해당 객체의 인증된 사용자의 값을 읽어 오는 것이 가능함
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
-        // 토큰을 발행ㅔ
-        //hmac512를 이용한 알고리즘
-        String jwtToken = JWT.create()
-                .withSubject("RoomUsToken")
-                .withExpiresAt(new Date(System.currentTimeMillis()+ACCESS_TOKEN_EXPIRE_TIME)) // 유효시간을 결정함 withExpiresAt(new Date(System.currentTimeMillis()+ 만료시간)) 유효시간을 결정함
-                .withClaim("memberNo", principalDetails.getMember().getMemberNo())
-                .withClaim("memberId", principalDetails.getMember().getMemberId())
-                .sign(Algorithm.HMAC512(key));
+        // 토큰을 발행
+        String jwtToken = jwtConfig.createToken(principalDetails,key);
 
         LoginRequestDTO responseDTO = new LoginRequestDTO();
-//        responseDTO.setUserName(principalDetails.getMember().getMemberInfo().getName());
         responseDTO.setUserRole(principalDetails.getMember().getRole());
         responseDTO.setUserNo(principalDetails.getMember().getMemberNo());
 
