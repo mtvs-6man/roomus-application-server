@@ -74,9 +74,19 @@ public class MemberService {
         return true;
     }
 
-    public void chagePass(String token, String changePass) {
+    public Member chagePass(String token, String changePass) throws JsonProcessingException {
 
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
 
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
+        member.setPassword(passwordEncoder.encode(changePass));
+
+        Member chanageMember = memberRepository.save(member);
+        if(member.getPassword().equals(chanageMember.getPassword())){
+            return chanageMember;
+        }else{
+            return null;
+        }
 
     }
 }

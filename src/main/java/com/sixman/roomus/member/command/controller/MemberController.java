@@ -79,7 +79,7 @@ public class MemberController {
 
     @Operation(description = "비밀번호 변경")
     @PostMapping("/member/passChange")
-    public ResponseEntity<String> passChange(@RequestHeader("Authorization") String token, @RequestParam String changePass){
+    public ResponseEntity<String> passChange(@RequestHeader("Authorization") String token, @RequestParam String changePass) throws JsonProcessingException {
         if(token.isBlank()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("token 정보가 유효하지 않습니다.");
         }
@@ -87,9 +87,9 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 잘못되었습니다.");
         }
 
-        memberService.chagePass(token,changePass);
+        Member member = memberService.chagePass(token,changePass);
 
-        return ResponseEntity.ok().body("비밀번호가 변경되었습니다 \n 다시 로그인해주세요");
+        return ResponseEntity.ok().body(member.getMemberId()+" 님의 비밀번호가 변경되었습니다 \n 다시 로그인해주세요");
     }
 }
 
