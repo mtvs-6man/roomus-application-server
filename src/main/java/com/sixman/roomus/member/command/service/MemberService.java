@@ -1,5 +1,7 @@
 package com.sixman.roomus.member.command.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sixman.roomus.commons.vo.DateSet;
 import com.sixman.roomus.member.Dto.JoinDto;
 import com.sixman.roomus.member.command.domain.model.Member;
@@ -12,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Base64;
+import java.util.Map;
 
 @Service
 public class MemberService {
@@ -52,4 +56,24 @@ public class MemberService {
         return "회원가입 완료";
     }
 
+    public boolean passConfirm(String token, String confirmPass) throws JsonProcessingException {
+
+        Base64.Decoder decoder = Base64.getDecoder();
+        ObjectMapper mapper = new ObjectMapper();
+
+        token = token.substring(token.lastIndexOf(" ") + 1);
+        String[] splitJwt = token.split("\\.");
+
+        String payload = new String(decoder.decode(splitJwt[1].getBytes()));
+        Map<String, String> payloadMap = mapper.readValue(payload, Map.class);
+
+
+        Member member = memberRepository.findByMemberId(payloadMap.get("memberId"));
+
+        if(!passwordEncoder.matches(confirmPass, member.getPassword())){
+            return false;
+        }
+
+        return true;
+    }
 }

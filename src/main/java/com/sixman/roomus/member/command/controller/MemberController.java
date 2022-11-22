@@ -30,47 +30,51 @@ import java.util.*;
 public class MemberController {
 
     private MemberService memberService;
+
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
     @Operation(description = "회원가입")
     @PostMapping("/guest/signup")
-    public ResponseEntity<String> userJoin(@Valid @RequestBody JoinDto joinDto){
+    public ResponseEntity<String> userJoin(@Valid @RequestBody JoinDto joinDto) {
 
         String result = memberService.memberSinup(joinDto);
 
-        switch (result){
-            case "중복" : return ResponseEntity.ok("중복된 아이디 입니다.");
-            case "실패" : return ResponseEntity.status(500).body("회원 가입에 실패하였습니다.");
+        switch (result) {
+            case "중복":
+                return ResponseEntity.ok("중복된 아이디 입니다.");
+            case "실패":
+                return ResponseEntity.status(500).body("회원 가입에 실패하였습니다.");
         }
 
         return ResponseEntity.ok().body(result);
     }
+
     @Operation(description = "판매자 가입")
     @PostMapping("/member/rankUp")
-    public ResponseEntity<String> memberRankUp(@Valid @RequestBody LoginDto loginDto){
+    public ResponseEntity<String> memberRankUp(@Valid @RequestBody LoginDto loginDto) {
 
         return null;
     }
 
     @Operation(description = "비밀번호 확인")
     @PostMapping("/member/passcheck")
-    public ResponseEntity<Boolean> passCheck(@RequestHeader("Authorization") String token, @RequestParam String confirmPass) throws Exception {
+    public ResponseEntity<Boolean> passCheck(@RequestHeader("Authorization") String token, @RequestParam String confirmPass) throws JsonProcessingException {
 
-        Base64.Decoder decoder = Base64.getDecoder();
-        ObjectMapper mapper = new ObjectMapper();
-        token = token.substring(token.lastIndexOf(" ") +1);
-        String[] splitJwt = token.split("\\.");
+        boolean checkValue;
 
-        try{
-            String payload = new String(decoder.decode(splitJwt[1].getBytes()));
-            Map<String, String> payloadMap = mapper.readValue(payload, Map.class);
-        }catch (Exception e){
-            throw new Exception("유요하지 않은 토큰 입니다.");
+        if(token.equals(null)){
+            checkValue= false;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(checkValue);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-    }
+        if (confirmPass.equals(null)){
+            checkValue = false;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(checkValue);
+        }
 
+        checkValue = memberService.passConfirm(token, confirmPass);
+        return ResponseEntity.ok().body(checkValue);
+    }
 }
 
