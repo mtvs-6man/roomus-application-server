@@ -4,6 +4,7 @@ package com.sixman.roomus.rooms.command.application.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.sixman.roomus.rooms.command.application.dto.AssignmentInfoDTO;
 import com.sixman.roomus.rooms.command.application.dto.RegisterRoomRequestDTO;
+import com.sixman.roomus.rooms.command.application.dto.RoomLightingRequestDTO;
 import com.sixman.roomus.rooms.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomException;
 import com.sixman.roomus.rooms.command.domain.model.FurnitureArrangement;
@@ -189,5 +190,10 @@ public class RoomService {
 
         // 이미지 url 업데이트
         foundRoom.setScreenShotUrl(fileUrl);
+    }
+
+    @Transactional
+    public void saveRoomLighting(int memberNo, int roomNo, RoomLightingRequestDTO roomLighting) {
+
     }
 }

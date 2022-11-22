@@ -1,10 +1,7 @@
 package com.sixman.roomus.rooms.command.application.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
-import com.sixman.roomus.rooms.command.application.dto.AssignmentInfoDTO;
-import com.sixman.roomus.rooms.command.application.dto.RegisterRoomRequestDTO;
-import com.sixman.roomus.rooms.command.application.dto.UpdateFunitureInfoDTO;
-import com.sixman.roomus.rooms.command.application.dto.UpdateRoomDTO;
+import com.sixman.roomus.rooms.command.application.dto.*;
 import com.sixman.roomus.rooms.command.application.service.RoomService;
 import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -128,5 +125,18 @@ public class RoomController {
         }
         roomService.updateScreenShot(roomNo, memberNo, screenShot);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "이미지 수정이 완료되었습니다.", roomNo));
+    }
+
+    @Operation(description = "방 전체 조명 정보를 저장하는 API입니다.", summary = "방 전체 조명 저장")
+    @PostMapping(value = "/{roomNo}/lighting")
+    public ResponseEntity<ResponseDTO> saveRoomLighting(@PathVariable int roomNo,
+                                                        @RequestBody RoomLightingRequestDTO roomLighting) {
+        // 회원 정보 조회
+        int memberNo = 1;
+        // 유효성 검사
+        System.out.println("roomLighting = " + roomLighting);
+        // 서비스 호출
+        roomService.saveRoomLighting(memberNo, roomNo, roomLighting);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "", roomNo));
     }
 }
