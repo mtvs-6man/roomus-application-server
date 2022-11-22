@@ -127,16 +127,15 @@ public class RoomController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "이미지 수정이 완료되었습니다.", roomNo));
     }
 
-    @Operation(description = "방 전체 조명 정보를 저장하는 API입니다.", summary = "방 전체 조명 저장")
-    @PostMapping(value = "/{roomNo}/lighting")
-    public ResponseEntity<ResponseDTO> saveRoomLighting(@PathVariable int roomNo,
-                                                        @RequestBody RoomLightingRequestDTO roomLighting) {
+    @Operation(description = "방 전체 필터 정보를 저장하는 API입니다.", summary = "방 필터 저장")
+    @PutMapping(value = "/{roomNo}/filter", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> saveRoomFilter(@PathVariable int roomNo,
+                                                      @RequestBody RoomFilterRequestDTO roomLighting) {
         // 회원 정보 조회
         int memberNo = 1;
         // 유효성 검사
-        System.out.println("roomLighting = " + roomLighting);
         // 서비스 호출
-        roomService.saveRoomLighting(memberNo, roomNo, roomLighting);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "", roomNo));
+        roomService.saveRoomFilter(memberNo, roomNo, roomLighting);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "필터 정보 수정에 성공하였습니다.", roomNo));
     }
 }
