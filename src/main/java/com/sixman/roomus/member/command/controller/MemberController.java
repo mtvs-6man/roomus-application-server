@@ -1,5 +1,7 @@
 package com.sixman.roomus.member.command.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sixman.roomus.commons.vo.DateSet;
 import com.sixman.roomus.member.Dto.JoinDto;
 import com.sixman.roomus.member.Dto.LoginDto;
@@ -9,6 +11,7 @@ import com.sixman.roomus.member.command.repository.MemberRepository;
 import com.sixman.roomus.member.command.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.bouncycastle.est.ESTSourceConnectionListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServlet;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
-import java.util.SortedMap;
+import java.util.*;
 
 @RestController
 @Tag(name = "UserController")
@@ -53,11 +54,22 @@ public class MemberController {
         return null;
     }
 
-    @Operation(description = "test")
-    @GetMapping("/test")
-    public String test(){
+    @Operation(description = "비밀번호 확인")
+    @PostMapping("/member/passcheck")
+    public ResponseEntity<Boolean> passCheck(@RequestHeader("Authorization") String token, @RequestParam String confirmPass) throws Exception {
 
-        return "<h1> test </h1>";
+        Base64.Decoder decoder = Base64.getDecoder();
+        ObjectMapper mapper = new ObjectMapper();
+        token = token.substring(token.lastIndexOf(" ") +1);
+        String[] splitJwt = token.split("\\.");
+
+        try{
+            String payload = new String(decoder.decode(splitJwt[1].getBytes()));
+            Map<String, String> payloadMap = mapper.readValue(payload, Map.class);
+        }catch (Exception e){
+            throw new Exception("유요하지 않은 토큰 입니다.");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
     }
 
 }
