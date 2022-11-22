@@ -3,6 +3,7 @@ package com.sixman.roomus.rooms.command.domain.model;
 import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
 import com.sixman.roomus.rooms.command.domain.exception.NotRoomOwnerException;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +22,7 @@ import java.util.Date;
         initialValue = 1,
         allocationSize = 1
 )
+@DynamicInsert
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROOM_SEQUENCE")
@@ -77,6 +79,9 @@ public class Room {
     @Column(name = "URL_SCREENSHOT")
     @NonNull
     private String ScreenShotUrl;
+
+    @Embedded
+    private RoomFilter roomFilter;
 
 
     // 방 소유자 확인
