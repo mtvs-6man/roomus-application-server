@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/rooms")
 @RequiredArgsConstructor
-@Tag(name = "방 조회", description = "방에 관련된 조회에 관련된 API")
+@Tag(name = "방 조회", description = "방 관련 조회 API")
 public class RoomViewController {
 
     private final RoomViewService roomViewService;

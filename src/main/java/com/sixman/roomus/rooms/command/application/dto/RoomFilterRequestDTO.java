@@ -1,7 +1,7 @@
 package com.sixman.roomus.rooms.command.application.dto;
 
-import com.sixman.roomus.rooms.command.domain.model.Color;
-import com.sixman.roomus.rooms.command.domain.model.Float4;
+import com.sixman.roomus.rooms.command.domain.model.vo.Color;
+import com.sixman.roomus.rooms.command.domain.model.vo.Float4;
 import lombok.*;
 
 @Setter

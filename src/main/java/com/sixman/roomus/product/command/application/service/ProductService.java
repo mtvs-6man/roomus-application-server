@@ -7,8 +7,8 @@ import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO
 import com.sixman.roomus.product.command.application.exception.NullProductException;
 import com.sixman.roomus.product.command.domain.model.Product;
 import com.sixman.roomus.product.command.domain.model.ProductLikesMember;
-import com.sixman.roomus.product.command.domain.model.ProductLikesMemberPK;
-import com.sixman.roomus.product.command.domain.model.ProductScale;
+import com.sixman.roomus.product.command.domain.model.vo.ProductLikesMemberPK;
+import com.sixman.roomus.product.command.domain.model.vo.ProductScale;
 import com.sixman.roomus.product.command.domain.repository.ProductLikesMemberRepository;
 import com.sixman.roomus.product.command.domain.repository.ProductRepository;
 import com.sixman.roomus.product.command.domain.service.ProductCallAPI;

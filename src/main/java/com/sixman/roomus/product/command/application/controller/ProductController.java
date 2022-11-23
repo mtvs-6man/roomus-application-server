@@ -21,7 +21,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/v1/products")
 @RequiredArgsConstructor // 생성자 자동 주입
-@Tag(name = "상품", description = "상품 조회를 제외한 API")
+@Tag(name = "상품", description = "상품 관련 CUD API")
 public class ProductController {
     private final ProductService productService;
     private final ProductCallAPI productCallAPI;

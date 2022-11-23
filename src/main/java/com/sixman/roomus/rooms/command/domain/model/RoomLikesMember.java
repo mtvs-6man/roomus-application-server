@@ -1,5 +1,6 @@
 package com.sixman.roomus.rooms.command.domain.model;
 
+import com.sixman.roomus.rooms.command.domain.model.vo.RoomLikesMemberPK;
 import lombok.*;
 
 import javax.persistence.EmbeddedId;

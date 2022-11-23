@@ -1,6 +1,7 @@
 package com.sixman.roomus.rooms.command.domain.model;
 
 
+import com.sixman.roomus.rooms.command.domain.model.vo.Vector3;
 import lombok.*;
 
 import javax.persistence.*;

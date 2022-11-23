@@ -1,8 +1,9 @@
-package com.sixman.roomus.rooms.command.domain.model;
+package com.sixman.roomus.rooms.command.domain.model.vo;
 
+import com.sixman.roomus.rooms.command.domain.model.vo.Color;
+import com.sixman.roomus.rooms.command.domain.model.vo.Float4;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

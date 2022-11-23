@@ -2,7 +2,7 @@ package com.sixman.roomus.product.query.model;
 
 import com.sixman.roomus.commons.jpa.MoneyConverter;
 import com.sixman.roomus.commons.model.Money;
-import com.sixman.roomus.product.command.domain.model.ProductScale;
+import com.sixman.roomus.product.command.domain.model.vo.ProductScale;
 import lombok.*;
 
 import javax.persistence.*;

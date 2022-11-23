@@ -2,6 +2,7 @@ package com.sixman.roomus.rooms.command.domain.model;
 
 import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
 import com.sixman.roomus.rooms.command.domain.exception.NotRoomOwnerException;
+import com.sixman.roomus.rooms.command.domain.model.vo.RoomFilter;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 

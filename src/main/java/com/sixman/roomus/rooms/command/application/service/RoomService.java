@@ -8,6 +8,8 @@ import com.sixman.roomus.rooms.command.application.dto.RoomFilterRequestDTO;
 import com.sixman.roomus.rooms.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomException;
 import com.sixman.roomus.rooms.command.domain.model.*;
+import com.sixman.roomus.rooms.command.domain.model.vo.RoomFilter;
+import com.sixman.roomus.rooms.command.domain.model.vo.RoomLikesMemberPK;
 import com.sixman.roomus.rooms.command.domain.repository.FurnitureArrangementRepository;
 import com.sixman.roomus.rooms.command.domain.repository.RoomLikesMemberRepository;
 import com.sixman.roomus.rooms.command.domain.repository.RoomRepository;
