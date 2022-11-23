@@ -89,4 +89,27 @@ public class MemberService {
         }
 
     }
+
+    public String memberRanke(String token) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
+
+        if((member.getRoleList().contains(Role.SELLER.toString())) || (member.getRoleList().contains(Role.ADMIN.toString()))){
+            return "판매자 권한을 가진 회원 입니다.";
+        }
+
+        member.setRole(Role.SELLER);
+
+        Member changeMember = memberRepository.save(member);
+
+
+        if(changeMember.getRole().equals(Role.SELLER.toString())){
+            return "제작자 신청이 완료 되었습니다.";
+        }
+
+
+
+        return "제작자 신청에 실패하였습니다.";
+    }
 }
