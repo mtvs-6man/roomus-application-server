@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -64,6 +65,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority(Role.SELLER.getValue(), Role.ADMIN.getValue())
                 .antMatchers("/admin/**")// 관리자
                 .hasAnyAuthority(Role.ADMIN.getValue())
+                // 상품 업로드, 수정, 삭제 권한
+                .antMatchers(HttpMethod.POST,"/v1/products/{productNo}")
+                .hasAnyAuthority(Role.SELLER.getValue())
+                .antMatchers(HttpMethod.PUT,"/v1/products/{productNo}")
+                .hasAnyAuthority(Role.SELLER.getValue())
+                .antMatchers(HttpMethod.DELETE,"/v1/products/{productNo}")
+                .hasAnyAuthority(Role.SELLER.getValue())
+                // 그 외 상품 관련 url 권한 설정 (회원, 판매자, 관리자)
+                .antMatchers("/v1/products/**")
+                .hasAnyAuthority(Role.USER.getValue(), Role.SELLER.getValue(), Role.ADMIN.getValue())
+                // 방 관련 url 권한 설정 (회원, 판매자, 관리자)
+                .antMatchers("/v1/rooms/**")
+                .hasAnyAuthority(Role.USER.getValue(), Role.SELLER.getValue(), Role.ADMIN.getValue())
+                // 그 외 모든 url 허용
                 .antMatchers("/**").permitAll()
                 .anyRequest().permitAll(); //denyAll();//위의 요청을 제외한 모든 요청을
 

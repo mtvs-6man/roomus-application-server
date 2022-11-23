@@ -1,6 +1,7 @@
 package com.sixman.roomus.rooms.command.application.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
+import com.sixman.roomus.commons.util.SecurityContextUtil;
 import com.sixman.roomus.rooms.command.application.dto.*;
 import com.sixman.roomus.rooms.command.application.service.RoomService;
 import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
@@ -23,6 +24,7 @@ import java.util.List;
 public class RoomController {
 
     private final RoomService roomService;
+    private final SecurityContextUtil securityContextUtil;
 
     @Operation(description = "방 생성을 위해서 사용하는 API입니다.", summary = "방 생성")
     @PostMapping(value = {""}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -30,7 +32,7 @@ public class RoomController {
                                                     @RequestPart MultipartFile screenShot
     ) throws IOException, ContentTypeNotAllowedException {
         // 0. 회원 정보 수집
-        int memberNo = 1; // 후에 token에서 받는 것으로 수정해야 합니다.
+        int memberNo = securityContextUtil.getMemberNo();
         // 1. 유효성 검사
         String contentType = screenShot.getContentType();
         if (!contentType.split("/")[0].equals("image")) {
@@ -49,7 +51,7 @@ public class RoomController {
         List<AssignmentInfoDTO> datas = updateFunitureInfoDTO.getDatas();
         System.out.println("assignmentInfoList = " + datas);
         // 0. 회원정보 수집
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
         // 1. 유효성 검사
 
         // 2. 서비스 호출
@@ -64,7 +66,7 @@ public class RoomController {
 //                                                  @RequestPart MultipartFile screenShot
     ) {
         // 0. 회원 정보 수집
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
         // 1. 유효성 검사
         updateRoomDTO.setRoomNo(roomNo);
         // ㅌ서비스 호출
@@ -77,7 +79,7 @@ public class RoomController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ResponseDTO> deleteRoom(@PathVariable(name = "id") int roomNo) {
         // 회원 정보 꺼내기
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
         // 유효성 검사
 
         // 서비스 호출
@@ -93,7 +95,8 @@ public class RoomController {
         // 0. 유효성 검사
 
         // 1. 현재 로그인한 유저 판별
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
+
         // 2. 서비스 호출
         roomService.likeProducts(roomNo, memberNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 추가 완료.", null));
@@ -105,7 +108,8 @@ public class RoomController {
         // 0. 유효성 검사
 
         // 1. 현재 로그인한 유저 판별
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
+
         // 2. 서비스 호출
         roomService.unlikeRooms(roomNo, memberNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 삭제 완료", null));
@@ -117,7 +121,8 @@ public class RoomController {
     public ResponseEntity<ResponseDTO> updateImage(@PathVariable int roomNo,
                                                    @RequestPart MultipartFile screenShot
     ) throws ContentTypeNotAllowedException, IOException {
-        int memberNo = 1;
+
+        int memberNo = securityContextUtil.getMemberNo();
         // 1. 유효성 검사
         String contentType = screenShot.getContentType();
         if (!contentType.split("/")[0].equals("image")) {
@@ -132,7 +137,7 @@ public class RoomController {
     public ResponseEntity<ResponseDTO> saveRoomFilter(@PathVariable int roomNo,
                                                       @RequestBody RoomFilterRequestDTO roomLighting) {
         // 회원 정보 조회
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
         // 유효성 검사
         // 서비스 호출
         roomService.saveRoomFilter(memberNo, roomNo, roomLighting);

@@ -4,6 +4,7 @@ import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductDetailsResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductSummaryResponseDTO;
 import com.sixman.roomus.product.query.service.ProductViewService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,16 +25,18 @@ public class ProductViewController {
     private final ProductViewService productViewService;
 
     @GetMapping(value = {"", "/"})
+    @Operation(summary = "상품 목록 조회", description = "상품의 전제 목록을 조회합니다.")
     public ResponseEntity<ResponseDTO> findProductList() {
         List<ProductSummaryResponseDTO> productList = productViewService.findProductList();
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상풍 목록조회 성공", productList));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품 목록조회 성공", productList));
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO> findProductByProductId(@PathVariable int id) {
-        ProductDetailsResponseDTO productResponseDTO = productViewService.findProductByProductId(id);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "가구를 성공적으로 찾았습니다.", productResponseDTO));
+    @GetMapping("/{roomNo}")
+    @Operation(summary = "상품 상세 조회", description = "단일 상품을 상세하게 조회합니다.")
+    public ResponseEntity<ResponseDTO> findProductByProductId(@PathVariable int roomNo) {
+        ProductDetailsResponseDTO productResponseDTO = productViewService.findProductByProductId(roomNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 찾았습니다.", productResponseDTO));
     }
 
 }
