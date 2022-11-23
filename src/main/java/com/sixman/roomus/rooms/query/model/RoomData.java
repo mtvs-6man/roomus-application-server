@@ -76,6 +76,10 @@ public class RoomData {
     @NonNull
     private List<FurnitureArrangementData> furnitureArrangementList;
 
+    @OneToMany
+    @JoinColumn(name = "ROOM_NO")
+    private List<RoomLikesMemberData> roomLikesMemberData;
+
     public boolean isRoomOwner(int memberNo) {
         if (this.memberNo != memberNo) {
             throw new NotRoomOwnerException("방에 대한 권한이 없습니다.");
