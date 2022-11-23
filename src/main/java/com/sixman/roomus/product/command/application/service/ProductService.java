@@ -73,14 +73,17 @@ public class ProductService {
     }
 
     @Transactional
-    public boolean updateProduct(ProductUpdateRequestDTO requestProduct
-//                                , MultipartFile screenShot
+    public boolean updateProduct(ProductUpdateRequestDTO requestProduct,
+                                 int memberNo
                                 ) throws IOException {
         Optional<Product> productOptional = productRepository.findById(requestProduct.getProductNo());
         if (productOptional.isEmpty()) {
             throw new NullProductException("수정할 상품이 존재하지 않습니다.");
         }
         Product product = productOptional.get();
+        // 방 소유 확인
+        product.isProductOwner(memberNo);
+
         if (requestProduct.getFurnitName() != null) {
             product.setFunitureName(requestProduct.getFurnitName());
         }
@@ -113,12 +116,15 @@ public class ProductService {
     }
 
     @Transactional
-    public boolean deleteProduct(int productNo) {
+    public boolean deleteProduct(int productNo, int memberNo) {
         Optional<Product> foundProduct = productRepository.findById(productNo);
         if (foundProduct.isEmpty()) {
             throw new NullProductException("상품이 존재하지 않습니다.");
         }
         Product product = foundProduct.get();
+        // 회원의 상품인지 확인
+        product.isProductOwner(memberNo);
+
         product.setDelete(true);
         product.setDeleteDate(new Date());
 

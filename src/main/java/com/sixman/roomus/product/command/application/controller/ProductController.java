@@ -1,6 +1,7 @@
 package com.sixman.roomus.product.command.application.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
+import com.sixman.roomus.commons.util.SecurityContextUtil;
 import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
 import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
 import com.sixman.roomus.product.command.application.service.ProductService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,8 +24,8 @@ import java.io.IOException;
 @Tag(name = "상품", description = "상품 조회를 제외한 API")
 public class ProductController {
     private final ProductService productService;
-    private final ProductMemberService productMemberService;
     private final ProductCallAPI productCallAPI;
+    private final SecurityContextUtil securityContextUtil;
 
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseDTO> insertProduct(ProductRequestDTO product,
@@ -31,8 +33,7 @@ public class ProductController {
                                                      @RequestPart(value = "screenShot") MultipartFile screenShot
     ) throws IOException {
         // 1. 로그인한 유저를 security 꺼내는 작업을 해야한다.
-//        Integer memberNo = productMemberService.getMemberNo();
-        product.setMemberNo(1);
+        product.setMemberNo(securityContextUtil.getMemberNo());
         // 2. 서비스 호출
         Integer registProductNo = productService.registProduct(product, zipFile, screenShot);
         // 3. 호출결과 반환
@@ -48,12 +49,11 @@ public class ProductController {
 
         // 0. 유효성 검사 필요
 
-        // 1. 현재 로그인한 유저 판별, 해당 리소스가 유저의 소유가 맞는지 확인
-
+        // 1. 현재 로그인한 유저 판별
+        int memberNo = securityContextUtil.getMemberNo();
         // 2. 서비스 호출
         product.setProductNo(productNo);
-//        boolean result = productService.updateProduct(product, screenShot);
-        boolean result = productService.updateProduct(product);
+        boolean result = productService.updateProduct(product, memberNo);
         // 3. 호출 결과 반환
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 수정하였습니다.", result));
     }
@@ -61,9 +61,10 @@ public class ProductController {
     @DeleteMapping(value = "/{productNo}")
     public ResponseEntity<ResponseDTO> deleteProduct(@PathVariable int productNo) {
         // 0. 유효성 검사
-        // 1. 현재 로그인한 유저 판별, 해당 리소스가 유저의 소유가 맞는지 확인
+        // 1. 현재 로그인한 유저 판별
+        Integer memberNo = securityContextUtil.getMemberNo();
         // 2. 서비스 호출
-        boolean result = productService.deleteProduct(productNo);
+        boolean result = productService.deleteProduct(productNo, memberNo);
         // 4. 결과 반환
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 삭제하였습니다.", result));
     }
@@ -73,7 +74,7 @@ public class ProductController {
         // 0. 유효성 검사
 
         // 1. 현재 로그인한 유저 판별
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
         // 2. 서비스 호출
         productService.likeProducts(productNo, memberNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 추가 완료.", null));
@@ -84,7 +85,8 @@ public class ProductController {
         // 0. 유효성 검사
 
         // 1. 현재 로그인한 유저 판별
-        int memberNo = 1;
+        int memberNo = securityContextUtil.getMemberNo();
+
         // 2. 서비스 호출
         productService.unlikeProducts(productNo, memberNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 삭제 완료", null));
