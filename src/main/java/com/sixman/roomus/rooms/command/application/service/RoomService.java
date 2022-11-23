@@ -4,12 +4,10 @@ package com.sixman.roomus.rooms.command.application.service;
 import com.sixman.roomus.product.command.application.exception.NullProductException;
 import com.sixman.roomus.rooms.command.application.dto.AssignmentInfoDTO;
 import com.sixman.roomus.rooms.command.application.dto.RegisterRoomRequestDTO;
+import com.sixman.roomus.rooms.command.application.dto.RoomFilterRequestDTO;
 import com.sixman.roomus.rooms.command.application.dto.UpdateRoomDTO;
 import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomException;
-import com.sixman.roomus.rooms.command.domain.model.FurnitureArrangement;
-import com.sixman.roomus.rooms.command.domain.model.Room;
-import com.sixman.roomus.rooms.command.domain.model.RoomLikesMember;
-import com.sixman.roomus.rooms.command.domain.model.RoomLikesMemberPK;
+import com.sixman.roomus.rooms.command.domain.model.*;
 import com.sixman.roomus.rooms.command.domain.repository.FurnitureArrangementRepository;
 import com.sixman.roomus.rooms.command.domain.repository.RoomLikesMemberRepository;
 import com.sixman.roomus.rooms.command.domain.repository.RoomRepository;
@@ -188,5 +186,31 @@ public class RoomService {
 
         // 이미지 url 업데이트
         foundRoom.setScreenShotUrl(fileUrl);
+    }
+
+    @Transactional
+    public void saveRoomFilter(int memberNo, int roomNo, RoomFilterRequestDTO roomFilterRequestDTO) {
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방을 찾을 수 없습니다.");
+        }
+        // 방 소유 확인
+        Room foundRoom = foundRoomOpt.get();
+        foundRoom.isRoomOwner(memberNo);
+
+        RoomFilter roomFilter = new RoomFilter(
+                roomFilterRequestDTO.getShadowVal(),
+                roomFilterRequestDTO.getMidtoneVal(),
+                roomFilterRequestDTO.getHighlightVal(),
+                roomFilterRequestDTO.getContrast(),
+                roomFilterRequestDTO.getPostExposure(),
+                roomFilterRequestDTO.getHueShift(),
+                roomFilterRequestDTO.getSaturation(),
+                roomFilterRequestDTO.getTemp(),
+                roomFilterRequestDTO.getTint(),
+                roomFilterRequestDTO.getColorFilter()
+        );
+
+        foundRoom.setRoomFilter(roomFilter);
     }
 }
