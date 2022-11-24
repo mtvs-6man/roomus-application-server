@@ -8,8 +8,10 @@ import com.sixman.roomus.member.Dto.JoinDto;
 import com.sixman.roomus.member.Dto.TokenDTO;
 import com.sixman.roomus.member.command.domain.model.Member;
 import com.sixman.roomus.member.command.domain.model.MemberInfo;
+import com.sixman.roomus.member.command.domain.model.Relation;
 import com.sixman.roomus.member.command.domain.model.Role;
 import com.sixman.roomus.member.command.repository.MemberRepository;
+import com.sixman.roomus.member.command.repository.RelationRepository;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,20 +19,23 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class MemberService {
 
     private MemberRepository memberRepository;
-
+    private RelationRepository relationRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private JwtConfig jwtConfig;
 
-    public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder passwordEncoder, JwtConfig jwtConfig){
+    public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder passwordEncoder, JwtConfig jwtConfig, RelationRepository relationRepository){
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtConfig = jwtConfig;
+        this.relationRepository = relationRepository;
     }
 
     public String memberSinup(JoinDto joinDto){
@@ -108,8 +113,35 @@ public class MemberService {
             return "제작자 신청이 완료 되었습니다.";
         }
 
-
-
         return "제작자 신청에 실패하였습니다.";
+    }
+
+    public String followUser(String token, Integer userNo) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+        if(Integer.parseInt(tokenDTO.getMemberNo()) == userNo) {
+            return "자신을 팔로우 할 수 없습니다.";
+        }
+
+        Member relationMember = memberRepository.findByMemberId(tokenDTO.getMemberId());
+        Member followMember = memberRepository.findByMemberNo(userNo);
+
+        if(Objects.isNull(relationMember) || Objects.isNull(followMember)){
+            return "유효하지 않은 토큰 혹은 사용자 정보 입니다.";
+        }
+
+        Relation relation = relationRepository.findByRelationUserAndFollowUser(relationMember, followMember);
+
+        if(!Objects.isNull(relation)){
+            return "이미 팔로우가 되어 있습니다.";
+        }
+
+        Relation newRelation = new Relation();
+        newRelation.setRelationUser(relationMember);
+        newRelation.setFollowUser(followMember);
+
+        relationRepository.save(newRelation);
+
+        return "팔로우 되었습니다.";
     }
 }
