@@ -21,7 +21,7 @@ public class ProductViewService {
     private final ProductDataRepository productDataRepository;
 
     public ProductDetailsResponseDTO findProductByProductId(int productNo) {
-        Optional<ProductData> productDataOptional = productDataRepository.findProductDataByProductNoAndIsDelete(productNo);
+        Optional<ProductData> productDataOptional = productDataRepository.findProductDetails(productNo);
         if (productDataOptional.isEmpty()) {
             throw new NotFoundException("product를 찾을 수 없습니다.");
         }
@@ -36,7 +36,8 @@ public class ProductViewService {
                 foundProduct.getProductScale().getYSize(),
                 foundProduct.getProductScale().getZSize(),
                 foundProduct.getPrice().getValue(),
-                foundProduct.getFileUrl()
+                foundProduct.getFileUrl(),
+                foundProduct.getProductCommentData()
         );
         System.out.println("productResponseDTO = " + productResponseDTO);
         return productResponseDTO;

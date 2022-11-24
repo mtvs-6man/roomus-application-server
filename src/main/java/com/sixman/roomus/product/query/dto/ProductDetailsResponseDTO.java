@@ -1,6 +1,9 @@
 package com.sixman.roomus.product.query.dto;
 
+import com.sixman.roomus.product.query.model.ProductCommentData;
 import lombok.*;
+
+import java.util.List;
 
 
 @Getter
@@ -19,4 +22,5 @@ public class ProductDetailsResponseDTO {
     private float zsize;
     private Integer price;
     private String fileUrl;
+    private List<ProductCommentData> comments;
 }
