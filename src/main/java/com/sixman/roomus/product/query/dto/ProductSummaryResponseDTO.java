@@ -13,5 +13,6 @@ public class ProductSummaryResponseDTO {
     private String furnitName;
     private String screenShotUrl;
     private String category;
-    private int likes;
+    private int cntLikes;
+    private int cntComments;
 }

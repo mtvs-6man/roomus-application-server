@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/rooms")
 @RequiredArgsConstructor
-@Tag(name = "방", description = "방에 관련된 조회를 제외한 API")
+@Tag(name = "방", description = "방 관련 CUD API")
 public class RoomController {
 
     private final RoomService roomService;
@@ -142,5 +142,50 @@ public class RoomController {
         // 서비스 호출
         roomService.saveRoomFilter(memberNo, roomNo, roomLighting);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "필터 정보 수정에 성공하였습니다.", roomNo));
+    }
+
+    @Operation(summary = "방 코멘트 추가", description = "사용자는 방에 코멘트를 추가할 수 있습니다.")
+    @PostMapping(value = "/{roomNo}/comments")
+    public ResponseEntity<ResponseDTO> commentRoom(@PathVariable int roomNo,
+                                                   @RequestBody RoomCommentSaveRequestDTO roomCommentReqeustDTO) {
+        // 회원 정보 조회
+        int memberNo = securityContextUtil.getMemberNo();
+        // 유효성 검사
+        // 서비스 호출
+        int insertedCommentNo = roomService.saveRoomComment(roomNo, memberNo, roomCommentReqeustDTO);
+        // 응답
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "방에 댓글 추가에 성공하였습니다.", insertedCommentNo));
+    }
+
+    @Operation(summary = "방 코멘트 변경", description = "사용자는 방에 남겻던 코멘트를 변경할 수 있습니다.")
+    @PutMapping(value = "/{roomNo}/comments")
+    public ResponseEntity<ResponseDTO> updateCommentRoom(@PathVariable int roomNo,
+                                                         @RequestBody RoomCommentUpdateRequestDTO roomCommentUpdateRequestDTO
+    ) {
+        // 회원 정보 조회
+        int memberNo = securityContextUtil.getMemberNo();
+        securityContextUtil.checkPassword(roomCommentUpdateRequestDTO.getPassword());
+
+        // 유효성 검사
+        // 서비스 호출
+        int updateCommentNo = roomService.updateRoomComment(roomNo, memberNo, roomCommentUpdateRequestDTO);
+        // 응답
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방에 댓글 변경에 성공하였습니다.", updateCommentNo));
+
+    }
+
+    @Operation(summary = "방 코멘트 삭제", description = "사용자는 방에 남겼던 코멘트를 삭제할 수 있습니다.")
+    @DeleteMapping(value = "/{roomNo}/comments")
+    public ResponseEntity<ResponseDTO> deleteCommentRoom(@PathVariable int roomNo,
+                                                         @RequestBody RoomCommentDeleteRequestDTO roomCommentDeleteRequestDTO
+                                                         ) {
+        // 회원 정보 조회
+        int memberNo = securityContextUtil.getMemberNo();
+        securityContextUtil.checkPassword(roomCommentDeleteRequestDTO.getPassword());
+        // 유효성 검사
+        // 서비스 호출
+        roomService.deleteRoomComment(roomNo, memberNo, roomCommentDeleteRequestDTO);
+        // 응답
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방에 댓글 변경에 성공하였습니다.", null));
     }
 }

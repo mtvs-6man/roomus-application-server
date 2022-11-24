@@ -1,4 +1,4 @@
-package com.sixman.roomus.rooms.command.domain.model;
+package com.sixman.roomus.rooms.command.domain.model.vo;
 
 import org.hibernate.annotations.ColumnDefault;
 

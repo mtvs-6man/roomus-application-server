@@ -1,6 +1,6 @@
 package com.sixman.roomus.rooms.command.application.dto;
 
-import com.sixman.roomus.rooms.command.domain.model.Vector3;
+import com.sixman.roomus.rooms.command.domain.model.vo.Vector3;
 import lombok.Data;
 
 @Data

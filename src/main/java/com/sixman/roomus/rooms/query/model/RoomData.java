@@ -2,6 +2,7 @@ package com.sixman.roomus.rooms.query.model;
 
 import com.sixman.roomus.rooms.command.domain.exception.NotRoomOwnerException;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -78,7 +79,11 @@ public class RoomData {
 
     @OneToMany
     @JoinColumn(name = "ROOM_NO")
-    private List<RoomLikesMemberData> roomLikesMemberData;
+    private List<RoomLikesMemberData> roomLikesMemberDataList;
+
+    @OneToMany
+    @JoinColumn(name = "ROOM_NO")
+    private List<RoomCommentData> roomCommentDataList;
 
     public boolean isRoomOwner(int memberNo) {
         if (this.memberNo != memberNo) {

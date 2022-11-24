@@ -1,9 +1,13 @@
 package com.sixman.roomus.rooms.query.service;
 
 import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomException;
+import com.sixman.roomus.rooms.query.dto.RoomCommentResponseDTO;
 import com.sixman.roomus.rooms.query.dto.RoomDetailsResponseDTO;
 import com.sixman.roomus.rooms.query.dto.RoomSummaryResponseDTO;
+import com.sixman.roomus.rooms.query.infra.RoomMemberService;
+import com.sixman.roomus.rooms.query.model.RoomCommentData;
 import com.sixman.roomus.rooms.query.model.RoomData;
+import com.sixman.roomus.rooms.query.repository.RoomCommentDataRepository;
 import com.sixman.roomus.rooms.query.repository.RoomDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +21,15 @@ import java.util.Optional;
 public class RoomViewService {
 
     private final RoomDataRepository roomDataRepository;
+    private final RoomCommentDataRepository roomCommentDataRepository;
+    private final RoomMemberService roomMemberService;
 
     public List<RoomSummaryResponseDTO> findRoomList(int memberNo) {
-        List<RoomData> foundRoomList = roomDataRepository.findAllByMemberNoAndIsDelete(memberNo);
+        List<RoomData> foundRoomList = roomDataRepository.findAllByMemberNoAndIsDeleteOrderByRoomNo(memberNo, false);
         List<RoomSummaryResponseDTO> roomResponseDTOList = new ArrayList<>();
         for (RoomData roomData : foundRoomList) {
+            System.out.println("roomData.getRoomCommentDataList() = " + roomData.getRoomCommentDataList());
+            System.out.println("roomResponseDTOList = " + roomResponseDTOList);
             RoomSummaryResponseDTO roomResponseDTO = new RoomSummaryResponseDTO(
                     roomData.getRoomNo(),
                     roomData.getMemberNo(),
@@ -38,7 +46,8 @@ public class RoomViewService {
                     roomData.getDeletedDate(),
                     roomData.isDelete(),
                     roomData.getScreenShotUrl(),
-                    roomData.getRoomLikesMemberData().size()
+                    roomData.getRoomLikesMemberDataList().size(),
+                    roomData.getRoomCommentDataList().size()
             );
             roomResponseDTOList.add(roomResponseDTO);
         }
@@ -63,8 +72,31 @@ public class RoomViewService {
                 foundRoom.getZsize(),
                 foundRoom.getScreenShotUrl(),
                 foundRoom.getFurnitureArrangementList(),
-                foundRoom.getRoomLikesMemberData()
+                foundRoom.getRoomLikesMemberDataList()
         );
         return roomDetailsResponseDTO;
+    }
+
+    public List<RoomCommentResponseDTO> findRoomCommentList(int roomNo) {
+        List<RoomCommentData> foundRoomCommentList = roomCommentDataRepository.findAllByRoomNo(roomNo);
+        System.out.println("foundRoomCommentList = " + foundRoomCommentList);
+        List<RoomCommentResponseDTO> roomCommentResponseDTOList = new ArrayList<>();
+
+        for (RoomCommentData roomCommentData : foundRoomCommentList) {
+            String memberId = roomMemberService.getMemberId(roomCommentData.getMemberNo());
+            RoomCommentResponseDTO roomCommentResponseDTO = new RoomCommentResponseDTO(
+                    roomCommentData.getCommentNo(),
+                    memberId,
+                    roomCommentData.getComment(),
+                    roomCommentData.isDelete(),
+                    roomCommentData.getDeleteDate(),
+                    roomCommentData.getLastModifiedDate(),
+                    roomCommentData.getCreateDate()
+            );
+            roomCommentResponseDTOList.add(roomCommentResponseDTO);
+        }
+        return roomCommentResponseDTOList;
+
+
     }
 }

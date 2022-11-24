@@ -2,7 +2,7 @@ package com.sixman.roomus.product.query.model;
 
 import com.sixman.roomus.commons.jpa.MoneyConverter;
 import com.sixman.roomus.commons.model.Money;
-import com.sixman.roomus.product.command.domain.model.ProductScale;
+import com.sixman.roomus.product.command.domain.model.vo.ProductScale;
 import lombok.*;
 
 import javax.persistence.*;
@@ -64,19 +64,8 @@ public class ProductData {
     @JoinColumn(name = "PRODUCT_NO")
     private List<ProductLikesMemberData> ProductLikesMember;
 
-//    public ProductData(Integer memberNo,String funitureName, Boolean location, String category, String information, Float xSize, Float ySize, Float zSize, Integer price, Date createdDate, Date lastModifiedDate, String fileUrl, String screenShotUrl, int countLike, boolean isDelete) {
-//        this.memberNo = memberNo;
-//        this.funitureName = funitureName;
-//        this.location = location;
-//        this.category = category;
-//        this.information = information;
-//        this.productScale = new ProductScale(xSize, ySize, zSize);
-//        this.price = new Money(price);
-//        this.createdDate = createdDate;
-//        this.lastModifiedDate = lastModifiedDate;
-//        this.fileUrl = fileUrl;
-//        this.screenShotUrl = screenShotUrl;
-//        this.countLikes = countLike;
-//        this.isDelete = isDelete;
-//    }
+    @OneToMany
+    @JoinColumn(name = "PRODUCT_NO")
+    private List<ProductCommentData> productCommentData;
+
 }

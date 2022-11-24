@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/v1/products")
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "상품 조회", description = "상품 조회 관련 API")
+@Tag(name = "상품 조회", description = "상품 관련 조회 API")
 public class ProductViewController {
 
     private final ProductViewService productViewService;
