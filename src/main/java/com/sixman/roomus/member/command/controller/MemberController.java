@@ -41,7 +41,7 @@ public class MemberController {
     }
 
     @Operation(description = "판매자 가입")
-    @PutMapping("/member/rankUp")
+    @PostMapping("/member/rankUp")
     public ResponseEntity<String> memberRankUp(@RequestHeader("Authorization") String token) throws JsonProcessingException {
         if(token.isBlank()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 토큰 값 입니다.");
@@ -54,7 +54,7 @@ public class MemberController {
     }
 
     @Operation(description = "비밀번호 확인")
-    @PutMapping("/member/passcheck")
+    @PostMapping("/member/passcheck")
     public ResponseEntity<Boolean> passCheck(@RequestHeader("Authorization") String token, @RequestParam String confirmPass) throws JsonProcessingException {
 
         boolean checkValue;
@@ -73,11 +73,13 @@ public class MemberController {
     }
 
     @Operation(description = "비밀번호 변경")
-    @PatchMapping("/member/passChange")
+    @PostMapping("/member/passChange")
     public ResponseEntity<String> passChange(@RequestHeader("Authorization") String token, @RequestParam String changePass) throws JsonProcessingException {
+
         if(token.isBlank()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("token 정보가 유효하지 않습니다.");
         }
+
         if(changePass.isBlank()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 잘못되었습니다.");
         }
