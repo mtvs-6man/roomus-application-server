@@ -24,7 +24,6 @@ public class FollowController {
     @Operation(description = "팔로우 신청")
     @PostMapping ("/follow")
     public ResponseEntity<String> follow(@RequestHeader("Authorization") String token, @RequestParam Integer userNo) throws JsonProcessingException {
-        if(token.isBlank())  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰 정보가 유효하지 않습니다.");
         if(userNo.equals(null)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("데이터가 유효하지 않습니다.");
 
         String relations = memberService.followUser(token, userNo);
