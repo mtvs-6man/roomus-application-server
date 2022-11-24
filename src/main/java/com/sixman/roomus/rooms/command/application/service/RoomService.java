@@ -223,8 +223,6 @@ public class RoomService {
             throw new NotFoundRoomException("방을 찾을 수 없습니다.");
         }
         Room foundRoom = foundRoomOpt.get();
-        // 방 소유 확인
-        foundRoom.isRoomOwner(memberNo);
         RoomComment insertedRoomComment = new RoomComment(
                 memberNo,
                 foundRoom,
@@ -234,7 +232,7 @@ public class RoomService {
                 new Date()
         );
         roomCommentsRepository.save(insertedRoomComment);
-        return insertedRoomComment.getRoomCommentNo();
+        return insertedRoomComment.getCommentNo();
     }
 
     @Transactional
@@ -244,15 +242,14 @@ public class RoomService {
             throw new NotFoundRoomException("방을 찾을 수 없습니다.");
         }
         Room foundRoom = foundRoomOpt.get();
-        // 방 소유 확인
-        foundRoom.isRoomOwner(memberNo);
         Optional<RoomComment> foundRoomCommentOpt = roomCommentsRepository.findByCommentNoAndIsDelete(roomCommentUpdateRequestDTO.getCommentNo(), false);
         if (foundRoomCommentOpt.isEmpty()) {
             throw new NotFoundRoomCommentException("댓글을 찾을 수 없습니다.");
         }
         RoomComment foundRoomComment = foundRoomCommentOpt.get();
         foundRoomComment.setComment(roomCommentUpdateRequestDTO.getComment());
-        return foundRoomComment.getRoomCommentNo();
+        foundRoomComment.setLastModifiedDate(new Date());
+        return foundRoomComment.getCommentNo();
     }
 
     @Transactional
@@ -262,8 +259,6 @@ public class RoomService {
             throw new NotFoundRoomException("방을 찾을 수 없습니다.");
         }
         Room foundRoom = foundRoomOpt.get();
-        // 방 소유 확인
-        foundRoom.isRoomOwner(memberNo);
         Optional<RoomComment> foundRoomCommentOpt = roomCommentsRepository.findByCommentNoAndIsDelete(roomCommentDeleteRequestDTO.getCommentNo(), false);
         if (foundRoomCommentOpt.isEmpty()) {
             throw new NotFoundRoomCommentException("댓글을 찾을 수 없습니다.");

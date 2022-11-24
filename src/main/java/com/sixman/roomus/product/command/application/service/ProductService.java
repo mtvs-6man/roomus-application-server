@@ -200,7 +200,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteComment(int productNo, int memberNo, CommentUpdateRequestDTO commentRequestDTO) {
+    public void deleteComment(int productNo, int memberNo, CommentDeleteRequestDTO commentRequestDTO) {
         Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
         if (foundProductOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 상품입니다.");
@@ -216,7 +216,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateComment(int productNo, int memberNo, CommentUpdateRequestDTO commentRequestDTO) {
+    public int updateComment(int productNo, int memberNo, CommentUpdateRequestDTO commentRequestDTO) {
         Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
         if (foundProductOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 상품입니다.");
@@ -229,5 +229,6 @@ public class ProductService {
         ProductComment productComment = foundCommentOpt.get();
         productComment.setComment(commentRequestDTO.getComment());
         productComment.setLastModifiedDate(new Date());
+        return productComment.getProductCommentNo();
     }
 }

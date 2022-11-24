@@ -1,5 +1,4 @@
-package com.sixman.roomus.product.command.domain.model;
-
+package com.sixman.roomus.rooms.query.model;
 
 import lombok.*;
 
@@ -13,27 +12,20 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-@SequenceGenerator(
-        name = "PRODUCT_COMMENT_SEQUENCE",
-        sequenceName = "PRODUCT_COMMENT_NO_SEQ"
-)
 @Entity
-@Table(name = "TBL_PRODUCT_COMMENT")
-public class ProductComment {
+@Table(name = "TBL_ROOM_COMMENT")
+public class RoomCommentData {
 
     @Id
-    @Column(name = "PRODUCT_COMMENT_NO")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_COMMENT_SEQUENCE")
-    private int productCommentNo;
+    @Column(name = "COMMENT_NO")
+    private int commentNo;
+
+    @Column(name = "ROOM_NO")
+    private int roomNo;
 
     @Column(name = "MEMBER_NO")
     @NonNull
     private int memberNo;
-
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_NO")
-    @NonNull
-    private Product product;
 
     @Column(name = "COMMENT")
     @NonNull
@@ -56,6 +48,7 @@ public class ProductComment {
     @Temporal(TemporalType.TIMESTAMP)
     @NonNull
     private Date createDate;
+
 }
 
 

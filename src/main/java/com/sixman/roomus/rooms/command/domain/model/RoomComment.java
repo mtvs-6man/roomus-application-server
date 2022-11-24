@@ -1,6 +1,5 @@
 package com.sixman.roomus.rooms.command.domain.model;
 
-import com.sixman.roomus.product.command.domain.model.Product;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,13 +16,13 @@ import java.util.Date;
         sequenceName = "ROOM_COMMENT_NO_SEQ"
 )
 @Entity
-@Table(name = "ROOM_COMMENT")
+@Table(name = "TBL_ROOM_COMMENT")
 public class RoomComment {
 
     @Id
-    @Column(name = "ROOM_COMMENT_NO")
+    @Column(name = "COMMENT_NO")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROOM_COMMENT_SEQUENCE")
-    private int roomCommentNo;
+    private int commentNo;
 
     @Column(name = "MEMBER_NO")
     @NonNull

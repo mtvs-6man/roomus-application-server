@@ -10,4 +10,5 @@ import lombok.*;
 public class RoomCommentUpdateRequestDTO {
     private Integer commentNo;
     private String comment;
+    private String password;
 }

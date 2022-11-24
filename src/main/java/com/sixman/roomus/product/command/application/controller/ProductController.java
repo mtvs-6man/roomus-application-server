@@ -2,10 +2,7 @@ package com.sixman.roomus.product.command.application.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.commons.util.SecurityContextUtil;
-import com.sixman.roomus.product.command.application.dto.CommentUpdateRequestDTO;
-import com.sixman.roomus.product.command.application.dto.CommentSaveRequestDTO;
-import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
-import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
+import com.sixman.roomus.product.command.application.dto.*;
 import com.sixman.roomus.product.command.application.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -111,10 +108,12 @@ public class ProductController {
     @DeleteMapping(value = "/{productNo}/comments")
     @Operation(summary = "상품 코멘트 삭제", description = "사용자는 다른사람 혹은 자신의 상품에 남긴 코멘트를 삭제할 수 있습니다.")
     public ResponseEntity<ResponseDTO> deleteComment(@PathVariable int productNo,
-                                                     @RequestBody CommentUpdateRequestDTO commentRequestDTO) {
+                                                     @RequestBody CommentDeleteRequestDTO commentRequestDTO) {
 
         // 로그인한 회원 정보
         int memberNo = securityContextUtil.getMemberNo();
+        securityContextUtil.checkPassword(commentRequestDTO.getPassword());
+
         // 서비스 호출
         productService.deleteComment(productNo, memberNo, commentRequestDTO);
 
@@ -127,10 +126,12 @@ public class ProductController {
                                                      @RequestBody CommentUpdateRequestDTO commentRequestDTO) {
         // 로그인한 회원 정보
         int memberNo = securityContextUtil.getMemberNo();
+        securityContextUtil.checkPassword(commentRequestDTO.getPassword());
+
         // 서비스 호출
-        productService.updateComment(productNo, memberNo, commentRequestDTO);
+        int result = productService.updateComment(productNo, memberNo, commentRequestDTO);
         // 응답
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "댓글 수정 완료", commentRequestDTO.getCommentNo()));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "댓글 수정 완료", result));
     }
 
 

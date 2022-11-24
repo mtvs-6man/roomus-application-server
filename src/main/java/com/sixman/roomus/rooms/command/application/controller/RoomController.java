@@ -164,6 +164,8 @@ public class RoomController {
     ) {
         // 회원 정보 조회
         int memberNo = securityContextUtil.getMemberNo();
+        securityContextUtil.checkPassword(roomCommentUpdateRequestDTO.getPassword());
+
         // 유효성 검사
         // 서비스 호출
         int updateCommentNo = roomService.updateRoomComment(roomNo, memberNo, roomCommentUpdateRequestDTO);
@@ -173,12 +175,13 @@ public class RoomController {
     }
 
     @Operation(summary = "방 코멘트 삭제", description = "사용자는 방에 남겼던 코멘트를 삭제할 수 있습니다.")
-    @PutMapping(value = "/{roomNo}/comments")
+    @DeleteMapping(value = "/{roomNo}/comments")
     public ResponseEntity<ResponseDTO> deleteCommentRoom(@PathVariable int roomNo,
                                                          @RequestBody RoomCommentDeleteRequestDTO roomCommentDeleteRequestDTO
                                                          ) {
         // 회원 정보 조회
         int memberNo = securityContextUtil.getMemberNo();
+        securityContextUtil.checkPassword(roomCommentDeleteRequestDTO.getPassword());
         // 유효성 검사
         // 서비스 호출
         roomService.deleteRoomComment(roomNo, memberNo, roomCommentDeleteRequestDTO);

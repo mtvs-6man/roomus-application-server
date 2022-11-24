@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "PRODUCT_COMMENT")
+@Table(name = "TBL_PRODUCT_COMMENT")
 public class ProductCommentData {
 
     @Id

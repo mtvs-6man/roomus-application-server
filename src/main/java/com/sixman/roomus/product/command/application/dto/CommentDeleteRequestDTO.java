@@ -1,14 +1,14 @@
-package com.sixman.roomus.rooms.command.application.dto;
+package com.sixman.roomus.product.command.application.dto;
+
 
 import lombok.*;
 
-@Setter
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomCommentDeleteRequestDTO {
+public class CommentDeleteRequestDTO {
     private Integer commentNo;
     private String password;
-
 }
