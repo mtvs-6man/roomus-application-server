@@ -2,15 +2,14 @@ package com.sixman.roomus.rooms.command.application.service;
 
 
 import com.sixman.roomus.product.command.application.exception.NullProductException;
-import com.sixman.roomus.rooms.command.application.dto.AssignmentInfoDTO;
-import com.sixman.roomus.rooms.command.application.dto.RegisterRoomRequestDTO;
-import com.sixman.roomus.rooms.command.application.dto.RoomFilterRequestDTO;
-import com.sixman.roomus.rooms.command.application.dto.UpdateRoomDTO;
+import com.sixman.roomus.rooms.command.application.dto.*;
+import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomCommentException;
 import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomException;
 import com.sixman.roomus.rooms.command.domain.model.*;
 import com.sixman.roomus.rooms.command.domain.model.vo.RoomFilter;
 import com.sixman.roomus.rooms.command.domain.model.vo.RoomLikesMemberPK;
 import com.sixman.roomus.rooms.command.domain.repository.FurnitureArrangementRepository;
+import com.sixman.roomus.rooms.command.domain.repository.RoomCommentsRepository;
 import com.sixman.roomus.rooms.command.domain.repository.RoomLikesMemberRepository;
 import com.sixman.roomus.rooms.command.domain.repository.RoomRepository;
 import com.sixman.roomus.rooms.command.domain.service.RoomStorageService;
@@ -33,6 +32,7 @@ public class RoomService {
     private final RoomLikesMemberRepository roomLikesMemberRepository;
     private final FurnitureArrangementRepository furnitureArrangementRepository;
     private final RoomStorageService roomStorageService;
+    private final RoomCommentsRepository roomCommentsRepository;
 
     @Transactional
     public int registRoom(int memberNo, RegisterRoomRequestDTO registerRoom, MultipartFile screenShot) throws IOException {
@@ -214,5 +214,62 @@ public class RoomService {
         );
 
         foundRoom.setRoomFilter(roomFilter);
+    }
+
+    @Transactional
+    public int saveRoomComment(int roomNo, int memberNo, RoomCommentSaveRequestDTO roomCommentReqeustDTO) {
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방을 찾을 수 없습니다.");
+        }
+        Room foundRoom = foundRoomOpt.get();
+        // 방 소유 확인
+        foundRoom.isRoomOwner(memberNo);
+        RoomComment insertedRoomComment = new RoomComment(
+                memberNo,
+                foundRoom,
+                roomCommentReqeustDTO.getComment(),
+                false,
+                new Date(),
+                new Date()
+        );
+        roomCommentsRepository.save(insertedRoomComment);
+        return insertedRoomComment.getRoomCommentNo();
+    }
+
+    @Transactional
+    public int updateRoomComment(int roomNo, int memberNo, RoomCommentUpdateRequestDTO roomCommentUpdateRequestDTO) {
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방을 찾을 수 없습니다.");
+        }
+        Room foundRoom = foundRoomOpt.get();
+        // 방 소유 확인
+        foundRoom.isRoomOwner(memberNo);
+        Optional<RoomComment> foundRoomCommentOpt = roomCommentsRepository.findByCommentNoAndIsDelete(roomCommentUpdateRequestDTO.getCommentNo(), false);
+        if (foundRoomCommentOpt.isEmpty()) {
+            throw new NotFoundRoomCommentException("댓글을 찾을 수 없습니다.");
+        }
+        RoomComment foundRoomComment = foundRoomCommentOpt.get();
+        foundRoomComment.setComment(roomCommentUpdateRequestDTO.getComment());
+        return foundRoomComment.getRoomCommentNo();
+    }
+
+    @Transactional
+    public void deleteRoomComment(int roomNo, int memberNo, RoomCommentDeleteRequestDTO roomCommentDeleteRequestDTO) {
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방을 찾을 수 없습니다.");
+        }
+        Room foundRoom = foundRoomOpt.get();
+        // 방 소유 확인
+        foundRoom.isRoomOwner(memberNo);
+        Optional<RoomComment> foundRoomCommentOpt = roomCommentsRepository.findByCommentNoAndIsDelete(roomCommentDeleteRequestDTO.getCommentNo(), false);
+        if (foundRoomCommentOpt.isEmpty()) {
+            throw new NotFoundRoomCommentException("댓글을 찾을 수 없습니다.");
+        }
+        RoomComment foundRoomComment = foundRoomCommentOpt.get();
+        foundRoomComment.setDelete(true);
+        foundRoomComment.setDeleteDate(new Date());
     }
 }

@@ -1,10 +1,7 @@
 package com.sixman.roomus.product.command.application.service;
 
 import com.sixman.roomus.commons.model.Money;
-import com.sixman.roomus.product.command.application.dto.AiRequestDTO;
-import com.sixman.roomus.product.command.application.dto.CommentRequestDTO;
-import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
-import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
+import com.sixman.roomus.product.command.application.dto.*;
 import com.sixman.roomus.product.command.application.exception.NullCommentException;
 import com.sixman.roomus.product.command.application.exception.NullProductException;
 import com.sixman.roomus.product.command.domain.model.Product;
@@ -184,7 +181,7 @@ public class ProductService {
     }
 
     @Transactional
-    public int commentProducts(int productNo, int memberNo, CommentRequestDTO commentReqeust) {
+    public int commentProducts(int productNo, int memberNo, CommentSaveRequestDTO commentReqeust) {
         Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
         if (foundProductOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 상품입니다.");
@@ -203,7 +200,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteComment(int productNo, int memberNo, CommentRequestDTO commentRequestDTO) {
+    public void deleteComment(int productNo, int memberNo, CommentUpdateRequestDTO commentRequestDTO) {
         Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
         if (foundProductOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 상품입니다.");
@@ -219,7 +216,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateComment(int productNo, int memberNo, CommentRequestDTO commentRequestDTO) {
+    public void updateComment(int productNo, int memberNo, CommentUpdateRequestDTO commentRequestDTO) {
         Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
         if (foundProductOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 상품입니다.");
