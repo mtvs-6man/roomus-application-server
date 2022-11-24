@@ -3,6 +3,7 @@ package com.sixman.roomus.product.query.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.sixman.roomus.product.query.dto.ProductDetailsResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductSummaryResponseDTO;
+import com.sixman.roomus.product.query.model.ProductCommentData;
 import com.sixman.roomus.product.query.model.ProductData;
 import com.sixman.roomus.product.query.model.ProductLikesMemberData;
 import com.sixman.roomus.product.query.repository.ProductDataRepository;
@@ -50,13 +51,17 @@ public class ProductViewService {
         for (ProductData productData : productDataList) {
             // 좋아요 수 구하기
             List<ProductLikesMemberData> productLikesMember = productData.getProductLikesMember();
+            // 코멘트 수 구하기
+            List<ProductCommentData> productCommentData = productData.getProductCommentData();
             // DTO로 변환
             ProductSummaryResponseDTO productListResponseDTO = new ProductSummaryResponseDTO(
                     productData.getProductNo(),
                     productData.getFunitureName(),
                     productData.getScreenShotUrl(),
                     productData.getCategory(),
-                    productLikesMember.size()
+                    productLikesMember.size(),
+                    productCommentData.size()
+
             );
             // 응답 리스트에 추가
             productSummaryResponseDTO.add(productListResponseDTO);
