@@ -18,7 +18,7 @@ import java.util.Date;
 @Component
 public class JwtConfig {
 
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분 사용이 가능함
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 240; // 30분 사용이 가능함
 
     public String createToken(PrincipalDetails principalDetails,String key){
         //hmac512를 이용한 알고리즘

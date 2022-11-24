@@ -1,28 +1,17 @@
 package com.sixman.roomus.member.command.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sixman.roomus.commons.vo.DateSet;
 import com.sixman.roomus.member.Dto.JoinDto;
 import com.sixman.roomus.member.Dto.LoginDto;
 import com.sixman.roomus.member.command.domain.model.Member;
-import com.sixman.roomus.member.command.domain.model.Role;
-import com.sixman.roomus.member.command.repository.MemberRepository;
 import com.sixman.roomus.member.command.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.bouncycastle.est.ESTSourceConnectionListener;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.validation.Valid;
-import java.util.*;
 
 @RestController
 @Tag(name = "UserController")
@@ -91,5 +80,6 @@ public class MemberController {
 
         return ResponseEntity.ok().body(member.getMemberId()+" 님의 비밀번호가 변경되었습니다 \n 다시 로그인해주세요");
     }
+
 }
 
