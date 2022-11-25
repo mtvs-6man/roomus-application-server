@@ -43,6 +43,7 @@ public class MemberViewController {
     public ResponseEntity<?> serchMyProduct(@RequestHeader("Authorization") String token) throws JsonProcessingException {
 
         List<MyProductDTO> myProductList = memberViewService.serchProduct(token);
+        if(myProductList.isEmpty()) return ResponseEntity.ok().body("찜한 상품이 존재하지 않습니다.");
 
         return ResponseEntity.ok().body(myProductList);
     }

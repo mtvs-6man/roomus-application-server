@@ -11,6 +11,7 @@ import com.sixman.roomus.member.query.repository.MemberDataRepository;
 import com.sixman.roomus.member.query.repository.MyProductDataRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,13 +45,12 @@ public class MemberViewService {
 
         TokenDTO tokenDTO = jwtConfig.decryption(token);
         MemberData memberData = memberDataRepository.findByMemberNo(Integer.parseInt(tokenDTO.getMemberNo()));
+        List<MyProductDTO> myProductList = new ArrayList<>();
 
-        if(Objects.isNull(memberData)) return null;
-        List<MyProductDTO> myProductDTO = myProductDataRepository.findMyproductList(memberData.getMemberNo());
+        if(Objects.isNull(memberData)) return myProductList;
+        myProductList = myProductDataRepository.findMyproductList(memberData.getMemberNo());
 
-        if(myProductDTO.size() <= 0) return null;
-
-        return myProductDTO;
+        return myProductList;
 
     }
 }
