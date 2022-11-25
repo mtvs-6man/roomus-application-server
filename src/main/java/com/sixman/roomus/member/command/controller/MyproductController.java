@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 public class MyproductController {
 
     private MemberService memberService;
-
     public MyproductController(MemberService memberService){
         this.memberService = memberService;
     }

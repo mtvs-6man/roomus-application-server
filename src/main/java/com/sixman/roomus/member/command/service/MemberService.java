@@ -11,24 +11,16 @@ import com.sixman.roomus.member.command.domain.model.MyProduct;
 import com.sixman.roomus.member.command.domain.model.vo.Role;
 import com.sixman.roomus.member.command.repository.MemberRepository;
 import com.sixman.roomus.member.command.repository.MyproductRepository;
+import com.sixman.roomus.member.command.repository.RelationRepository;
 import com.sixman.roomus.product.command.domain.model.Product;
 import com.sixman.roomus.product.command.domain.repository.ProductRepository;
 import com.sixman.roomus.member.command.domain.model.Relation;
-import com.sixman.roomus.member.command.domain.model.Role;
-import com.sixman.roomus.member.command.repository.RelationRepository;
-import org.springframework.security.core.parameters.P;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -36,17 +28,20 @@ public class MemberService {
 
     private MemberRepository memberRepository;
     private MyproductRepository myproductRepository;
+    private RelationRepository relationRepository;
     private ProductRepository productRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private JwtConfig jwtConfig;
 
     public MemberService(MemberRepository memberRepository,MyproductRepository myproductRepository ,
-                         ProductRepository productRepository, BCryptPasswordEncoder passwordEncoder, JwtConfig jwtConfig){
+                         ProductRepository productRepository, BCryptPasswordEncoder passwordEncoder,
+                         RelationRepository relationRepository,JwtConfig jwtConfig){
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtConfig = jwtConfig;
         this.myproductRepository = myproductRepository;
         this.productRepository = productRepository;
+        this.relationRepository = relationRepository;
     }
 
     public String memberSinup(JoinDto joinDto){
@@ -169,8 +164,6 @@ public class MemberService {
         //입력한 제품이 있는 경우
         MyProduct myProduct = myproductRepository.findByMemberNoAndProductNo(member, product);
         if(!Objects.isNull(myProduct)) return "이미 등록된 상품입니다.";
-
-
 
         //입력 제품이 없는 경우
         MyProduct registMyproduct = new MyProduct();

@@ -46,9 +46,7 @@ public class MemberController {
         if(token.isBlank()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 토큰 값 입니다.");
         }
-
         String result = memberService.memberRanke(token);
-
 
         return ResponseEntity.ok().body(result);
     }
