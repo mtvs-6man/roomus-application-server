@@ -13,7 +13,6 @@ import java.util.List;
 @NamedNativeQuery(
         name = "UserSerchQuery",
         query = "SELECT MEMBER_NO AS memberNo, " +
-                "MEMBER_ID AS memberId, " +
                 "MEMBER_NAME AS memberName " +
                 "FROM MEMBER_INFO WHERE MEMBER_NAME = :name",
         resultSetMapping = "user_serch_dto"
@@ -24,7 +23,6 @@ import java.util.List;
                 targetClass = UserSerchDTO.class,
                 columns = {
                         @ColumnResult(name = "memberNo", type = Integer.class),
-                        @ColumnResult(name = "memberId", type = String.class),
                         @ColumnResult(name = "memberName", type = String.class)
                 }
         )

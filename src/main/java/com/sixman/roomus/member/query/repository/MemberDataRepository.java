@@ -1,5 +1,6 @@
 package com.sixman.roomus.member.query.repository;
 
+import com.sixman.roomus.member.command.domain.model.Member;
 import com.sixman.roomus.member.query.dto.UserSerchDTO;
 import com.sixman.roomus.member.query.model.MemberData;
 import feign.Param;
@@ -14,5 +15,6 @@ public interface MemberDataRepository extends JpaRepository<MemberData, Integer>
 
     @Query(name = "UserSerchQuery", nativeQuery = true)
     List<UserSerchDTO> findUser(@Param("name") String name);
+
 
 }
