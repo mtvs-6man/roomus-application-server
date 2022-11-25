@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public class ProductViewController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 찾았습니다.", productList));
     }
 
-    @PostMapping("/image-search")
+    @PostMapping(value = "/image-search", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "사진으로 상품을 검색하는 기능", description = "사용자는 자신의 실제 가구사진을 사용하여 비슷한 에셋을 검색할 수 있습니다.")
     public ResponseEntity<ResponseDTO> imageSearch(@RequestPart MultipartFile image) throws ContentTypeNotAllowedException {
         String contentType = image.getContentType();

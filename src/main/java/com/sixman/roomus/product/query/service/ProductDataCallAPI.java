@@ -9,10 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@FeignClient(name = "ProductCallAPI", url = "${ai.server}")
+@FeignClient(name = "ProductDataCallAPI", url = "${ai.server}")
 public interface ProductDataCallAPI {
 
-    @PostMapping("/find_sim_image")
-    @Headers("Content-Type: " + MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/find_sim_image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     List<DistanceDTO> callFindSimImageAPI(MultipartFile image);
 }
