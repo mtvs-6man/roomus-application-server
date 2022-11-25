@@ -217,4 +217,23 @@ public class MemberService {
         return "내 상품에서 제거 되었습니다.";
 
     }
+
+    
+    public String seccsionUser(String token) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+
+        Member member = memberRepository.findByMemberNo(Integer.parseInt(tokenDTO.getMemberNo()));
+
+        if(Objects.isNull(member)) return "회원 정보가 유효하지 않습니다. ";
+        LocalDate now = LocalDate.now();
+
+        member.setState("N");
+        member.setDeleteDate(new DateSet(now.toString()));
+        Member updateMember = memberRepository.save(member);
+
+        if(!updateMember.getState().equals("N")) return "회원 탈퇴가 실패 했습니다. ";
+
+        return "탈퇴 되었습니다.";
+    }
 }
