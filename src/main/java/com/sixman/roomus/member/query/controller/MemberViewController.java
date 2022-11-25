@@ -1,6 +1,7 @@
 package com.sixman.roomus.member.query.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sixman.roomus.member.query.dto.MyProductDTO;
 import com.sixman.roomus.member.query.dto.UserSerchDTO;
 import com.sixman.roomus.member.query.service.MemberViewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Tag(name = "회원 조회")
 @RestController
-@RequestMapping("/v1/member")
+@RequestMapping("/v1")
 public class MemberViewController {
 
     private MemberViewService memberViewService;
@@ -23,7 +24,7 @@ public class MemberViewController {
     }
 
     @Operation(description = "회원 검색")
-    @GetMapping("/{userName}")
+    @GetMapping("/member/{userName}")
     public ResponseEntity<?> serchUser(@RequestHeader("Authorization") String token, @PathVariable String userName) throws JsonProcessingException {
         if(token.isBlank()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 후 사용이 가능합니다.");
 
@@ -36,4 +37,14 @@ public class MemberViewController {
 
         return ResponseEntity.ok().body(userList);
     }
+
+    @Operation(description = "내상품 조회")
+    @GetMapping("/myproduct")
+    public ResponseEntity<?> serchMyProduct(@RequestHeader("Authorization") String token) throws JsonProcessingException {
+
+        List<MyProductDTO> myProductList = memberViewService.serchProduct(token);
+
+        return ResponseEntity.ok().body(myProductList);
+    }
+
 }

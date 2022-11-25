@@ -13,6 +13,7 @@ public interface MemberDataRepository extends JpaRepository<MemberData, Integer>
 
     Boolean existsByMemberNo(int memberNo);
 
+    MemberData findByMemberNo(int memberNo);
     @Query(name = "UserSerchQuery", nativeQuery = true)
     List<UserSerchDTO> findUser(@Param("name") String name);
 
