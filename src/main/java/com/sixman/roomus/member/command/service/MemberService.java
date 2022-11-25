@@ -180,6 +180,23 @@ public class MemberService {
         }else {
             return "내상품에 등록 되었습니다.";
         }
-
     }
+
+    public String unfollow(String token, Integer userNo) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
+        Member unFollowMember = memberRepository.findByMemberNo(userNo);
+
+        if(Objects.isNull(member)||Objects.isNull(unFollowMember)) return "유요한 회원이 아닙니다.";
+
+        Relation relation = relationRepository.findByRelationUserAndFollowUser(member,unFollowMember);
+        if(Objects.isNull(relation)) return "관계가 없는 회원 입니다.";
+
+        relationRepository.delete(relation);
+
+        return "팔로우가 취소 되었습니다.";
+    }
+
 }

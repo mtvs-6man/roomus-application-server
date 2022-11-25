@@ -31,6 +31,18 @@ public class FollowController {
         return ResponseEntity.ok().body(relations);
     }
 
+    @Operation(description = "언팔로우 신청")
+    @PostMapping("/unfollow")
+    public ResponseEntity<String> unfollow(@RequestHeader("Authorization")String token, @RequestParam Integer userNo) throws JsonProcessingException {
+
+        if(userNo.equals(null)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("데이터가 유효하지 않습니다.");
+
+        String result = memberService.unfollow(token, userNo);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+
 }
 
 

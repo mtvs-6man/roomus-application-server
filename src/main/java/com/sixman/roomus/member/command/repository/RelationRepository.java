@@ -12,4 +12,5 @@ public interface RelationRepository extends JpaRepository<Relation, Integer> {
 
     Relation findByRelationUserAndFollowUser(Member relation, Member follow);
 
+
 }
