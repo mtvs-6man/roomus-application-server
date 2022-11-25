@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/v1/products")
@@ -54,7 +55,7 @@ public class ProductViewController {
 
     @PostMapping(value = "/image-search", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "사진으로 상품을 검색하는 기능", description = "사용자는 자신의 실제 가구사진을 사용하여 비슷한 에셋을 검색할 수 있습니다.")
-    public ResponseEntity<ResponseDTO> imageSearch(@RequestPart MultipartFile image) throws ContentTypeNotAllowedException {
+    public ResponseEntity<ResponseDTO> imageSearch(@RequestPart MultipartFile image) throws ContentTypeNotAllowedException, IOException {
         String contentType = image.getContentType();
         if (!contentType.split("/")[0].equals("image")) {
             throw new ContentTypeNotAllowedException("지원하지 않는 타입입니다.");

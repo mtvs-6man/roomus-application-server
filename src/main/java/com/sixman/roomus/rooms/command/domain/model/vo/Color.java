@@ -1,11 +1,19 @@
 package com.sixman.roomus.rooms.command.domain.model.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Embeddable
 public class Color implements Serializable {
     @ColumnDefault("0.0")

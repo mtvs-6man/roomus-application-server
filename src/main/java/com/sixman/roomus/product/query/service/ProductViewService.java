@@ -1,6 +1,7 @@
 package com.sixman.roomus.product.query.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.sixman.roomus.product.query.dto.AiResponseDTO;
 import com.sixman.roomus.product.query.dto.DistanceDTO;
 import com.sixman.roomus.product.query.dto.ProductDetailsResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductSummaryResponseDTO;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -90,8 +92,9 @@ public class ProductViewService {
         return response;
     }
 
-    public List<ProductSummaryResponseDTO> imageSearch(MultipartFile image) {
-        List<DistanceDTO> distanceDTOList = productDataCallAPI.callFindSimImageAPI(image);
+    public List<ProductSummaryResponseDTO> imageSearch(MultipartFile image) throws IOException {
+        AiResponseDTO datas = productDataCallAPI.callFindSimImageAPI(image);
+        List<DistanceDTO> distanceDTOList = datas.getDatas();
         List<Integer> idList = new ArrayList<>();
         for (DistanceDTO distanceDTO : distanceDTOList) {
             idList.add(distanceDTO.getId());
@@ -100,7 +103,7 @@ public class ProductViewService {
         List<ProductSummaryResponseDTO> responseDTOList = new ArrayList<>();
         for (ProductData productData : foundProductList) {
             ProductSummaryResponseDTO productSummaryResponseDTO = new ProductSummaryResponseDTO(
-                    productData.getMemberNo(),
+                    productData.getProductNo(),
                     productData.getFunitureName(),
                     productData.getScreenShotUrl(),
                     productData.getCategory(),
