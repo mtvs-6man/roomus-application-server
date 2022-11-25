@@ -111,7 +111,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LoginRequestDTO responseDTO = new LoginRequestDTO();
         responseDTO.setUserRole(principalDetails.getMember().getRole());
         responseDTO.setUserNo(principalDetails.getMember().getMemberNo());
-
+        responseDTO.setMemberEmail(principalDetails.getMember().getMemberInfo().getEmail());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String responseValue = objectMapper.writeValueAsString(responseDTO);

@@ -8,15 +8,18 @@ public class LoginRequestDTO {
     String userName;
     int userNo;
     Role userRole;
+    String memberEmail;
+
     public LoginRequestDTO() {
         super();
     }
 
 
-    public LoginRequestDTO(String userName, int userNo, Role userRole) {
+    public LoginRequestDTO(String userName, int userNo, Role userRole, String memberEmail) {
         this.userName = userName;
         this.userNo = userNo;
         this.userRole = userRole;
+        this.memberEmail = memberEmail;
     }
 
     public String getUserName() {
@@ -42,12 +45,21 @@ public class LoginRequestDTO {
         this.userRole = userRole;
     }
 
+    public String getMemberEmail() {
+        return memberEmail;
+    }
+
+    public void setMemberEmail(String memberEmail) {
+        this.memberEmail = memberEmail;
+    }
+
     @Override
     public String toString() {
         return "LoginRequestDTO{" +
                 "userName='" + userName + '\'' +
                 ", userNo=" + userNo +
                 ", userRole=" + userRole +
+                ", memberEmail=" + memberEmail+
                 '}';
     }
 }
