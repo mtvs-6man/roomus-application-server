@@ -19,6 +19,7 @@ import com.sixman.roomus.member.command.domain.model.Relation;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -207,8 +208,10 @@ public class MemberService {
         Member member = memberRepository.findByMemberNo(Integer.parseInt(tokenDTO.getMemberNo()));
 
         if(Objects.isNull(member)) return "회원 정보가 유효하지 않습니다.";
+        LocalDate now = LocalDate.now();
 
         member.setState("N");
+        member.setDeleteDate(new DateSet(now.toString()));
         Member updateMember = memberRepository.save(member);
 
         if(!updateMember.getState().equals("N")) return "회원 탈퇴가 실패 했습니다.";
