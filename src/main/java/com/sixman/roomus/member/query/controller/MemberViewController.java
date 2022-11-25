@@ -2,6 +2,7 @@ package com.sixman.roomus.member.query.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sixman.roomus.member.query.dto.MyProductDTO;
+import com.sixman.roomus.member.query.dto.RelationDTO;
 import com.sixman.roomus.member.query.dto.UserSerchDTO;
 import com.sixman.roomus.member.query.service.MemberViewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,4 +49,25 @@ public class MemberViewController {
         return ResponseEntity.ok().body(myProductList);
     }
 
+    @Operation(description = "팔로워 조회")
+    @GetMapping("/followers")
+    public ResponseEntity<?> followersList(@RequestHeader("Authorization")String token) throws JsonProcessingException {
+
+        List<RelationDTO> followersList = memberViewService.followersList(token);
+
+        if(followersList.isEmpty()) return ResponseEntity.ok().body("팔로워가 존재하지 않습니다.");
+
+        return ResponseEntity.ok().body(followersList);
+    }
+
+    @Operation(description = "팔로우 조회")
+    @GetMapping("/follow")
+    public ResponseEntity<?> followList(@RequestHeader("Authorization")String token) throws JsonProcessingException {
+
+        List<RelationDTO> followList = memberViewService.followList(token);
+
+        if(followList.isEmpty()) return ResponseEntity.ok().body("팔로우 회원이 존재하지 않습니다.");
+
+        return ResponseEntity.ok().body(followList);
+    }
 }
