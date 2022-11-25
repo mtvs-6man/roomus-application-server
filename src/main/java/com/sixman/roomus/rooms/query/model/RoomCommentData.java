@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"roomData"})
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -20,8 +20,9 @@ public class RoomCommentData {
     @Column(name = "COMMENT_NO")
     private int commentNo;
 
-    @Column(name = "ROOM_NO")
-    private int roomNo;
+    @ManyToOne
+    @JoinColumn(name = "ROOM_NO")
+    private RoomData roomData;
 
     @Column(name = "MEMBER_NO")
     @NonNull

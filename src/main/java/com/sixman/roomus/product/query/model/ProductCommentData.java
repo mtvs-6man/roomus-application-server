@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"productData"})
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -19,6 +19,10 @@ public class ProductCommentData {
     @Id
     @Column(name = "PRODUCT_COMMENT_NO")
     private int productCommentNo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_NO")
+    private ProductData productData;
 
     @Column(name = "MEMBER_NO")
     @NonNull

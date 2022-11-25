@@ -6,6 +6,7 @@ import com.sixman.roomus.product.command.domain.model.vo.ProductScale;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,12 +61,10 @@ public class ProductData {
     @Column(name = "IS_DELETE")
     private boolean isDelete;
 
-    @OneToMany
-    @JoinColumn(name = "PRODUCT_NO")
-    private List<ProductLikesMemberData> ProductLikesMember;
+    @OneToMany(mappedBy = "productLikesMemberPk.productData")
+    private List<ProductLikesMemberData> productLikesMember = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "PRODUCT_NO")
-    private List<ProductCommentData> productCommentData;
+    @OneToMany(mappedBy = "productData")
+    private List<ProductCommentData> productCommentData = new ArrayList<>();
 
 }

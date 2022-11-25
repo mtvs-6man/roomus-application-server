@@ -7,8 +7,8 @@ import com.sixman.roomus.product.query.model.ProductCommentData;
 import com.sixman.roomus.product.query.model.ProductData;
 import com.sixman.roomus.product.query.model.ProductLikesMemberData;
 import com.sixman.roomus.product.query.repository.ProductDataRepository;
+import com.sixman.roomus.product.query.repository.ProductLikesMemberDataRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import java.util.Optional;
 public class ProductViewService {
 
     private final ProductDataRepository productDataRepository;
+    private final ProductLikesMemberDataRepository productLikesMemberDataRepository;
 
     public ProductDetailsResponseDTO findProductByProductId(int productNo) {
         Optional<ProductData> productDataOptional = productDataRepository.findProductDetails(productNo);
@@ -46,7 +47,7 @@ public class ProductViewService {
 
     public List<ProductSummaryResponseDTO> findProductList() {
         List<ProductData> productDataList = productDataRepository.findAllByIsDelete();
-        System.out.println("productDataList = " + productDataList);
+//        System.out.println("productDataList = " + productDataList);
         List<ProductSummaryResponseDTO> productSummaryResponseDTO = new ArrayList<>();
         for (ProductData productData : productDataList) {
             // 좋아요 수 구하기
@@ -69,4 +70,20 @@ public class ProductViewService {
         return productSummaryResponseDTO;
     }
 
+    public List<ProductSummaryResponseDTO> findLikesProducts(int memberNo) {
+        List<ProductData> myLikesList = productDataRepository.findMyLikesList(memberNo);
+        List<ProductSummaryResponseDTO> response = new ArrayList<>();
+        for (ProductData productData : myLikesList) {
+            ProductSummaryResponseDTO productSummaryResponseDTO = new ProductSummaryResponseDTO(
+                    productData.getProductNo(),
+                    productData.getFunitureName(),
+                    productData.getScreenShotUrl(),
+                    productData.getCategory(),
+                    productData.getProductLikesMember().size(),
+                    productData.getProductCommentData().size()
+            );
+            response.add(productSummaryResponseDTO);
+        }
+        return response;
+    }
 }
