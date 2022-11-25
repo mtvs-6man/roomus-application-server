@@ -19,10 +19,15 @@ public interface ProductDataRepository extends JpaRepository<ProductData, Intege
 
     @Query("select a " +
             " from ProductData a " +
-            " left join fetch a.ProductLikesMember " +
+            " left join fetch a.productLikesMember " +
             "where a.isDelete = false " +
             "order by a.productNo asc")
     List<ProductData> findAllByIsDelete();
 
+    @Query("select a " +
+            " from ProductData a " +
+            " join fetch a.productLikesMember b " +
+            "where b.productLikesMemberPk.memberNo = :memberNo ")
+    List<ProductData> findMyLikesList(int memberNo);
 
 }
