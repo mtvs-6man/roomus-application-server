@@ -8,10 +8,7 @@ import com.sixman.roomus.rooms.command.domain.exception.NotFoundRoomException;
 import com.sixman.roomus.rooms.command.domain.model.*;
 import com.sixman.roomus.rooms.command.domain.model.vo.RoomFilter;
 import com.sixman.roomus.rooms.command.domain.model.vo.RoomLikesMemberPK;
-import com.sixman.roomus.rooms.command.domain.repository.FurnitureArrangementRepository;
-import com.sixman.roomus.rooms.command.domain.repository.RoomCommentsRepository;
-import com.sixman.roomus.rooms.command.domain.repository.RoomLikesMemberRepository;
-import com.sixman.roomus.rooms.command.domain.repository.RoomRepository;
+import com.sixman.roomus.rooms.command.domain.repository.*;
 import com.sixman.roomus.rooms.command.domain.service.RoomStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -33,6 +30,7 @@ public class RoomService {
     private final FurnitureArrangementRepository furnitureArrangementRepository;
     private final RoomStorageService roomStorageService;
     private final RoomCommentsRepository roomCommentsRepository;
+    private final RoomLightingRepository roomLightingRepository;
 
     @Transactional
     public int registRoom(int memberNo, RegisterRoomRequestDTO registerRoom, MultipartFile screenShot) throws IOException {
@@ -266,5 +264,38 @@ public class RoomService {
         RoomComment foundRoomComment = foundRoomCommentOpt.get();
         foundRoomComment.setDelete(true);
         foundRoomComment.setDeleteDate(new Date());
+    }
+
+    @Transactional
+    public void saveLightingInfo(int roomNo, int memberNo, List<RoomLightingRequestDTO> lights) {
+        Optional<Room> foundRoomOpt = roomRepository.findByRoomNoAndIsDelete(roomNo, false);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방을 찾을 수 없습니다.");
+        }
+        Room foundRoom = foundRoomOpt.get();
+        // 본인방 확인
+        foundRoom.isRoomOwner(memberNo);
+        // 기존 정보 삭제
+        roomLightingRepository.deleteAllByRoom(foundRoom);
+        // 새로운 조명 정보 저장
+        for (RoomLightingRequestDTO light : lights) {
+            RoomLighting roomLighting = new RoomLighting(
+                    null,
+                    foundRoom,
+                    light.isSpot(),
+                    light.getInnerAngle(),
+                    light.getOuterAngle(),
+                    light.getColor(),
+                    light.getIntensity(),
+                    light.getRange(),
+                    light.getPosition(),
+                    light.getEulerAngle(),
+                    light.getLocalScale()
+            );
+
+            roomLightingRepository.save(roomLighting);
+        }
+
+
     }
 }

@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**")// 관리자
                 .hasAnyAuthority(Role.ADMIN.getValue())
                 // 상품 업로드, 수정, 삭제 권한
-                .antMatchers(HttpMethod.POST,"/v1/products/{productNo}")
+                .antMatchers(HttpMethod.POST,"/v1/products")
                 .hasAnyAuthority(Role.SELLER.getValue())
                 .antMatchers(HttpMethod.PUT,"/v1/products/{productNo}")
                 .hasAnyAuthority(Role.SELLER.getValue())

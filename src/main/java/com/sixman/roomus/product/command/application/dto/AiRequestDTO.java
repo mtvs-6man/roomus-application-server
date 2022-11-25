@@ -10,5 +10,4 @@ import lombok.*;
 @NoArgsConstructor
 public class AiRequestDTO {
     private String id;
-    private String url;
 }
