@@ -1,9 +1,7 @@
 package com.sixman.roomus.config.auth;
 
 import com.sixman.roomus.member.command.domain.model.Member;
-import com.sixman.roomus.member.command.domain.model.Role;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;

@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Optional<Product> findByProductNoAndIsDelete(int productNo, boolean isDelete);
+
+    Product findByProductNo(int parseInt);
 }
