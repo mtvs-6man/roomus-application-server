@@ -72,18 +72,21 @@ public class RoomData {
     @NonNull
     private String ScreenShotUrl;
 
-    @OneToMany
-    @JoinColumn(name = "ROOM_NO")
+    @OneToMany(mappedBy = "roomData")
     @NonNull
     private List<FurnitureArrangementData> furnitureArrangementList;
 
-    @OneToMany
-    @JoinColumn(name = "ROOM_NO")
+    @OneToMany(mappedBy = "roomLikesMemberPK.roomData")
+    @NonNull
     private List<RoomLikesMemberData> roomLikesMemberDataList;
 
-    @OneToMany
-    @JoinColumn(name = "ROOM_NO")
+    @OneToMany(mappedBy = "roomData")
+    @NonNull
     private List<RoomCommentData> roomCommentDataList;
+
+    @OneToMany(mappedBy = "roomData")
+    @NonNull
+    private List<RoomLightingData> roomLightingDataList;
 
     public boolean isRoomOwner(int memberNo) {
         if (this.memberNo != memberNo) {

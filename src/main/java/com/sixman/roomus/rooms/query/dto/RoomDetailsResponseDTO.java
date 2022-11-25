@@ -1,6 +1,7 @@
 package com.sixman.roomus.rooms.query.dto;
 
 import com.sixman.roomus.rooms.query.model.FurnitureArrangementData;
+import com.sixman.roomus.rooms.query.model.RoomLightingData;
 import com.sixman.roomus.rooms.query.model.RoomLikesMemberData;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class RoomDetailsResponseDTO {
     private float ysize;
     private float zsize;
     private String screenShotUrl;
-    private List<FurnitureArrangementData> datas;
-    private List<RoomLikesMemberData> likers;
+    private List<FurnitureArrangementResponseDTO> datas;
+    private List<RoomLikesMemberResponseDTO> likers;
+    private List<RoomLightingResponseDTO> lights;
 }

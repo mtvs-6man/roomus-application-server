@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,12 +15,15 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"roomData"})
 public class RoomLikesMemberDataPK implements Serializable {
 
     @Column(name = "MEMBER_NO")
     private int memberNo;
 
+    @ManyToOne
+    @JoinColumn(name = "ROOM_NO")
+    private RoomData roomData;
     @Override
     public int hashCode() {
         return Objects.hash(memberNo);
