@@ -42,7 +42,6 @@ public class FollowController {
         return ResponseEntity.ok().body(result);
     }
 
-
 }
 
 

@@ -31,6 +31,7 @@ public class Member {
     @Embedded
     private MemberInfo memberInfo;
 
+
     @Column (name = "MEMBER_ROLE", length = 10)
     private Role role;
 

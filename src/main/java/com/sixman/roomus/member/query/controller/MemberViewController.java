@@ -23,8 +23,8 @@ public class MemberViewController {
     }
 
     @Operation(description = "회원 검색")
-    @GetMapping("")
-    public ResponseEntity<?> serchUser(@RequestHeader("Authorization") String token, @RequestParam String userName) throws JsonProcessingException {
+    @GetMapping("/{userName}")
+    public ResponseEntity<?> serchUser(@RequestHeader("Authorization") String token, @PathVariable String userName) throws JsonProcessingException {
         if(token.isBlank()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 후 사용이 가능합니다.");
 
         if(userName.isBlank()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("사용자의 이름을 입력해주세요");

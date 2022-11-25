@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UpdateFunitureInfoDTO {
+public class UpdateFurnitureInfoDTO {
     private List<AssignmentInfoDTO> datas;
 }
