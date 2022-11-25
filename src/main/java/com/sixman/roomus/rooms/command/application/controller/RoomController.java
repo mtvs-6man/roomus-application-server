@@ -46,7 +46,7 @@ public class RoomController {
     @Operation(description = "방에 배치한 가구 정보를 변경하는 API입니다.", summary = "방의 가구 배치 정보 변경")
     @PutMapping(value = "/{id}/furniture", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseDTO> saveFurnitureAssignInfo(@PathVariable(name = "id") int roomNo,
-                                                               @RequestBody UpdateFunitureInfoDTO updateFunitureInfoDTO
+                                                               @RequestBody UpdateFurnitureInfoDTO updateFunitureInfoDTO
     ) {
         List<AssignmentInfoDTO> datas = updateFunitureInfoDTO.getDatas();
         System.out.println("assignmentInfoList = " + datas);
@@ -135,12 +135,12 @@ public class RoomController {
     @Operation(description = "방 전체 필터 정보를 저장하는 API입니다.", summary = "방 필터 저장")
     @PutMapping(value = "/{roomNo}/filter", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> saveRoomFilter(@PathVariable int roomNo,
-                                                      @RequestBody RoomFilterRequestDTO roomLighting) {
+                                                      @RequestBody RoomFilterRequestDTO roomFilter) {
         // 회원 정보 조회
         int memberNo = securityContextUtil.getMemberNo();
         // 유효성 검사
         // 서비스 호출
-        roomService.saveRoomFilter(memberNo, roomNo, roomLighting);
+        roomService.saveRoomFilter(memberNo, roomNo, roomFilter);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "필터 정보 수정에 성공하였습니다.", roomNo));
     }
 
@@ -188,4 +188,18 @@ public class RoomController {
         // 응답
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방에 댓글 변경에 성공하였습니다.", null));
     }
+
+    @Operation(summary = "방 조명 추가", description = "사용자는 방 조명을 추가할 수 있습니다.")
+    @PostMapping(value = "/{roomNo}/lightings")
+    public ResponseEntity<ResponseDTO> saveRoomLighting(@PathVariable int roomNo,
+                                                        @RequestBody UpdateRoomLightingListDTO lights
+                                                        ) {
+        int memberNo = securityContextUtil.getMemberNo();
+
+        List<RoomLightingRequestDTO> roomLightingData = lights.getLights();
+        roomService.saveLightingInfo(roomNo, memberNo, roomLightingData);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조명 정보 수정 완료", null));
+    }
+
 }
