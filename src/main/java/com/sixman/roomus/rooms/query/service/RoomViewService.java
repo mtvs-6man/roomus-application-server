@@ -110,6 +110,7 @@ public class RoomViewService {
                 foundRoom.getYsize(),
                 foundRoom.getZsize(),
                 foundRoom.getScreenShotUrl(),
+                foundRoom.getRoomFilter(),
                 furnitureArrangementResponseDTOList,
                 roomLikesMemberResponseDTOList,
                 roomLightingResponseDTOList

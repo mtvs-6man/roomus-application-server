@@ -1,8 +1,8 @@
 package com.sixman.roomus.rooms.query.model;
 
 import com.sixman.roomus.rooms.command.domain.exception.NotRoomOwnerException;
+import com.sixman.roomus.rooms.command.domain.model.vo.RoomFilter;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -71,6 +71,9 @@ public class RoomData {
     @Column(name = "URL_SCREENSHOT")
     @NonNull
     private String ScreenShotUrl;
+    
+    @Embedded
+    private RoomFilter roomFilter;
 
     @OneToMany(mappedBy = "roomData")
     @NonNull
