@@ -1,18 +1,18 @@
 package com.sixman.roomus.product.query.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
+import com.sixman.roomus.commons.util.SecurityContextUtil;
 import com.sixman.roomus.product.query.dto.ProductDetailsResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductSummaryResponseDTO;
+import com.sixman.roomus.product.query.model.ProductData;
+import com.sixman.roomus.product.query.model.ProductLikesMemberData;
 import com.sixman.roomus.product.query.service.ProductViewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +23,9 @@ import java.util.List;
 public class ProductViewController {
 
     private final ProductViewService productViewService;
+    private final SecurityContextUtil securityContextUtil;
 
-    @GetMapping(value = {"", "/"})
+    @GetMapping(value = {""})
     @Operation(summary = "상품 목록 조회", description = "상품의 전제 목록을 조회합니다.")
     public ResponseEntity<ResponseDTO> findProductList() {
         List<ProductSummaryResponseDTO> productList = productViewService.findProductList();
@@ -37,6 +38,15 @@ public class ProductViewController {
     public ResponseEntity<ResponseDTO> findProductByProductId(@PathVariable int roomNo) {
         ProductDetailsResponseDTO productResponseDTO = productViewService.findProductByProductId(roomNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 찾았습니다.", productResponseDTO));
+    }
+
+    @GetMapping("/myLikes")
+    @Operation(summary = "좋아요 기반 상품 조회", description = "사용자는 자신이 좋아요를 누른 상품들을 조회할 수 있습니다.")
+    public ResponseEntity<ResponseDTO> findProductByLikes() {
+        // 로그인 사용자 정보
+        Integer memberNo = securityContextUtil.getMemberNo();
+        List<ProductSummaryResponseDTO> productList = productViewService.findLikesProducts(memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 찾았습니다.", productList));
     }
 
 }

@@ -19,6 +19,7 @@ import com.sixman.roomus.member.command.domain.model.Relation;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -60,6 +61,7 @@ public class MemberService {
         member.setMemberInfo(new MemberInfo(joinDto.getMemberName(),joinDto.getMemberEmail()));
         member.setDate(new DateSet(now.toString()));
         member.setRole(Role.USER);
+        member.setState("Y");
 
         Member value = memberRepository.save(member);
 
@@ -213,5 +215,6 @@ public class MemberService {
         myproductRepository.delete(myProduct);
 
         return "내 상품에서 제거 되었습니다.";
+
     }
 }
