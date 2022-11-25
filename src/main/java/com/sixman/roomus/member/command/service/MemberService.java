@@ -1,23 +1,31 @@
 package com.sixman.roomus.member.command.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sixman.roomus.commons.vo.DateSet;
 import com.sixman.roomus.config.jwt.JwtConfig;
 import com.sixman.roomus.member.Dto.JoinDto;
 import com.sixman.roomus.member.Dto.TokenDTO;
 import com.sixman.roomus.member.command.domain.model.Member;
 import com.sixman.roomus.member.command.domain.model.MemberInfo;
+import com.sixman.roomus.member.command.domain.model.MyProduct;
+import com.sixman.roomus.member.command.domain.model.vo.Role;
+import com.sixman.roomus.member.command.repository.MemberRepository;
+import com.sixman.roomus.member.command.repository.MyproductRepository;
+import com.sixman.roomus.product.command.domain.model.Product;
+import com.sixman.roomus.product.command.domain.repository.ProductRepository;
 import com.sixman.roomus.member.command.domain.model.Relation;
 import com.sixman.roomus.member.command.domain.model.Role;
-import com.sixman.roomus.member.command.repository.MemberRepository;
 import com.sixman.roomus.member.command.repository.RelationRepository;
 import org.springframework.security.core.parameters.P;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +35,18 @@ import java.util.Objects;
 public class MemberService {
 
     private MemberRepository memberRepository;
-    private RelationRepository relationRepository;
+    private MyproductRepository myproductRepository;
+    private ProductRepository productRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private JwtConfig jwtConfig;
 
-    public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder passwordEncoder, JwtConfig jwtConfig, RelationRepository relationRepository){
+    public MemberService(MemberRepository memberRepository,MyproductRepository myproductRepository ,
+                         ProductRepository productRepository, BCryptPasswordEncoder passwordEncoder, JwtConfig jwtConfig){
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtConfig = jwtConfig;
-        this.relationRepository = relationRepository;
+        this.myproductRepository = myproductRepository;
+        this.productRepository = productRepository;
     }
 
     public String memberSinup(JoinDto joinDto){
@@ -143,5 +154,39 @@ public class MemberService {
         relationRepository.save(newRelation);
 
         return "팔로우 되었습니다.";
+    }
+
+    public String insertProduct(String token, String productNo) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
+        Product product = productRepository.findByProductNo(Integer.parseInt(productNo));
+
+        //제품 및 회원 유효성 검사
+        if(Objects.isNull(member) || Objects.isNull(product))  return "입력 정보가 유효하지 않습니다.";
+
+        //입력한 제품이 있는 경우
+        MyProduct myProduct = myproductRepository.findByMemberNoAndProductNo(member, product);
+        if(!Objects.isNull(myProduct)) return "이미 등록된 상품입니다.";
+
+
+
+        //입력 제품이 없는 경우
+        MyProduct registMyproduct = new MyProduct();
+        registMyproduct.setMemberNo(member);
+        registMyproduct.setProductNo(product);
+        registMyproduct.setRegistDate(new Date());
+
+        System.out.println("my Product : " + registMyproduct);
+
+        MyProduct result = myproductRepository.save(registMyproduct);
+
+        if(Objects.isNull(result)) {
+            return "내상품 등록에 실패하였습니다.";
+        }else {
+            return "내상품에 등록 되었습니다.";
+        }
+
     }
 }

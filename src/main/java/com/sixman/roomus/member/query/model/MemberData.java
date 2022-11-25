@@ -1,7 +1,7 @@
 package com.sixman.roomus.member.query.model;
 
 import com.sixman.roomus.commons.vo.DateSet;
-import com.sixman.roomus.member.command.domain.model.Role;
+import com.sixman.roomus.member.command.domain.model.vo.Role;
 import com.sixman.roomus.member.query.dto.UserSerchDTO;
 
 import javax.persistence.*;

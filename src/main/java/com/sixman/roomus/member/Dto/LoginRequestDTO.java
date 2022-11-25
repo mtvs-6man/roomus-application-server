@@ -1,6 +1,6 @@
 package com.sixman.roomus.member.Dto;
 
-import com.sixman.roomus.member.command.domain.model.Role;
+import com.sixman.roomus.member.command.domain.model.vo.Role;
 
 
 public class LoginRequestDTO {

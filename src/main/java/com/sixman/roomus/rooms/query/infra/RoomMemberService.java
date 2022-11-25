@@ -2,7 +2,7 @@ package com.sixman.roomus.rooms.query.infra;
 
 
 import com.sixman.roomus.member.command.domain.model.Member;
-import com.sixman.roomus.member.command.domain.model.MemberNullError;
+import com.sixman.roomus.member.command.domain.model.vo.MemberNullError;
 import com.sixman.roomus.member.command.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

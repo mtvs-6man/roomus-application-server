@@ -1,4 +1,4 @@
-package com.sixman.roomus.member.command.domain.model;
+package com.sixman.roomus.member.command.domain.model.vo;
 
 public class MemberNullError extends RuntimeException{
     public MemberNullError(String message) {
