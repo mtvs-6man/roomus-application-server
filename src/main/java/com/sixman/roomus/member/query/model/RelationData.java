@@ -25,7 +25,7 @@ import javax.persistence.*;
                 "    mi.member_name as memberName,\n" +
                 "    mi.member_email as memberEmail\n" +
                 "from tbl_relation tl\n" +
-                "left join member_info mi on mi.member_no = tl.follow_user\n" +
+                "left join member_info mi on mi.member_no = tl.relation_user\n" +
                 "where tl.follow_user = :memberData \n" +
                 "  AND mi.member_state = 'Y';",
         resultSetMapping = "RelationDTO"

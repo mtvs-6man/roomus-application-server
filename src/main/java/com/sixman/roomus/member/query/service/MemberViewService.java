@@ -73,5 +73,17 @@ public class MemberViewService {
         return followList;
     }
 
+    public List<RelationDTO> followList(String token) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+        MemberData memberData = memberDataRepository.findByMemberNo(Integer.parseInt(tokenDTO.getMemberNo()));
+        List<RelationDTO> followList = new ArrayList<>();
+
+        if(Objects.isNull(memberData)) return followList;
+
+        followList = relationDataRepository.followList(memberData);
+
+        return followList;
+    }
 
 }

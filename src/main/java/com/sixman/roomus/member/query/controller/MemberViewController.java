@@ -51,11 +51,22 @@ public class MemberViewController {
 
     @Operation(description = "팔로워 조회")
     @GetMapping("/followers")
+    public ResponseEntity<?> followersList(@RequestHeader("Authorization")String token) throws JsonProcessingException {
+
+        List<RelationDTO> followersList = memberViewService.followersList(token);
+
+        if(followersList.isEmpty()) return ResponseEntity.ok().body("팔로워가 존재하지 않습니다.");
+
+        return ResponseEntity.ok().body(followersList);
+    }
+
+    @Operation(description = "팔로우 조회")
+    @GetMapping("/follow")
     public ResponseEntity<?> followList(@RequestHeader("Authorization")String token) throws JsonProcessingException {
 
-        List<RelationDTO> followList = memberViewService.followersList(token);
+        List<RelationDTO> followList = memberViewService.followList(token);
 
-        if(followList.isEmpty()) return ResponseEntity.ok().body("팔로워가 존재하지 않습니다.");
+        if(followList.isEmpty()) return ResponseEntity.ok().body("팔로우 회원이 존재하지 않습니다.");
 
         return ResponseEntity.ok().body(followList);
     }
