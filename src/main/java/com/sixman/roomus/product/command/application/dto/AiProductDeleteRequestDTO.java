@@ -8,6 +8,6 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class AiRequestDTO {
+public class AiProductDeleteRequestDTO {
     private String id;
 }

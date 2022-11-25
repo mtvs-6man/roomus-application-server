@@ -1,6 +1,7 @@
 package com.sixman.roomus.product.command.domain.service;
 
-import com.sixman.roomus.product.command.application.dto.AiRequestDTO;
+import com.sixman.roomus.product.command.application.dto.AiProductDeleteRequestDTO;
+import com.sixman.roomus.product.command.application.dto.AiProductUploadRequestDTO;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,10 @@ public interface ProductCallAPI {
 
     @PostMapping(value = "/upload_furniture")
     @Headers("Content-Type: application/json")
-    String callUploadFurniture(AiRequestDTO aiRequestDTO);
+    String callUploadFurniture(AiProductUploadRequestDTO aiRequestDTO);
 
     @PostMapping(value = "/delete_furniture")
     @Headers("Content-Type: application/json")
-    String callDeleteFurniture(AiRequestDTO aiRequestDTO);
+    String callDeleteFurniture(AiProductDeleteRequestDTO aiRequestDTO);
 
 }
