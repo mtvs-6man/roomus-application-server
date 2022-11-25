@@ -18,11 +18,6 @@ public interface RoomDataRepository extends JpaRepository<RoomData, Integer> {
     List<RoomData> findRoomListByMemberNo(int memberNo);
 
     List<RoomData> findAllByMemberNoAndIsDeleteOrderByRoomNo(int memberNo, boolean isDelete);
-    @Query("select a " +
-            " from RoomData a " +
-            " left join fetch a.furnitureArrangementList " +
-            " left join a.roomLikesMemberDataList " +
-            "where a.isDelete = false " +
-            "  and a.roomNo = :roomNo ")
-    Optional<RoomData> findByRoomNoAndIsDelete(int roomNo);
+
+    Optional<RoomData> findByRoomNoAndIsDelete(int roomNo, boolean isDelete);
 }

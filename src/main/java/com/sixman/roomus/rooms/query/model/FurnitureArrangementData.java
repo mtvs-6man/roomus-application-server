@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "roomData")
 @Entity
 @Table(name = "TBL_FURNITURE_ARRANGEMENT")
 public class FurnitureArrangementData {
@@ -18,6 +18,10 @@ public class FurnitureArrangementData {
     @Id
     @Column(name = "FUNITURE_ARRANGEMENT_NO")
     private Integer furnitureArrangementNo;
+
+    @ManyToOne
+    @JoinColumn(name = "ROOM_NO")
+    private RoomData roomData;
 
     @Column(name = "PRODUCT_NO")
     private int idx;

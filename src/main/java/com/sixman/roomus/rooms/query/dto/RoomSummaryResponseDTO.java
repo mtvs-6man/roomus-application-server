@@ -23,8 +23,6 @@ public class RoomSummaryResponseDTO {
     private int door;
     private Date createdDate;
     private Date lastModifiedDate;
-    private Date deletedDate;
-    private boolean isDelete;
     private String screenShotUrl;
     private int cntLikes;
     private int cntComments;
