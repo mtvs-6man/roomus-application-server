@@ -111,13 +111,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LoginRequestDTO responseDTO = new LoginRequestDTO();
         responseDTO.setUserRole(principalDetails.getMember().getRole());
         responseDTO.setUserNo(principalDetails.getMember().getMemberNo());
+        responseDTO.setUserName(principalDetails.getMember().getMemberInfo().getName());
         responseDTO.setMemberEmail(principalDetails.getMember().getMemberInfo().getEmail());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String responseValue = objectMapper.writeValueAsString(responseDTO);
+        System.out.println(responseValue);
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.addHeader("Authorization", "Bearer " + jwtToken);
-        response.getOutputStream().println(responseValue);
+        response.getWriter().println(responseValue);
     }
 
 }
