@@ -30,4 +30,5 @@ public interface ProductDataRepository extends JpaRepository<ProductData, Intege
             "where b.productLikesMemberPk.memberNo = :memberNo ")
     List<ProductData> findMyLikesList(int memberNo);
 
+    List<ProductData> findByProductNoInAndIsDelete(List<Integer> productNo, boolean isDelete);
 }

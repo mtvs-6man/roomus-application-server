@@ -1,6 +1,7 @@
 package com.sixman.roomus.product.query.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
+import com.sixman.roomus.commons.exception.ContentTypeNotAllowedException;
 import com.sixman.roomus.commons.util.SecurityContextUtil;
 import com.sixman.roomus.product.query.dto.ProductDetailsResponseDTO;
 import com.sixman.roomus.product.query.dto.ProductSummaryResponseDTO;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -47,6 +49,17 @@ public class ProductViewController {
         Integer memberNo = securityContextUtil.getMemberNo();
         List<ProductSummaryResponseDTO> productList = productViewService.findLikesProducts(memberNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상품을 성공적으로 찾았습니다.", productList));
+    }
+
+    @PostMapping("/image-search")
+    @Operation(summary = "사진으로 상품을 검색하는 기능", description = "사용자는 자신의 실제 가구사진을 사용하여 비슷한 에셋을 검색할 수 있습니다.")
+    public ResponseEntity<ResponseDTO> imageSearch(@RequestPart MultipartFile image) throws ContentTypeNotAllowedException {
+        String contentType = image.getContentType();
+        if (!contentType.split("/")[0].equals("image")) {
+            throw new ContentTypeNotAllowedException("지원하지 않는 타입입니다.");
+        }
+        List<ProductSummaryResponseDTO> result = productViewService.imageSearch(image);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "이미지 검색을 완료했습니다.", result));
     }
 
 }
