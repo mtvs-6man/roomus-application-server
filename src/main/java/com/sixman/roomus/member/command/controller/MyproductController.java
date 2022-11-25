@@ -17,11 +17,17 @@ public class MyproductController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> insertMyProduct(@RequestHeader("Authorization") String token, @RequestParam("productNo") String productNo) throws JsonProcessingException {
-
-        if(productNo.isBlank()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("상품 정보가 유효하지 않습니다.");
+    public ResponseEntity<String> insertMyProduct(@RequestHeader("Authorization") String token, @RequestParam("productNo") int productNo) throws JsonProcessingException {
 
         String result = memberService.insertProduct(token, productNo);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> delMyproduct(@RequestHeader("Authorization")String token, @RequestParam("productNo") int productNo) throws JsonProcessingException {
+
+        String result = memberService.delMyProduct(token, productNo);
 
         return ResponseEntity.ok().body(result);
     }
