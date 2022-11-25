@@ -14,7 +14,9 @@ import java.util.List;
         name = "UserSerchQuery",
         query = "SELECT MEMBER_NO AS memberNo, " +
                 "MEMBER_NAME AS memberName " +
-                "FROM MEMBER_INFO WHERE MEMBER_NAME = :name",
+                "FROM MEMBER_INFO " +
+                "WHERE MEMBER_STATE = 'Y'" +
+                "AND MEMBER_NAME = :name",
         resultSetMapping = "user_serch_dto"
 )
 @SqlResultSetMapping(
