@@ -87,5 +87,14 @@ public class MemberController {
         return ResponseEntity.ok().body(member.getMemberId()+" 님의 비밀번호가 변경되었습니다 \n 다시 로그인해주세요");
     }
 
+    @Operation(description = "회원 탈퇴")
+    @PostMapping("/memeber/secession")
+    public ResponseEntity<String> secession(@RequestHeader("Authorization")String token, @RequestParam String empty) throws JsonProcessingException {
+
+        String result = memberService.seccsionUser(token);
+
+        return ResponseEntity.ok().body(result);
+    }
+
 }
 
