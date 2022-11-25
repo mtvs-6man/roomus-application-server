@@ -182,4 +182,16 @@ public class MemberService {
         }
 
     }
+
+    public String unfollow(String token, Integer userNo) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
+        Member unFollowMember = memberRepository.findByMemberNo(userNo);
+
+        if(Objects.isNull(member)||Objects.isNull(unFollowMember)) return "유요한 회원이 아닙니다.";
+
+        return null;
+    }
 }

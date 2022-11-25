@@ -42,7 +42,7 @@ public class MemberController {
 
     @Operation(description = "판매자 가입")
     @PostMapping("/member/rankUp")
-    public ResponseEntity<String> memberRankUp(@RequestHeader("Authorization") String token) throws JsonProcessingException {
+    public ResponseEntity<String> memberRankUp(@RequestHeader("Authorization") String token,@RequestParam String empty) throws JsonProcessingException {
         if(token.isBlank()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 토큰 값 입니다.");
         }
