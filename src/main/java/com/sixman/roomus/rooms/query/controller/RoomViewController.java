@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class RoomViewController {
     private final RoomViewService roomViewService;
     private final SecurityContextUtil securityContextUtil;
 
-    @GetMapping("")
+    @GetMapping("/my")
     @Operation(summary = "나의 방 목록 조회", description = "내가 만든 방들의 목록을 조회합니다.")
     public ResponseEntity<ResponseDTO> getMyRoomList() {
 
@@ -35,19 +32,19 @@ public class RoomViewController {
         int memberNo = securityContextUtil.getMemberNo();
 
         // 서비스 호출
-        List<RoomSummaryResponseDTO> roomList = roomViewService.findRoomList(memberNo);
+        List<RoomSummaryResponseDTO> roomList = roomViewService.findMyRoomList(memberNo);
         // 응답
         return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK, "방 목록 조회", roomList));
     }
 
-    @GetMapping("/{roomNo}")
+    @GetMapping("/my/{roomNo}")
     @Operation(summary = "나의 방 상세 조회", description = "내가 만든 방을 상세하게 조회합니다.")
     public ResponseEntity<ResponseDTO> getMyRoomDetails(@PathVariable int roomNo) {
         // 회원 인증
         int memberNo = securityContextUtil.getMemberNo();
 
         // 서비스 호출
-        RoomDetailsResponseDTO result = roomViewService.findRoomDetails(memberNo, roomNo);
+        RoomDetailsResponseDTO result = roomViewService.findMyRoomDetails(memberNo, roomNo);
         return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK, "방 상세정보 조회에 성공했습니다.", result));
     }
 
@@ -57,5 +54,26 @@ public class RoomViewController {
 
         List<RoomCommentResponseDTO> result = roomViewService.findRoomCommentList(roomNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 댓글 조회에 성공했습니다.", result));
+    }
+
+    @GetMapping("")
+    @Operation(summary = "방 리스트 조회", description = "모든 방의 리스트를 조회합니다. criteria에는 검색조건, value는 검색 값이 들어갑니다.\n" +
+            "현재 criteria는 none(전체검색), memberNo, category이 가능합니다. ")
+    public ResponseEntity<ResponseDTO> getRoomList(
+            @RequestParam(name = "criteria", required = false) String criteria,
+            @RequestParam(name = "value", required = false) String value
+            ) {
+        List<RoomSummaryResponseDTO> roomList= roomViewService.findRoomList(criteria, value);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 조회를 완료했습니다.", roomList));
+    }
+
+
+    @GetMapping("/mylikes")
+    @Operation(summary = "좋아요 누른 방 조회", description = "사용자가 좋아요를 누른 방 리스트를 조회합니다.")
+    public ResponseEntity<ResponseDTO> getMyLikesRoomList() {
+        // 사용자 인증
+        int memberNo = securityContextUtil.getMemberNo();
+        List<RoomSummaryResponseDTO> roomList = roomViewService.findMyLikesRoomList(memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 조회를 완료했습니다.", roomList));
     }
 }

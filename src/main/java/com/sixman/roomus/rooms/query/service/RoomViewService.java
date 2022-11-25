@@ -21,7 +21,7 @@ public class RoomViewService {
     private final RoomCommentDataRepository roomCommentDataRepository;
     private final RoomMemberService roomMemberService;
 
-    public List<RoomSummaryResponseDTO> findRoomList(int memberNo) {
+    public List<RoomSummaryResponseDTO> findMyRoomList(int memberNo) {
         List<RoomData> foundRoomList = roomDataRepository.findAllByMemberNoAndIsDeleteOrderByRoomNo(memberNo, false);
         List<RoomSummaryResponseDTO> roomResponseDTOList = new ArrayList<>();
         for (RoomData roomData : foundRoomList) {
@@ -49,7 +49,7 @@ public class RoomViewService {
         return roomResponseDTOList;
     }
 
-    public RoomDetailsResponseDTO findRoomDetails(int memberNo, int roomNo) {
+    public RoomDetailsResponseDTO findMyRoomDetails(int memberNo, int roomNo) {
         Optional<RoomData> foundRoomOpt = roomDataRepository.findByRoomNoAndIsDelete(roomNo, false);
         if (foundRoomOpt.isEmpty()) {
             throw new NotFoundRoomException("방을 찾을 수 없습니다.");
@@ -143,6 +143,68 @@ public class RoomViewService {
         }
         return roomCommentResponseDTOList;
 
+
+    }
+
+    public List<RoomSummaryResponseDTO> findRoomList(String criteria, String value) {
+        List<RoomData> foundRoomList = new ArrayList<>();
+        if("".equals(criteria) || criteria == null) {
+            foundRoomList = roomDataRepository.findAllByIsDeleteAndAccessOrderByRoomNo(false, true);
+        } else if (criteria.equals("memberNo")) {
+            foundRoomList = roomDataRepository.findAllByMemberNoAndIsDeleteAndAccessOrderByRoomNo(Integer.parseInt(value), false, true);
+        } else if (criteria.equals("category")) {
+            foundRoomList = roomDataRepository.findAllByCategoryAndIsDeleteAndAccessOrderByRoomNo(value, false, true);
+        }
+
+        List<RoomSummaryResponseDTO> roomResponseDTOList = new ArrayList<>();
+        for (RoomData roomData : foundRoomList) {
+            RoomSummaryResponseDTO roomResponseDTO = new RoomSummaryResponseDTO(
+                    roomData.getRoomNo(),
+                    roomData.getMemberNo(),
+                    roomData.getRoomName(),
+                    roomData.isAccess(),
+                    roomData.getCategory(),
+                    roomData.getDescription(),
+                    roomData.getXsize(),
+                    roomData.getYsize(),
+                    roomData.getZsize(),
+                    roomData.getDoor(),
+                    roomData.getCreatedDate(),
+                    roomData.getLastModifiedDate(),
+                    roomData.getScreenShotUrl(),
+                    roomData.getRoomLikesMemberDataList().size(),
+                    roomData.getRoomCommentDataList().size()
+            );
+            roomResponseDTOList.add(roomResponseDTO);
+        }
+        return roomResponseDTOList;
+
+    }
+
+    public List<RoomSummaryResponseDTO> findMyLikesRoomList(int memberNo) {
+        List<RoomData> foundRoomList = roomDataRepository.findMyLikesList(memberNo);
+        List<RoomSummaryResponseDTO> roomResponseDTOList = new ArrayList<>();
+        for (RoomData roomData : foundRoomList) {
+            RoomSummaryResponseDTO roomResponseDTO = new RoomSummaryResponseDTO(
+                    roomData.getRoomNo(),
+                    roomData.getMemberNo(),
+                    roomData.getRoomName(),
+                    roomData.isAccess(),
+                    roomData.getCategory(),
+                    roomData.getDescription(),
+                    roomData.getXsize(),
+                    roomData.getYsize(),
+                    roomData.getZsize(),
+                    roomData.getDoor(),
+                    roomData.getCreatedDate(),
+                    roomData.getLastModifiedDate(),
+                    roomData.getScreenShotUrl(),
+                    roomData.getRoomLikesMemberDataList().size(),
+                    roomData.getRoomCommentDataList().size()
+            );
+            roomResponseDTOList.add(roomResponseDTO);
+        }
+        return roomResponseDTOList;
 
     }
 }
