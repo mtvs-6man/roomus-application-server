@@ -151,13 +151,11 @@ public class MemberService {
         return "팔로우 되었습니다.";
     }
 
-    public String insertProduct(String token, String productNo) throws JsonProcessingException {
+    public String insertProduct(String token, int productNo) throws JsonProcessingException {
 
         TokenDTO tokenDTO = jwtConfig.decryption(token);
-
         Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
-        Product product = productRepository.findByProductNo(Integer.parseInt(productNo));
-
+        Product product = productRepository.findByProductNo(productNo);
         //제품 및 회원 유효성 검사
         if(Objects.isNull(member) || Objects.isNull(product))  return "입력 정보가 유효하지 않습니다.";
 
@@ -199,4 +197,21 @@ public class MemberService {
         return "팔로우가 취소 되었습니다.";
     }
 
+    public String delMyProduct(String token, int productNo) throws JsonProcessingException {
+
+        TokenDTO tokenDTO = jwtConfig.decryption(token);
+
+        Member member = memberRepository.findByMemberId(tokenDTO.getMemberId());
+        Product product = productRepository.findByProductNo(productNo);
+
+        if(Objects.isNull(member) || Objects.isNull(product)) return "요청 값이 유효하지 않습니다.";
+
+        MyProduct myProduct = myproductRepository.findByMemberNoAndProductNo(member, product);
+
+        if(Objects.isNull(myProduct)) return "내 상품이 존재하지 않습니다.";
+
+        myproductRepository.delete(myProduct);
+
+        return "내 상품에서 제거 되었습니다.";
+    }
 }
