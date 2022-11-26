@@ -2,9 +2,7 @@ package com.sixman.roomus.rooms.query.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.commons.util.SecurityContextUtil;
-import com.sixman.roomus.rooms.query.dto.RoomCommentResponseDTO;
-import com.sixman.roomus.rooms.query.dto.RoomDetailsResponseDTO;
-import com.sixman.roomus.rooms.query.dto.RoomSummaryResponseDTO;
+import com.sixman.roomus.rooms.query.dto.*;
 import com.sixman.roomus.rooms.query.service.RoomViewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -89,8 +87,8 @@ public class RoomViewController {
     @Operation(summary = "자신의 방 좋아요 순 통계", description = "자신의 올린 방중 가장 좋아요를 많이 받은 순 조회")
     public  ResponseEntity<ResponseDTO> getBestLikeRooms() {
         Integer memberNo = securityContextUtil.getMemberNo();
-        List<RoomSummaryResponseDTO> result =  roomViewService.findMyRoomListOrderByLikes(memberNo);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 순 방 조회 성공", result));
+        List<RoomRankResponseDTO> roomRankResultDTOList =  roomViewService.findMyRoomListOrderByLikes(memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 순 방 조회 성공", roomRankResultDTOList));
     }
 
 

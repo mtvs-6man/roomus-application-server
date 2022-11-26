@@ -111,6 +111,7 @@ public class RoomViewService {
                 foundRoom.getZsize(),
                 foundRoom.getScreenShotUrl(),
                 foundRoom.getRoomFilter(),
+                foundRoom.getDoor(),
                 furnitureArrangementResponseDTOList,
                 roomLikesMemberResponseDTOList,
                 roomLightingResponseDTOList
@@ -269,6 +270,7 @@ public class RoomViewService {
                 foundRoom.getZsize(),
                 foundRoom.getScreenShotUrl(),
                 foundRoom.getRoomFilter(),
+                foundRoom.getDoor(),
                 furnitureArrangementResponseDTOList,
                 roomLikesMemberResponseDTOList,
                 roomLightingResponseDTOList
@@ -276,38 +278,27 @@ public class RoomViewService {
         return roomDetailsResponseDTO;
     }
 
-    public List<RoomSummaryResponseDTO> findMyRoomListOrderByLikes(Integer memberNo) {
-        List<RoomData> foundRoomList = roomDataRepository.findAllByMemberNoAndIsDeleteAndAccessOrderByRoomNo(memberNo, false, true);
-        foundRoomList.sort((t1, t2) -> {
-            int left = t1.getRoomLikesMemberDataList().size();
-            int right = t2.getRoomLikesMemberDataList().size();
-            return right - left;
-        });
-        List<RoomSummaryResponseDTO> roomResponseDTOList = new ArrayList<>();
-        int count = 0;
-        for (RoomData roomData : foundRoomList) {
-            RoomSummaryResponseDTO roomResponseDTO = new RoomSummaryResponseDTO(
-                    roomData.getRoomNo(),
-                    roomData.getMemberNo(),
-                    roomData.getRoomName(),
-                    roomData.isAccess(),
-                    roomData.getCategory(),
-                    roomData.getDescription(),
-                    roomData.getXsize(),
-                    roomData.getYsize(),
-                    roomData.getZsize(),
-                    roomData.getDoor(),
-                    roomData.getCreatedDate(),
-                    roomData.getLastModifiedDate(),
-                    roomData.getScreenShotUrl(),
-                    roomData.getRoomLikesMemberDataList().size(),
-                    roomData.getRoomCommentDataList().size()
+    public List<RoomRankResponseDTO> findMyRoomListOrderByLikes(int memberNo) {
+        List<RoomRankResultDTO> likesRanking = roomDataRepository.findLikesRanking(memberNo);
+        ArrayList<RoomRankResponseDTO> roomRankResponseList = new ArrayList<>();
+        for (RoomRankResultDTO roomRankResultDTO : likesRanking) {
+            RoomRankResponseDTO roomRankResponseDTO = new RoomRankResponseDTO(
+                    roomRankResultDTO.getMemberNo(),
+                    roomRankResultDTO.getRoomNo(),
+                    roomRankResultDTO.getCategory(),
+                    roomRankResultDTO.getDescription(),
+                    roomRankResultDTO.getXsize(),
+                    roomRankResultDTO.getYsize(),
+                    roomRankResultDTO.getZsize(),
+                    roomRankResultDTO.getCreatedDate(),
+                    roomRankResultDTO.getLastModifiedDate(),
+                    roomRankResultDTO.getScreenShotUrl(),
+                    roomRankResultDTO.getCntLikes(),
+                    roomRankResultDTO.getRanking()
             );
-            roomResponseDTOList.add(roomResponseDTO);
-            if (++count >= 5) {
-                break;
-            }
+            roomRankResponseList.add(roomRankResponseDTO);
         }
-        return roomResponseDTOList;
+
+        return roomRankResponseList;
     }
 }
