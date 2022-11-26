@@ -57,7 +57,7 @@ public class RoomViewController {
     }
 
     @GetMapping("")
-    @Operation(summary = "방 리스트 조회", description = "모든 방의 리스트를 조회합니다. criteria에는 검색조건, value는 검색 값이 들어갑니다.\n" +
+    @Operation(summary = "방 조건 조회", description = "모든 방의 리스트를 조건 조회합니다. criteria에는 검색조건, value는 검색 값이 들어갑니다.\n" +
             "현재 criteria는 none(전체검색), memberNo, category이 가능합니다. ")
     public ResponseEntity<ResponseDTO> getRoomList(
             @RequestParam(name = "criteria", required = false) String criteria,
@@ -76,4 +76,13 @@ public class RoomViewController {
         List<RoomSummaryResponseDTO> roomList = roomViewService.findMyLikesRoomList(memberNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 조회를 완료했습니다.", roomList));
     }
+
+    @GetMapping("/{roomNo}")
+    @Operation(summary = "특정 방 조회",description = "특정 방을 상세 조회할 수 있습니다.")
+    public ResponseEntity<ResponseDTO> getRoomDetails(@PathVariable int roomNo) {
+        RoomDetailsResponseDTO response = roomViewService.findRoomDetails(roomNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 상세조회 성공", response));
+
+    }
+
 }
