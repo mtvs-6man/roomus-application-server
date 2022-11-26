@@ -281,6 +281,7 @@ public class RoomViewService {
     public List<RoomRankResponseDTO> findMyRoomListOrderByLikes(int memberNo) {
         List<RoomRankResultDTO> likesRanking = roomDataRepository.findLikesRanking(memberNo);
         ArrayList<RoomRankResponseDTO> roomRankResponseList = new ArrayList<>();
+        int count = 0;
         for (RoomRankResultDTO roomRankResultDTO : likesRanking) {
             RoomRankResponseDTO roomRankResponseDTO = new RoomRankResponseDTO(
                     roomRankResultDTO.getMemberNo(),
@@ -297,6 +298,9 @@ public class RoomViewService {
                     roomRankResultDTO.getRanking()
             );
             roomRankResponseList.add(roomRankResponseDTO);
+            if (++count >= 5) {
+                break;
+            }
         }
 
         return roomRankResponseList;
