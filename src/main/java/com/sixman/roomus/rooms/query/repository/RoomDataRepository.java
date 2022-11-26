@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public interface RoomDataRepository extends JpaRepository<RoomData, Integer> {
 
+    Optional<RoomData> findByRoomNoAndIsDelete(int roomNo, boolean isDelete);
+    Optional<RoomData> findByRoomNoAndIsDeleteAndAccess(int roomNo, boolean isDelete, boolean access);
+
     @Query("select a " +
             " from RoomData a  " +
             "where a.isDelete = false " +
@@ -17,8 +20,6 @@ public interface RoomDataRepository extends JpaRepository<RoomData, Integer> {
     List<RoomData> findRoomListByMemberNo(int memberNo);
 
     List<RoomData> findAllByMemberNoAndIsDeleteOrderByRoomNo(int memberNo, boolean isDelete);
-
-    Optional<RoomData> findByRoomNoAndIsDelete(int roomNo, boolean isDelete);
 
     List<RoomData> findAllByIsDeleteAndAccessOrderByRoomNo(boolean isDelete, boolean access);
     List<RoomData> findAllByMemberNoAndIsDeleteAndAccessOrderByRoomNo(int memberNo, boolean isDelete, boolean access);
@@ -31,5 +32,6 @@ public interface RoomDataRepository extends JpaRepository<RoomData, Integer> {
             "  and a.isDelete = false " +
             "order by a.roomNo")
     List<RoomData> findMyLikesList(int memberNo);
+
 
 }
