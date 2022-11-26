@@ -21,6 +21,7 @@ public class RoomDetailsResponseDTO {
     private float zsize;
     private String screenShotUrl;
     private RoomFilter roomFilter;
+    private int door;
     private List<FurnitureArrangementResponseDTO> datas;
     private List<RoomLikesMemberResponseDTO> likers;
     private List<RoomLightingResponseDTO> lights;

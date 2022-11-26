@@ -2,9 +2,7 @@ package com.sixman.roomus.rooms.query.controller;
 
 import com.sixman.roomus.commons.dto.ResponseDTO;
 import com.sixman.roomus.commons.util.SecurityContextUtil;
-import com.sixman.roomus.rooms.query.dto.RoomCommentResponseDTO;
-import com.sixman.roomus.rooms.query.dto.RoomDetailsResponseDTO;
-import com.sixman.roomus.rooms.query.dto.RoomSummaryResponseDTO;
+import com.sixman.roomus.rooms.query.dto.*;
 import com.sixman.roomus.rooms.query.service.RoomViewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -78,11 +76,21 @@ public class RoomViewController {
     }
 
     @GetMapping("/{roomNo}")
-    @Operation(summary = "특정 방 조회",description = "특정 방을 상세 조회할 수 있습니다.")
+    @Operation(summary = "특정 방 조회", description = "특정 방을 상세 조회할 수 있습니다.")
     public ResponseEntity<ResponseDTO> getRoomDetails(@PathVariable int roomNo) {
         RoomDetailsResponseDTO response = roomViewService.findRoomDetails(roomNo);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "방 상세조회 성공", response));
 
     }
+
+    @GetMapping("/my-like-rank")
+    @Operation(summary = "자신의 방 좋아요 순 통계", description = "자신의 올린 방중 가장 좋아요를 많이 받은 순 조회")
+    public  ResponseEntity<ResponseDTO> getBestLikeRooms() {
+        Integer memberNo = securityContextUtil.getMemberNo();
+        List<RoomRankResponseDTO> roomRankResultDTOList =  roomViewService.findMyRoomListOrderByLikes(memberNo);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "좋아요 순 방 조회 성공", roomRankResultDTOList));
+    }
+
+
 
 }
