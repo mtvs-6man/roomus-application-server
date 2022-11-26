@@ -207,4 +207,73 @@ public class RoomViewService {
         return roomResponseDTOList;
 
     }
+
+    public RoomDetailsResponseDTO findRoomDetails(int roomNo) {
+        Optional<RoomData> foundRoomOpt = roomDataRepository.findByRoomNoAndIsDeleteAndAccess(roomNo, false, true);
+        if (foundRoomOpt.isEmpty()) {
+            throw new NotFoundRoomException("방을 찾을 수 없습니다.");
+        }
+        RoomData foundRoom = foundRoomOpt.get();
+
+        // 가구 정보 DTO 변환
+        List<FurnitureArrangementData> furnitureArrangementList = foundRoom.getFurnitureArrangementList();
+        List<FurnitureArrangementResponseDTO> furnitureArrangementResponseDTOList = new ArrayList<>();
+        for (FurnitureArrangementData furnitureArrangementData : furnitureArrangementList) {
+            FurnitureArrangementResponseDTO furnitureArrangementResponseDTO = new FurnitureArrangementResponseDTO(
+                    furnitureArrangementData.getFurnitureArrangementNo(),
+                    furnitureArrangementData.getRoomData().getRoomNo(),
+                    furnitureArrangementData.getIdx(),
+                    furnitureArrangementData.getPosition(),
+                    furnitureArrangementData.getEulerAngle(),
+                    furnitureArrangementData.getLocalScale()
+            );
+            furnitureArrangementResponseDTOList.add(furnitureArrangementResponseDTO);
+        }
+        // 좋아요 정보 DTO 변환
+        List<RoomLikesMemberData> roomLikesMemberDataList = foundRoom.getRoomLikesMemberDataList();
+        ArrayList<RoomLikesMemberResponseDTO> roomLikesMemberResponseDTOList = new ArrayList<>();
+        for (RoomLikesMemberData roomLikesMemberData : roomLikesMemberDataList) {
+            int likedMemberNo = roomLikesMemberData.getRoomLikesMemberPK().getMemberNo();
+            String memberId = roomMemberService.getMemberId(likedMemberNo);
+            RoomLikesMemberResponseDTO roomLikesMemberResponseDTO = new RoomLikesMemberResponseDTO(memberId);
+            roomLikesMemberResponseDTOList.add(roomLikesMemberResponseDTO);
+        }
+        // 조명 정보 DTO 변환
+        List<RoomLightingData> roomLightingDataList = foundRoom.getRoomLightingDataList();
+        ArrayList<RoomLightingResponseDTO> roomLightingResponseDTOList = new ArrayList<>();
+        for (RoomLightingData roomLightingData : roomLightingDataList) {
+            RoomLightingResponseDTO roomLightingResponseDTO = new RoomLightingResponseDTO(
+                    roomLightingData.getRoomLightingNo(),
+                    roomLightingData.getRoomData().getRoomNo(),
+                    roomLightingData.isSpot(),
+                    roomLightingData.getInnerAngle(),
+                    roomLightingData.getOuterAngle(),
+                    roomLightingData.getLightColor(),
+                    roomLightingData.getIntensity(),
+                    roomLightingData.getRange(),
+                    roomLightingData.getPosition(),
+                    roomLightingData.getEulerAngle(),
+                    roomLightingData.getLocalScale()
+            );
+            roomLightingResponseDTOList.add(roomLightingResponseDTO);
+        }
+
+        RoomDetailsResponseDTO roomDetailsResponseDTO = new RoomDetailsResponseDTO(
+                foundRoom.getRoomNo(),
+                foundRoom.getRoomName(),
+                foundRoom.getMemberNo(),
+                foundRoom.getCategory(),
+                foundRoom.getDescription(),
+                foundRoom.getXsize(),
+                foundRoom.getYsize(),
+                foundRoom.getZsize(),
+                foundRoom.getScreenShotUrl(),
+                foundRoom.getRoomFilter(),
+                furnitureArrangementResponseDTOList,
+                roomLikesMemberResponseDTOList,
+                roomLightingResponseDTOList
+        );
+        return roomDetailsResponseDTO;
+    }
+
 }
