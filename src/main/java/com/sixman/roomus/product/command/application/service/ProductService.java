@@ -1,15 +1,18 @@
 package com.sixman.roomus.product.command.application.service;
 
 import com.sixman.roomus.commons.model.Money;
-import com.sixman.roomus.product.command.application.dto.ProductRequestDTO;
-import com.sixman.roomus.product.command.application.dto.ProductUpdateRequestDTO;
+import com.sixman.roomus.product.command.application.dto.*;
+import com.sixman.roomus.product.command.application.exception.NullCommentException;
 import com.sixman.roomus.product.command.application.exception.NullProductException;
 import com.sixman.roomus.product.command.domain.model.Product;
+import com.sixman.roomus.product.command.domain.model.ProductComment;
 import com.sixman.roomus.product.command.domain.model.ProductLikesMember;
-import com.sixman.roomus.product.command.domain.model.ProductLikesMemberPK;
-import com.sixman.roomus.product.command.domain.model.ProductScale;
+import com.sixman.roomus.product.command.domain.model.vo.ProductLikesMemberPK;
+import com.sixman.roomus.product.command.domain.model.vo.ProductScale;
+import com.sixman.roomus.product.command.domain.repository.ProductCommentRepository;
 import com.sixman.roomus.product.command.domain.repository.ProductLikesMemberRepository;
 import com.sixman.roomus.product.command.domain.repository.ProductRepository;
+import com.sixman.roomus.product.command.domain.service.ProductCallAPI;
 import com.sixman.roomus.product.command.domain.service.ProductStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -28,6 +32,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductStorageService productStorageService;
     private final ProductLikesMemberRepository productLikesMemberRepository;
+    private final ProductCallAPI productCallAPI;
+    private final ProductCommentRepository productCommentRepository;
 
     @Transactional
     public Integer registProduct(ProductRequestDTO productRequestDTO, MultipartFile uploadFile, MultipartFile screenShot) throws IOException {
@@ -50,26 +56,36 @@ public class ProductService {
                 new java.util.Date(),
                 fbxFileName,
                 screenShotName,
+                null,
                 false
 //                new ArrayList<>()
         );
 
         // 도메인 서비스 혹은 레파지토리 호출
         productRepository.save(product);
+        AiProductUploadRequestDTO aiRequestDTO = new AiProductUploadRequestDTO(product.getProductNo().toString(), product.getScreenShotUrl());
+        try {
+            productCallAPI.callUploadFurniture(aiRequestDTO);
+        } catch (Exception e) {
+            System.out.println("오류 발생");
+        }
 
         // 삽입 결과 반환
         return product.getProductNo();
     }
 
     @Transactional
-    public boolean updateProduct(ProductUpdateRequestDTO requestProduct
-//                                , MultipartFile screenShot
+    public boolean updateProduct(ProductUpdateRequestDTO requestProduct,
+                                 int memberNo
                                 ) throws IOException {
-        Optional<Product> productOptional = productRepository.findById(requestProduct.getProductNo());
-        if (productOptional.isEmpty()) {
+        Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(requestProduct.getProductNo(), false);
+        if (foundProductOpt.isEmpty()) {
             throw new NullProductException("수정할 상품이 존재하지 않습니다.");
         }
-        Product product = productOptional.get();
+        Product product = foundProductOpt.get();
+        // 방 소유 확인
+        product.isProductOwner(memberNo);
+
         if (requestProduct.getFurnitName() != null) {
             product.setFunitureName(requestProduct.getFurnitName());
         }
@@ -102,14 +118,25 @@ public class ProductService {
     }
 
     @Transactional
-    public boolean deleteProduct(int productNo) {
-        Optional<Product> foundProduct = productRepository.findById(productNo);
-        if (foundProduct.isEmpty()) {
+    public boolean deleteProduct(int productNo, int memberNo) {
+        Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
+
+        if (foundProductOpt.isEmpty()) {
             throw new NullProductException("상품이 존재하지 않습니다.");
         }
-        Product product = foundProduct.get();
-        product.setDelete(true);
-//        productDataService.throwProductDeleteMessageToViewRepository(productNo);
+        Product foundProduct = foundProductOpt.get();
+        // 회원의 상품인지 확인
+        foundProduct.isProductOwner(memberNo);
+
+        foundProduct.setDelete(true);
+        foundProduct.setDeleteDate(new Date());
+
+        AiProductDeleteRequestDTO aiRequestDTO = new AiProductDeleteRequestDTO(foundProduct.getProductNo().toString());
+        try {
+            productCallAPI.callDeleteFurniture(aiRequestDTO);
+        } catch (Exception e) {
+            System.out.println("오류 발생");
+        }
         return true;
     }
 
@@ -117,11 +144,11 @@ public class ProductService {
     @Transactional
     public void likeProducts(int productNo, int memberNo) {
         // 1. 좋아요를 이미 누른 상태인지 확인하기 위해서 productLikesMemberPK 생성 (VO)
-        Optional<Product> productOpt = productRepository.findById(productNo);
-        if (productOpt.isEmpty()) {
+        Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
+        if (foundProductOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 상품입니다.");
         }
-        Product product = productOpt.get();
+        Product product = foundProductOpt.get();
         ProductLikesMemberPK productLikesMemberPK = new ProductLikesMemberPK(product, memberNo);
         Optional<ProductLikesMember> productLikesMemberQpt = productLikesMemberRepository.findById(productLikesMemberPK);
 
@@ -133,22 +160,74 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public void unlikeProducts(Integer productNo, int memberNo) {
         // 1. 좋아요를 이미 누른 상태인지 확인하기 위해서 productLikesMemberPK 생성 (VO)
-        Optional<Product> productOpt = productRepository.findById(productNo);
-        if (productOpt.isEmpty()) {
+        Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
+        if (foundProductOpt.isEmpty()) {
             throw new NullProductException("존재하지 않는 상품입니다.");
         }
-        Product product = productOpt.get();
+        Product product = foundProductOpt.get();
         ProductLikesMemberPK productLikesMemberPK = new ProductLikesMemberPK(product, memberNo);
         Optional<ProductLikesMember> productLikesMemberQpt = productLikesMemberRepository.findById(productLikesMemberPK);
 
-        if (productLikesMemberQpt.isPresent()) { // 2-1. 좋아요를 누른 상태인 경우 좋아요 추가
-            ProductLikesMember productLikesMember = new ProductLikesMember(new ProductLikesMemberPK(product, memberNo));
-            productLikesMemberRepository.delete(productLikesMember);
+        if (productLikesMemberQpt.isPresent()) { // 2-1. 좋아요를 누른 상태인 경우 좋아요 삭제
+            productLikesMemberRepository.delete(productLikesMemberQpt.get());
         } else { // 2-2. 좋아요를 누르지 않은 상태인 경우 exception
             throw new DuplicateKeyException("좋아요가 눌러져 있지 않습니다.");
         }
 
+    }
+
+    @Transactional
+    public int commentProducts(int productNo, int memberNo, CommentSaveRequestDTO commentReqeust) {
+        Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
+        if (foundProductOpt.isEmpty()) {
+            throw new NullProductException("존재하지 않는 상품입니다.");
+        }
+        Product foundProduct = foundProductOpt.get();
+        ProductComment insertComment = new ProductComment(
+                memberNo,
+                foundProduct,
+                commentReqeust.getComment(),
+                false,
+                new Date(),
+                new Date()
+        );
+        productCommentRepository.save(insertComment);
+        return insertComment.getProductCommentNo();
+    }
+
+    @Transactional
+    public void deleteComment(int productNo, int memberNo, CommentDeleteRequestDTO commentRequestDTO) {
+        Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
+        if (foundProductOpt.isEmpty()) {
+            throw new NullProductException("존재하지 않는 상품입니다.");
+        }
+        Product foundProduct = foundProductOpt.get();
+        Optional<ProductComment> foundCommentOpt = productCommentRepository.findByProductCommentNoAndIsDelete(commentRequestDTO.getCommentNo(), false);
+        if (foundCommentOpt.isEmpty()) {
+            throw new NullCommentException("존재하지 않는 상품입니다.");
+        }
+        ProductComment productComment = foundCommentOpt.get();
+        productComment.setDelete(true);
+        productComment.setDeleteDate(new Date());
+    }
+
+    @Transactional
+    public int updateComment(int productNo, int memberNo, CommentUpdateRequestDTO commentRequestDTO) {
+        Optional<Product> foundProductOpt = productRepository.findByProductNoAndIsDelete(productNo, false);
+        if (foundProductOpt.isEmpty()) {
+            throw new NullProductException("존재하지 않는 상품입니다.");
+        }
+        Product foundProduct = foundProductOpt.get();
+        Optional<ProductComment> foundCommentOpt = productCommentRepository.findByProductCommentNoAndIsDelete(commentRequestDTO.getCommentNo(), false);
+        if (foundCommentOpt.isEmpty()) {
+            throw new NullCommentException("존재하지 않는 상품입니다.");
+        }
+        ProductComment productComment = foundCommentOpt.get();
+        productComment.setComment(commentRequestDTO.getComment());
+        productComment.setLastModifiedDate(new Date());
+        return productComment.getProductCommentNo();
     }
 }

@@ -1,4 +1,5 @@
-package com.sixman.roomus.product.command.domain.model;
+package com.sixman.roomus.rooms.query.model;
+
 
 import lombok.*;
 
@@ -14,19 +15,18 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class ProductLikesMemberPK implements Serializable {
-
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_NO")
-    private Product product;
+@ToString(exclude = {"roomData"})
+public class RoomLikesMemberDataPK implements Serializable {
 
     @Column(name = "MEMBER_NO")
-    private int memberId;
+    private int memberNo;
 
+    @ManyToOne
+    @JoinColumn(name = "ROOM_NO")
+    private RoomData roomData;
     @Override
     public int hashCode() {
-        return Objects.hash(product.hashCode(), memberId);
+        return Objects.hash(memberNo);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ProductLikesMemberPK implements Serializable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        ProductLikesMemberPK productLikesMemberPK = (ProductLikesMemberPK) obj;
-        return product == productLikesMemberPK.getProduct() && Objects.equals(memberId, productLikesMemberPK.getMemberId());
+        RoomLikesMemberDataPK roomLikesMemberPK = (RoomLikesMemberDataPK) obj;
+        return this.memberNo == roomLikesMemberPK.getMemberNo();
     }
 }

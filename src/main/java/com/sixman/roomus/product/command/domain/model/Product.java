@@ -2,6 +2,8 @@ package com.sixman.roomus.product.command.domain.model;
 
 import com.sixman.roomus.commons.jpa.MoneyConverter;
 import com.sixman.roomus.commons.model.Money;
+import com.sixman.roomus.product.command.domain.exception.NotProductOwnerException;
+import com.sixman.roomus.product.command.domain.model.vo.ProductScale;
 import lombok.*;
 
 import javax.persistence.*;
@@ -65,7 +67,15 @@ public class Product {
     @Column(name = "SCREENT_SHOT_URL")
     private String screenShotUrl;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleteDate;
+
     @Column(name = "IS_DELETE")
     private boolean isDelete;
 
+    public void isProductOwner(int memberNo) {
+        if (this.memberNo != memberNo) {
+            throw new NotProductOwnerException("방 소유자가 아닙니다.");
+        }
+    }
 }

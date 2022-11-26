@@ -1,21 +1,19 @@
 package com.sixman.roomus.config;
 
+import com.sixman.roomus.config.jwt.JwtConfig;
 import com.sixman.roomus.config.jwt.filter.JwtAuthenticationFilter;
 import com.sixman.roomus.config.jwt.filter.JwtAuthorizationFilter;
-import com.sixman.roomus.config.jwt.filter.JwtFilter;
-import com.sixman.roomus.member.command.domain.model.Member;
-import com.sixman.roomus.member.command.domain.model.Role;
+import com.sixman.roomus.member.command.domain.model.vo.Role;
 import com.sixman.roomus.member.command.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -26,11 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static String AUTH_KEY;
     private final MemberRepository memberRepository;
-
-
-    public SecurityConfig(@Value("${jwt.secret}") String key, MemberRepository memberRepository) {
+    private final JwtConfig jwtConfig;
+    public SecurityConfig(@Value("${jwt.secret}") String key, MemberRepository memberRepository, JwtConfig jwtConfig) {
         this.AUTH_KEY = key;
         this.memberRepository = memberRepository;
+        this.jwtConfig = jwtConfig;
     }
 
     @Bean
@@ -54,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 // 아래의 authenticationManager는 WebSecurityConfigurerAdapter가 가지고 있어서 별도의 선언 없이 사용이 가능하다.
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(),AUTH_KEY)) // 로그인 요청시 해당 필터를 거치도록 설정 | 필수 파라미터 AuthenticationManger을 필수로 등록해야됨
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(),AUTH_KEY, jwtConfig)) // 로그인 요청시 해당 필터를 거치도록 설정 | 필수 파라미터 AuthenticationManger을 필수로 등록해야됨
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), AUTH_KEY, memberRepository))
                 .authorizeRequests()
                 .antMatchers("/member/**") // 회원용
@@ -63,6 +61,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority(Role.SELLER.getValue(), Role.ADMIN.getValue())
                 .antMatchers("/admin/**")// 관리자
                 .hasAnyAuthority(Role.ADMIN.getValue())
+                // 상품 업로드, 수정, 삭제 권한
+                .antMatchers(HttpMethod.POST,"/v1/products")
+                .hasAnyAuthority(Role.SELLER.getValue())
+                .antMatchers(HttpMethod.PUT,"/v1/products/{productNo}")
+                .hasAnyAuthority(Role.SELLER.getValue())
+                .antMatchers(HttpMethod.DELETE,"/v1/products/{productNo}")
+                .hasAnyAuthority(Role.SELLER.getValue())
+                // 그 외 상품 관련 url 권한 설정 (회원, 판매자, 관리자)
+                .antMatchers("/v1/products/**")
+                .hasAnyAuthority(Role.USER.getValue(), Role.SELLER.getValue(), Role.ADMIN.getValue())
+                // 방 관련 url 권한 설정 (회원, 판매자, 관리자)
+                .antMatchers("/v1/rooms/**")
+                .hasAnyAuthority(Role.USER.getValue(), Role.SELLER.getValue(), Role.ADMIN.getValue())
+                // 그 외 모든 url 허용
                 .antMatchers("/**").permitAll()
                 .anyRequest().permitAll(); //denyAll();//위의 요청을 제외한 모든 요청을
 

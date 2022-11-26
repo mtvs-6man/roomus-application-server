@@ -2,19 +2,21 @@ package com.sixman.roomus.product.query.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"productData"})
 public class ProductLikesMemberDataPK implements Serializable {
 
     @Column(name = "MEMBER_NO")
-    private int memberId;
+    private int memberNo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_NO")
+    private ProductData productData;
 
 }

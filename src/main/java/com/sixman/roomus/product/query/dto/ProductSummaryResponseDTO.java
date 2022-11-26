@@ -10,7 +10,9 @@ import lombok.*;
 @ToString
 public class ProductSummaryResponseDTO {
     private int no;
+    private String furnitName;
     private String screenShotUrl;
     private String category;
-    private int likes;
+    private int cntLikes;
+    private int cntComments;
 }

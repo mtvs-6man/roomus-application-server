@@ -1,8 +1,7 @@
 package com.sixman.roomus.member.command.domain.model;
 
 import com.sixman.roomus.commons.vo.DateSet;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.sixman.roomus.member.command.domain.model.vo.Role;
 
 import javax.persistence.*;
 import java.util.*;
@@ -19,6 +18,7 @@ import java.util.*;
 )
 public class Member {
     @Id
+    @Column(name = "MEMBER_NO")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQUENCE")
     private int memberNo;
 

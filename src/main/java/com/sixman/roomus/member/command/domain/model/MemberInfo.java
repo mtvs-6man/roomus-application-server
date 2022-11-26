@@ -1,6 +1,6 @@
 package com.sixman.roomus.member.command.domain.model;
 
-import com.sixman.roomus.member.command.domain.model.MemberNullError;
+import com.sixman.roomus.member.command.domain.model.vo.MemberNullError;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
