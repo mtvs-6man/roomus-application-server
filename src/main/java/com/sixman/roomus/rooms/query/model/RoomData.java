@@ -36,6 +36,7 @@ public class RoomData {
     private String category;
 
     @NonNull
+    @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "X_SIZE")
