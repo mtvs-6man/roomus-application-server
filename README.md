@@ -17,3 +17,6 @@
 
 ## 인프라 아키텍처 
 ![image](https://user-images.githubusercontent.com/96860725/198565789-1842c244-f008-4cf8-b11f-9f46eb61a016.png)
+
+## 인프라 아키텍처
+![Room Us ( 융합 프로젝트 )](https://user-images.githubusercontent.com/67566068/204130050-e55da51b-f8d9-4286-9272-05e05b2e7416.png)
