@@ -17,6 +17,11 @@
 ## 인프라 아키텍처
 ![Room Us ( 융합 프로젝트 )](https://user-images.githubusercontent.com/67566068/204130050-e55da51b-f8d9-4286-9272-05e05b2e7416.png)
 
+
+## 시퀀스 다이어 그램
+상품(가구) 업로드 및 사진 검색
+![가구 업로드 시퀀스](https://user-images.githubusercontent.com/96860725/204201267-d52f0ff7-a73f-49fe-a2eb-c16d84d14533.png)
+
 ## 사용 기술 스택
 ![사용 기술 스텍](https://user-images.githubusercontent.com/67566068/204131442-d6a865c2-9835-4780-874e-ddf67043281c.png)
 
@@ -36,3 +41,4 @@
 ## Wiki 관리  
 프로젝트를 진행하면서 서로 알면 좋은것들, 협업하기 위해 맞춰야하는 컨벤션 등을 Wiki를 통해서 팀원들이 쉽게 접근할 수 있도록 하였습니다.
 [wiki 바로가기](https://github.com/mtvs-6man/roomus-application-server/wiki)
+
