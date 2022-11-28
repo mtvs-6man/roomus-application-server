@@ -22,7 +22,7 @@
 
 ## Branch 관리  
 전반적인 틀은 git flow 브랜치 전략을 사용했습니다. 프로젝트를 관리하는 인원이 적음에 따라 release 브랜치는 필요하지 않을 것으로 판단하여 팀원들과의 회의 후에 아래와 같은 4개의 브랜치만 사용하는 것으로 결정하였습니다.  
-![브랜치 관리](https://user-images.githubusercontent.com/96860725/204170366-e9f41c35-d887-4a84-9a24-7831bff9dafb.png)
+![브랜치 관리](https://user-images.githubusercontent.com/96860725/204175676-9cf7e3a6-c63e-4204-b202-c3b0f2ab7a2b.png)
 - main: 실제 prod배포를 위한 main 브랜치
 - hotfix: main 브랜치에서 발생하는 오류를 긴급하게 수정해야 하는 경우 사용
 - develop: 개발 서버로 prod서버와 영향을 주지 않으면서 개발하기 위해 사용
