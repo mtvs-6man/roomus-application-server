@@ -35,3 +35,4 @@
 
 ## Wiki 관리  
 프로젝트를 진행하면서 서로 알면 좋은것들, 협업하기 위해 맞춰야하는 컨벤션 등을 Wiki를 통해서 팀원들이 쉽게 접근할 수 있도록 하였습니다.
+[wiki 바로가기](https://github.com/mtvs-6man/roomus-application-server/wiki)
