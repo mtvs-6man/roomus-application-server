@@ -14,6 +14,14 @@
   사용자가 만든 공간을 사용자의 선택에 따라 공개 여부를 결정 할 수 있도록 서비스 하여 사용자 접근성을 높이고자 기획하게 되었다.
   위 서비스를 통해 구현된 방의 인테리어 소품은 가상 공간에서 주문을 할 수 있으며 친구들과 함께 공간을 인테리어 하는 방식의 서비스도 지원하고 있다.
 
+## 인프라 아키텍처
+![Room Us ( 융합 프로젝트 )](https://user-images.githubusercontent.com/67566068/204130050-e55da51b-f8d9-4286-9272-05e05b2e7416.png)
 
-## 인프라 아키텍처 
-![image](https://user-images.githubusercontent.com/96860725/198565789-1842c244-f008-4cf8-b11f-9f46eb61a016.png)
+## 사용 기술 스택
+![사용 기술 스텍](https://user-images.githubusercontent.com/67566068/204131442-d6a865c2-9835-4780-874e-ddf67043281c.png)
+
+
+## Issue 관리  
+협업을 위해 팀원들과 Issue로 할일을 관리하였습니다. Issue 확인하러 가기 ->  
+[미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)  
+[완료된 Issue](https://github.com/mtvs-6man/roomus-application-server/issues?q=is%3Aissue+is%3Aclosed)
