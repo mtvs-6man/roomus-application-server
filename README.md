@@ -22,5 +22,5 @@
 
 
 ## Issue 관리
-![미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)
-![완료된 Issue](https://github.com/mtvs-6man/roomus-application-server/issues?q=is%3Aissue+is%3Aclosed)
+[미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)
+[완료된 Issue](https://github.com/mtvs-6man/roomus-application-server/issues?q=is%3Aissue+is%3Aclosed)
