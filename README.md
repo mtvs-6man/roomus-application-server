@@ -22,6 +22,6 @@
 
 
 ## Issue 관리  
-협업을 위해 팀원들과 Issue로 할일을 관리하였습니다. Issue 확인하러 가기 ->
+협업을 위해 팀원들과 Issue로 할일을 관리하였습니다. Issue 확인하러 가기 ->  
 [미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)  
 [완료된 Issue](https://github.com/mtvs-6man/roomus-application-server/issues?q=is%3Aissue+is%3Aclosed)
