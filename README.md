@@ -21,9 +21,13 @@
 ![사용 기술 스텍](https://user-images.githubusercontent.com/67566068/204131442-d6a865c2-9835-4780-874e-ddf67043281c.png)
 
 ## Branch 관리  
-![branch 관리](https://user-images.githubusercontent.com/96860725/204169983-bd029365-67f6-4264-b819-bb42418c102a.png)
-
-
+전반적인 틀은 git flow 브랜치 전략을 사용했습니다. 프로젝트를 관리하는 인원이 적음에 따라 release 브랜치는 필요하지 않을 것으로 판단하여 팀원들과의 회의 후에 아래와 같은 4개의 브랜치만 사용하는 것으로 결정하였습니다.  
+![브랜치 관리](https://user-images.githubusercontent.com/96860725/204170366-e9f41c35-d887-4a84-9a24-7831bff9dafb.png)
+- main: 실제 prod배포를 위한 main 브랜치
+- hotfix: main 브랜치에서 발생하는 오류를 긴급하게 수정해야 하는 경우 사용
+- develop: 개발 서버로 prod서버와 영향을 주지 않으면서 개발하기 위해 사용
+- feature: develop을 개발하면서 기능단위로 develop서버에 영향을 주지 않기 위해서 사용.
+  
 ## Issue 관리  
 협업을 위해 팀원들과 Issue로 할일을 관리하였습니다. Issue 확인하러 가기 ->  
 [미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)  
