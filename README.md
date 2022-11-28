@@ -21,6 +21,7 @@
 ![사용 기술 스텍](https://user-images.githubusercontent.com/67566068/204131442-d6a865c2-9835-4780-874e-ddf67043281c.png)
 
 
-## Issue 관리
-[미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)
+## Issue 관리  
+협업을 위해 팀원들과 Issue로 할일을 관리하였습니다. Issue 확인하러 가기 ->
+[미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)  
 [완료된 Issue](https://github.com/mtvs-6man/roomus-application-server/issues?q=is%3Aissue+is%3Aclosed)
