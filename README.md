@@ -20,8 +20,14 @@
 ## 사용 기술 스택
 ![사용 기술 스텍](https://user-images.githubusercontent.com/67566068/204131442-d6a865c2-9835-4780-874e-ddf67043281c.png)
 
+## Branch 관리  
+![branch 관리](https://user-images.githubusercontent.com/96860725/204169983-bd029365-67f6-4264-b819-bb42418c102a.png)
+
 
 ## Issue 관리  
 협업을 위해 팀원들과 Issue로 할일을 관리하였습니다. Issue 확인하러 가기 ->  
 [미완료 Issue](https://github.com/mtvs-6man/roomus-application-server/issues)  
 [완료된 Issue](https://github.com/mtvs-6man/roomus-application-server/issues?q=is%3Aissue+is%3Aclosed)
+
+## Wiki 관리  
+프로젝트를 진행하면서 서로 알면 좋은것들, 협업하기 위해 맞춰야하는 컨벤션 등을 Wiki를 통해서 팀원들이 쉽게 접근할 수 있도록 하였습니다.
