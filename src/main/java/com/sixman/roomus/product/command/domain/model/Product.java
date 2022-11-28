@@ -43,7 +43,7 @@ public class Product {
     @Column(name = "CATEGORY")
     private String category;
 
-    @Column(name = "INFORMATION")
+    @Column(name = "INFORMATION", columnDefinition = "TEXT")
     private String information;
 
     @Embedded
